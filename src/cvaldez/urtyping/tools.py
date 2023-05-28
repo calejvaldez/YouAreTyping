@@ -18,6 +18,10 @@ class User:
         self.username: str
         self.friend_name: str
 
+    def create(self, *, uuid: str, friend_name: str):
+        # TODO: Add the new user to the database
+        ...
+
 
 class Message:
     def __init__(self, data: dict):
