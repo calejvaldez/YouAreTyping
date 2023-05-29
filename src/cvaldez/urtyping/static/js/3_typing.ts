@@ -1,4 +1,5 @@
 let container_texts = document.getElementById('texts') as HTMLDivElement;
+let current_delivered: HTMLParagraphElement | null = null;
 
 interface Message {
     id: string
@@ -30,10 +31,58 @@ const sample_data: Array<Message> = [
         timestamp: '0',
         from: 'sender',
         to: 'friend'
-    }
+    },
+    {
+        id: '0',
+        user_id: '0',
+        content: 'This is another message meant for testing purposes. I am trying to see the scrolling affect these messages may have.',
+        timestamp: '0',
+        from: 'friend',
+        to: 'sender'
+    },
+    {
+        id: '1',
+        user_id: '1',
+        content: 'If you are reading these commits, I am sorry for the weird messages going forward.',
+        timestamp: '0',
+        from: 'sender',
+        to: 'friend'
+    },
+    {
+        id: '0',
+        user_id: '0',
+        content: 'whoa whoa whoa he he he he',
+        timestamp: '0',
+        from: 'friend',
+        to: 'sender'
+    },
+    {
+        id: '1',
+        user_id: '1',
+        content: 'im streaming marina electra heart i love her<3',
+        timestamp: '0',
+        from: 'sender',
+        to: 'friend'
+    },
+    {
+        id: '1',
+        user_id: '1',
+        content: 'actually im just gonna start talking about my favorite artists',
+        timestamp: '0',
+        from: 'sender',
+        to: 'friend'
+    },
+    {
+        id: '1',
+        user_id: '1',
+        content: 'miley cyrus is an icon, marina too, adele, sza, etc',
+        timestamp: '0',
+        from: 'sender',
+        to: 'friend'
+    },
 ]
 
-function addMessage(message: Message, type: 'friend' | 'sender') {
+function addMessage(message: Message, type: 'friend' | 'sender'): void {
     let container = document.createElement('div');
     container.className = `textdiv-${type}`;
 
@@ -54,6 +103,11 @@ function addMessage(message: Message, type: 'friend' | 'sender') {
         del.textContent = 'Delivered';
         del.className = 'delivered';
 
+        if (current_delivered !== null) {
+            current_delivered.remove()
+        }
+        current_delivered = del;
+
         total_container.appendChild(text);
         total_container.appendChild(del);
 
@@ -61,6 +115,10 @@ function addMessage(message: Message, type: 'friend' | 'sender') {
     }
 
     container_texts.appendChild(container);
+}
+
+function deleteLastDelivered(): void {
+
 }
 
 sample_data.forEach(m => {
