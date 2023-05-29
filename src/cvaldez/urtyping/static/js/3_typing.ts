@@ -125,10 +125,8 @@ function addMessage(message: Message, type: 'friend' | 'sender'): void {
     container_texts.appendChild(container);
 }
 
-function deleteLastDelivered(): void {
-
-}
-
 sample_data.forEach(m => {
     addMessage(m, m.from as 'friend' | 'sender')
-})
+});
+
+container_texts.scrollTop = container_texts.scrollHeight;
