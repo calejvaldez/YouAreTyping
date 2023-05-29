@@ -93,5 +93,17 @@ body {
 
 #tools {
     position: sticky;
-    bottom: 15px;
+    bottom: 10px;
+}
+
+#text-input {
+    height: 50px;
+    width: 300px;
+
+    background-color: transparent;
+    border: solid 1px $mainGrey;
+    border-radius: 25px;
+    color: white;
+
+    padding: 0 10px;
 }
