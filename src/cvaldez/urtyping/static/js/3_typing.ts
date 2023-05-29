@@ -1,4 +1,6 @@
 let container_texts = document.getElementById('texts') as HTMLDivElement;
+let button = document.getElementById('mainButton') as HTMLButtonElement;
+let input = document.getElementById('text-input') as HTMLInputElement;
 let current_delivered: HTMLParagraphElement | null = null;
 
 interface Message {
@@ -130,3 +132,13 @@ sample_data.forEach(m => {
 });
 
 container_texts.scrollTop = container_texts.scrollHeight;
+
+input.addEventListener('input', () => {
+    if (input.value === '') {
+        button.style.backgroundColor = '#B0B0B0';
+        button.textContent = 'Switch';
+    } else {
+        button.style.backgroundColor = '#72DDFF';
+        button.textContent = 'Send';
+    }
+})

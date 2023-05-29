@@ -109,3 +109,14 @@ body {
 
     padding: 0 10px;
 }
+
+#mainButton {
+    height: 50px;
+    width: 50px;
+
+    background-color: $mainGrey;
+
+    border-radius: 50%;
+
+    border: none;
+}
