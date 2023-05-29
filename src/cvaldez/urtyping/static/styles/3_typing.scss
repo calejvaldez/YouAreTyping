@@ -2,3 +2,35 @@ $mainBlue: #72DDFF;
 $mainGrey: #B0B0B0;
 $backgroundTextColor: #B0B0B0;
 $mainTextColor: #FFFFFF;
+
+@mixin user() {
+    background-color: $mainBlue;
+    color: black;
+    min-width: 165px;
+    max-width: 210px;
+
+    position: absolute;
+    right: 10px;
+
+    border-radius: 20px 20px 20px 0px;
+}
+
+@mixin friend() {
+    background-color: $mainGrey;
+    color: black;
+    min-width: 165px;
+    max-width: 210px;
+
+    position: absolute;
+    left: 10px;
+
+    border-radius: 20px 20px 20px 0px;
+}
+
+.friend {
+    @include friend();
+}
+
+.sender {
+    @include user();
+}
