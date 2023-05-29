@@ -98,7 +98,9 @@ body {
 
 #text-input {
     height: 50px;
-    width: 300px;
+    width: 70vw;
+
+    min-width: 200px;
 
     background-color: transparent;
     border: solid 1px $mainGrey;
