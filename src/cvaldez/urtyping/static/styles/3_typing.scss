@@ -3,28 +3,81 @@ $mainGrey: #B0B0B0;
 $backgroundTextColor: #B0B0B0;
 $mainTextColor: #FFFFFF;
 
-@mixin user() {
-    background-color: $mainBlue;
+@mixin text_defaults() {
     color: black;
     min-width: 165px;
-    max-width: 210px;
+    max-width: 215px;
 
-    position: absolute;
-    right: 10px;
+    min-height: 40px;
 
-    border-radius: 20px 20px 20px 0px;
+    padding: 10px;
+}
+
+@mixin user() {
+    @include text_defaults();
+
+    background-color: $mainBlue;
+
+    border-radius: 20px 20px 0 20px;
 }
 
 @mixin friend() {
+    @include text_defaults();
+
     background-color: $mainGrey;
-    color: black;
-    min-width: 165px;
-    max-width: 210px;
 
-    position: absolute;
-    left: 10px;
+    border-radius: 20px 20px 20px 0;
+}
 
-    border-radius: 20px 20px 20px 0px;
+body {
+    background-color: black;
+    font-family: Arial, Helvetica, sans-serif;
+
+    height: 100vh;
+}
+
+#intro_text {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    color: $backgroundTextColor;
+}
+
+#texts {
+    display: flex;
+    flex-direction: column;
+}
+
+@mixin textdiv_defaults() {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0;
+}
+
+.textdiv-friend {
+    @include textdiv_defaults();
+
+    justify-content: flex-start;
+}
+
+.textdiv-sender {
+    @include textdiv_defaults();
+
+    justify-content: flex-end;
+}
+
+.sender-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.delivered {
+    display: flex;
+    justify-content: flex-end;
+    color: $backgroundTextColor;
+    font-size: 12px;
 }
 
 .friend {
@@ -33,4 +86,9 @@ $mainTextColor: #FFFFFF;
 
 .sender {
     @include user();
+}
+
+#tools {
+    position: sticky;
+    bottom: 15px;
 }
