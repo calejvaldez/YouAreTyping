@@ -17,7 +17,7 @@ interface User {
     username: string
 }
 
-const sample_data: Array<Message> = [
+let sample_data: Array<Message> = [
     {
         id: '0',
         user_id: '0',
@@ -127,6 +127,23 @@ function addMessage(message: Message, type: 'friend' | 'sender'): void {
     container_texts.appendChild(container);
 }
 
+function switchMessages(): void {
+    while (container_texts.children.length > 1) {
+        container_texts.lastChild!.remove()
+    }
+
+    sample_data.forEach(m => {
+        if (m.from === 'sender') {
+            m.from = 'friend';
+        } else {
+            m.from = 'sender';
+        }
+
+        addMessage(m, m.from as 'friend' | 'sender')
+    })
+    
+}
+
 sample_data.forEach(m => {
     addMessage(m, m.from as 'friend' | 'sender')
 });
@@ -140,5 +157,13 @@ input.addEventListener('input', () => {
     } else {
         button.style.backgroundColor = '#72DDFF';
         button.textContent = 'Send';
+    }
+})
+
+button.addEventListener('click', () => {
+    if (button.style.backgroundColor === 'rgb(114, 221, 255)') {
+        // send message to the server
+    } else {
+        switchMessages()
     }
 })
