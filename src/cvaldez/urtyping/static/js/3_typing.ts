@@ -80,6 +80,14 @@ const sample_data: Array<Message> = [
         from: 'sender',
         to: 'friend'
     },
+    {
+        id: '1',
+        user_id: '1',
+        content: 'everyone should listen to them asap',
+        timestamp: '0',
+        from: 'friend',
+        to: 'sender'
+    },
 ]
 
 function addMessage(message: Message, type: 'friend' | 'sender'): void {
