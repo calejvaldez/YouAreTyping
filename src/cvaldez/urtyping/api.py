@@ -5,7 +5,7 @@
 
 from flask import Blueprint, request, Response
 import json
-from tools import fetch_messages, UserExistsError, UserNotFoundError, get_uuid_by_token
+from tools import fetch_messages, UserExistsError, UserNotFoundError, get_uuid_by_token, Message
 
 bp = Blueprint('You Are Typing API', __name__,
                template_folder='templates',
@@ -18,7 +18,7 @@ def get_messages():
     user_id = get_uuid_by_token(request.headers['Bearer'])
 
     if not user_id:
-        return Response({'ERROR': 'Unauthorized.'}, status=401)
+        return Response(json.dumps({'ERROR': 'Unauthorized.'}), status=401)
 
     return Response(json.dumps({'data': [{
         'id': x.id,
@@ -32,4 +32,19 @@ def get_messages():
 
 @bp.route("/send-message/", methods=['POST'])
 def send_message():
-    ...
+    user_id = get_uuid_by_token(request.headers['Bearer'])
+    data = json.loads(request.data)
+
+    if not user_id:
+        return Response(json.dumps(({'ERROR': 'Unauthorized'}), status=401))
+
+    m = Message.new(data['content'], sender=data['from'], user_id=user_id)
+
+    return Response(json.dumps({
+        'id': m.id,
+        'user_id': m.user_id,
+        'content': m.content,
+        'timestamp': m.timestamp,
+        'from': m.message_from,
+        'to': m.to
+    }), status=200)
