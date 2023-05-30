@@ -10,6 +10,11 @@ bp = Blueprint('You Are Typing', __name__,
                static_folder='static',
                url_prefix='/typing/')
 
-@bp.route('/text/')
+@bp.route('/messages/')
 def text():
     return render_template('3_typing.html')
+
+
+@bp.route('/')
+def index():
+    return '<p>I am still working on this page. Use <a href="/typing/messages/">this</a> instead.</p>'

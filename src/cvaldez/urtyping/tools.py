@@ -22,7 +22,7 @@ class User:
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
 
-            cur.execute("SELECT * FROM p3_users WHERE uuid=%s", (user_id,))
+            cur.execute("SELECT * FROM p3_users WHERE id=%s", (user_id,))
 
             fetched = cur.fetchall()
 
@@ -38,7 +38,7 @@ class User:
     def create(*, username: str, user_id: str) -> 'User':
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM p3_users WHERE uuid=%s", (user_id,))
+            cur.execute("SELECT * FROM p3_users WHERE id=%s", (user_id,))
 
             fetched = cur.fetchall()
 
@@ -66,6 +66,7 @@ class Message:
     @staticmethod
     def new(content: str, *, sender: str, user_id: str) -> 'Message':
         u = User(user_id)
+
         content = Fernet(os.getenv("EK_3").encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
 
         if u.username == sender:
@@ -74,10 +75,10 @@ class Message:
             send_to = u.username
 
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
-            message_id = uuid.uuid4()
+            message_id = str(uuid.uuid4())
 
             cur = con.cursor()
-            cur.execute("INSERT INTO p3_messages(id, user_id, content, timestamp, from, to) VALUES(%s, %s, %s, %s, %s, %s)", (message_id, user_id, content, time.time(), sender, send_to))
+            cur.execute('INSERT INTO p3_messages(id, user_id, content, timestamp, "from", "to") VALUES(%s, %s, %s, %s, %s, %s)', (message_id, user_id, content, time.time(), sender, send_to))
             con.commit()
 
             cur.execute("SELECT * FROM p3_messages WHERE id=%s", (message_id,))

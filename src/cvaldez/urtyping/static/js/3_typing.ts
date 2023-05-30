@@ -3,6 +3,8 @@ let button = document.getElementById('mainButton') as HTMLButtonElement;
 let input = document.getElementById('text-input') as HTMLInputElement;
 let current_delivered: HTMLParagraphElement | null = null;
 
+let mode = 'carlos';
+
 interface Message {
     id: string
     user_id: string
@@ -20,17 +22,25 @@ interface User {
 let data: Array<Message> | null = null;
 let user: User | null = {id: '', username: 'carlos'}
 
+function determineMessageType(message_from: string): string {
+    if (message_from === 'friend') {
+        return 'friend';
+    } else {
+        return 'sender';
+    }
+}
+
 function handleMessageRequest() {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        let d = JSON.parse(this.requestText)['data'] as Array<Message>;
+        let d = JSON.parse(this.responseText)['data'] as Array<Message>;
 
-        if (!d.toString().includes('ERROR')) {
+        if (d['ERROR']) {
             console.log("An error occured.");
         } else {
             data = d;
-
+            
             data.forEach(m => {
-                addMessage(m, m.from)
+                addMessage(m, determineMessageType(m.from))
             });
             
             container_texts.scrollTop = container_texts.scrollHeight;
@@ -40,12 +50,28 @@ function handleMessageRequest() {
     }
 }
 
-let m_xhttp = new XMLHttpRequest();
-// m_xhttp.setRequestHeader('Bearer', '');
-m_xhttp.open('GET', '/api/typing/messages/')
-m_xhttp.onreadystatechange = handleMessageRequest;
-m_xhttp.send();
+function loadMessages() {
+    let m_xhttp = new XMLHttpRequest();
+    // m_xhttp.setRequestHeader('Bearer', '');
+    m_xhttp.open('GET', '/api/typing/get-messages/')
+    m_xhttp.onreadystatechange = handleMessageRequest;
+    m_xhttp.send();
+}
 
+
+function handleUserExistsRequest() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        loadMessages();
+    }
+}
+
+
+let e_xhttp = new XMLHttpRequest();
+e_xhttp.open("POST", '/api/typing/register-user/');
+// e_xhttp.setRequestHeader('Bearer', '');
+e_xhttp.setRequestHeader('username', 'carlos');
+e_xhttp.onreadystatechange = handleUserExistsRequest;
+e_xhttp.send();
 
 
 function addMessage(message: Message, type: string): void {
@@ -88,29 +114,38 @@ function switchMessages(): void {
         container_texts.lastChild!.remove()
     }
 
+    if (mode === 'friend') {
+        mode = 'carlos';
+    } else {
+        mode = 'friend'
+    }
+
     data!.forEach(m => {
-        if (m.from === 'sender') {
+        if (m.from === 'carlos') {
             m.from = 'friend';
+            m.to = 'carlos';
         } else {
-            m.from = 'sender';
+            m.from = 'carlos';
+            m.to = 'friend';
         }
 
-        addMessage(m, m.from as 'friend' | 'sender')
+        addMessage(m, determineMessageType(m.from))
     })
     
 }
 
 function handleSendMessageRequest() {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        let d = JSON.parse(this.requestText) as Message;
+        let d = JSON.parse(this.responseText) as Message;
 
         data!.push(d);
 
-        addMessage(d, d.from);
+        addMessage(d, determineMessageType(d.from));
+        
         input.value = '';
     
         button.style.backgroundColor = '#B0B0B0';
-        button.textContent = 'Switch';
+        button.textContent = '⇄';
     }
 }
 
@@ -119,7 +154,7 @@ function sendMessage(): void {
     s_xhttp.open('POST', '/api/typing/send-message/')
     // s_xhttp.setRequestHeader('Bearer', '')
     s_xhttp.onreadystatechange = handleSendMessageRequest;
-    s_xhttp.send(JSON.stringify({'content': input.value, 'from': ''}));
+    s_xhttp.send(JSON.stringify({'content': input.value, 'from': mode}));
 }
 
 input.addEventListener('input', () => {
