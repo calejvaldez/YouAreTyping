@@ -96,6 +96,12 @@ body {
     bottom: 10px;
 }
 
+#tools-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 #text-input {
     height: 50px;
     width: 70vw;
