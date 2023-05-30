@@ -93,3 +93,17 @@ def fetch_messages(user_id, amount=30) -> list[Message]:
         fetched = cur.fetchmany(amount)
 
         return [Message(x) for x in fetched]
+
+
+def get_uuid_by_token(token: str) -> str | None:
+    with psycopg2.connect(os.getenv("DB_LINK")) as con:
+        f = Fernet(os.getenv("TOKEN_ENCRYPTION_KEY").encode('utf-8'))
+
+        cur = con.cursor()
+        cur.execute("SELECT uuid, token FROM tokens")
+
+        for t in cur.fetchall():
+            if f.decrypt(t[1]).decode('utf-8') == token:
+                return t[0]
+
+        return None
