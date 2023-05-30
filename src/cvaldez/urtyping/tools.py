@@ -22,7 +22,7 @@ class User:
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
 
-            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (user_id,))
+            cur.execute("SELECT * FROM p3_users WHERE uuid=%s", (user_id,))
 
             fetched = cur.fetchall()
 
@@ -38,14 +38,14 @@ class User:
     def create(*, username: str, user_id: str) -> 'User':
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (user_id,))
+            cur.execute("SELECT * FROM p3_users WHERE uuid=%s", (user_id,))
 
             fetched = cur.fetchall()
 
             if len(fetched):
                 raise UserExistsError
 
-            cur.execute("INSERT INTO 3_users(id, username) VALUES(%s, %s)", (user_id, username))
+            cur.execute("INSERT INTO p3_users(id, username) VALUES(%s, %s)", (user_id, username))
             con.commit()
 
         return User(user_id)
@@ -77,10 +77,10 @@ class Message:
             message_id = uuid.uuid4()
 
             cur = con.cursor()
-            cur.execute("INSERT INTO 3_messages(id, user_id, content, timestamp, from, to) VALUES(%s, %s, %s, %s, %s, %s)", (message_id, user_id, content, time.time(), sender, send_to))
+            cur.execute("INSERT INTO p3_messages(id, user_id, content, timestamp, from, to) VALUES(%s, %s, %s, %s, %s, %s)", (message_id, user_id, content, time.time(), sender, send_to))
             con.commit()
 
-            cur.execute("SELECT * FROM 3_messages WHERE id=%s", (message_id,))
+            cur.execute("SELECT * FROM p3_messages WHERE id=%s", (message_id,))
 
             return Message(cur.fetchone())
 
@@ -88,7 +88,7 @@ class Message:
 def fetch_messages(user_id, amount=30) -> list[Message]:
     with psycopg2.connect(os.getenv("DB_LINK")) as con:
         cur = con.cursor()
-        cur.execute("SELECT * FROM 3_messages WHERE user_id=%s", (user_id,))
+        cur.execute("SELECT * FROM p3_messages WHERE user_id=%s", (user_id,))
 
         fetched = cur.fetchmany(amount)
 
