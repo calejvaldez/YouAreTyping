@@ -18,9 +18,37 @@ interface User {
 }
 
 let data: Array<Message> | null = null;
-let user: User | null = null;
+let user: User | null = {id: '', username: 'carlos'}
 
-function addMessage(message: Message, type: 'friend' | 'sender'): void {
+function handleMessageRequest() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        let d = JSON.parse(this.requestText)['data'] as Array<Message>;
+
+        if (!d.toString().includes('ERROR')) {
+            console.log("An error occured.");
+        } else {
+            data = d;
+
+            data.forEach(m => {
+                addMessage(m, m.from)
+            });
+            
+            container_texts.scrollTop = container_texts.scrollHeight;
+        }
+
+        
+    }
+}
+
+let m_xhttp = new XMLHttpRequest();
+// m_xhttp.setRequestHeader('Bearer', '');
+m_xhttp.open('GET', '/api/typing/messages/')
+m_xhttp.onreadystatechange = handleMessageRequest;
+m_xhttp.send();
+
+
+
+function addMessage(message: Message, type: string): void {
     let container = document.createElement('div');
     container.className = `textdiv-${type}`;
 
@@ -60,7 +88,7 @@ function switchMessages(): void {
         container_texts.lastChild!.remove()
     }
 
-    data.forEach(m => {
+    data!.forEach(m => {
         if (m.from === 'sender') {
             m.from = 'friend';
         } else {
@@ -72,26 +100,27 @@ function switchMessages(): void {
     
 }
 
-function sendMessage(): void {
-    // send message to the server
-    // the content returned would be the timestamp, id, etc etc
+function handleSendMessageRequest() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        let d = JSON.parse(this.requestText) as Message;
 
-    let new_message = {from: 'sender', to: 'friend', content: input.value, timestamp: '0', id: '0', user_id: '0'};
+        data!.push(d);
 
-    data.push(new_message);
-
-    addMessage(new_message, 'sender');
-    input.value = '';
-
-    button.style.backgroundColor = '#B0B0B0';
-    button.textContent = 'Switch';
+        addMessage(d, d.from);
+        input.value = '';
+    
+        button.style.backgroundColor = '#B0B0B0';
+        button.textContent = 'Switch';
+    }
 }
 
-data.forEach(m => {
-    addMessage(m, m.from as 'friend' | 'sender')
-});
-
-container_texts.scrollTop = container_texts.scrollHeight;
+function sendMessage(): void {
+    let s_xhttp = new XMLHttpRequest();
+    s_xhttp.open('POST', '/api/typing/send-message/')
+    // s_xhttp.setRequestHeader('Bearer', '')
+    s_xhttp.onreadystatechange = handleSendMessageRequest;
+    s_xhttp.send();
+}
 
 input.addEventListener('input', () => {
     input.value = input.value.replace('`', '');
