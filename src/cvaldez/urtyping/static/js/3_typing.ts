@@ -169,10 +169,10 @@ input.addEventListener('input', () => {
     input.value = input.value.replace('`', '');
     if (input.value === '') {
         button.style.backgroundColor = '#B0B0B0';
-        button.textContent = 'Switch';
+        button.textContent = '⇄';
     } else {
         button.style.backgroundColor = '#72DDFF';
-        button.textContent = 'Send';
+        button.textContent = '⬆';
     }
 })
 
