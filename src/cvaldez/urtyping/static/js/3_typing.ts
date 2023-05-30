@@ -119,7 +119,7 @@ function sendMessage(): void {
     s_xhttp.open('POST', '/api/typing/send-message/')
     // s_xhttp.setRequestHeader('Bearer', '')
     s_xhttp.onreadystatechange = handleSendMessageRequest;
-    s_xhttp.send();
+    s_xhttp.send(JSON.stringify({'content': input.value, 'from': ''}));
 }
 
 input.addEventListener('input', () => {
