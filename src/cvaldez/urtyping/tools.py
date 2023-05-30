@@ -18,14 +18,11 @@ class UserNotFoundError(Exception):
 
 
 class User:
-    def __init__(self, uuid: str):
-        # TODO: Search database for uuid or username, then build the User
-        # TODO: If the user exists, raise a UserExistsError.
-
+    def __init__(self, user_id: str):
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
 
-            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (uuid,))
+            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (user_id,))
 
             fetched = cur.fetchall()
 
@@ -38,23 +35,23 @@ class User:
         self.username = fetched[1]
 
     @staticmethod
-    def create(*, username: str, uuid: str) -> 'User':
+    def create(*, username: str, user_id: str) -> 'User':
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (uuid,))
+            cur.execute("SELECT * FROM 3_users WHERE uuid=%s", (user_id,))
 
             fetched = cur.fetchall()
 
             if len(fetched):
                 raise UserExistsError
 
-            cur.execute("INSERT INTO 3_users(id, username) VALUES(%s, %s)", (uuid, username))
+            cur.execute("INSERT INTO 3_users(id, username) VALUES(%s, %s)", (user_id, username))
             con.commit()
 
-        return User(uuid)
+        return User(user_id)
 
     def new_message(self, content: str, *, sender: str) -> 'Message':
-        return Message.new(content, sender=sender, uuid=self.id)
+        return Message.new(content, sender=sender, user_id=self.id)
 
 
 class Message:
