@@ -10,17 +10,20 @@ class UserExistsError(Exception):
 
 
 class User:
-    def __init__(self, uuid=None, username=None):
+    def __init__(self, uuid: str):
         # TODO: Search database for uuid or username, then build the User
         # TODO: If the user exists, raise a UserExistsError.
 
         self.id: str
         self.username: str
-        self.friend_name: str
 
-    def create(self, *, uuid: str, friend_name: str):
+    @staticmethod
+    def create(*, uuid: str) -> 'User':
         # TODO: Add the new user to the database
         ...
+
+    def new_message(self, content: str, *, sender: str) -> 'Message':
+        return Message.new(content, sender=sender, uuid=self.id)
 
 
 class Message:
@@ -32,5 +35,10 @@ class Message:
         self.message_from: str
         self.to: str
 
-    def new(self, content: str, *, sender: str):
+    @staticmethod
+    def new(content: str, *, sender: str, uuid: str) -> 'Message':
         ...
+
+
+def fetch_messages(amount=30) -> list[Message]:
+    ...
