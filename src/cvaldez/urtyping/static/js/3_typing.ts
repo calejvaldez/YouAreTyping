@@ -161,8 +161,19 @@ input.addEventListener('input', () => {
 })
 
 button.addEventListener('click', () => {
-    if (button.style.backgroundColor === 'rgb(114, 221, 255)') {
+    if (button.style.backgroundColor === 'rgb(114, 221, 255)' && input.value !== '') {
         // send message to the server
+        // the content returned would be the timestamp, id, etc etc
+
+        let new_message = {from: 'sender', to: 'friend', content: input.value, timestamp: '0', id: '0', user_id: '0'};
+
+        sample_data.push(new_message);
+
+        addMessage(new_message, 'sender');
+        input.value = '';
+
+        button.style.backgroundColor = '#B0B0B0';
+        button.textContent = 'Switch';
     } else {
         switchMessages()
     }

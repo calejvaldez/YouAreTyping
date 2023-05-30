@@ -119,4 +119,8 @@ body {
     border-radius: 50%;
 
     border: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
