@@ -17,80 +17,8 @@ interface User {
     username: string
 }
 
-let sample_data: Array<Message> = [
-    {
-        id: '0',
-        user_id: '0',
-        content: 'Hello, me!',
-        timestamp: '0',
-        from: 'friend',
-        to: 'sender'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'This is a longer text message send by you. This is meant to represent a much longer thing. This is something something else.',
-        timestamp: '0',
-        from: 'sender',
-        to: 'friend'
-    },
-    {
-        id: '0',
-        user_id: '0',
-        content: 'This is another message meant for testing purposes. I am trying to see the scrolling affect these messages may have.',
-        timestamp: '0',
-        from: 'friend',
-        to: 'sender'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'If you are reading these commits, I am sorry for the weird messages going forward.',
-        timestamp: '0',
-        from: 'sender',
-        to: 'friend'
-    },
-    {
-        id: '0',
-        user_id: '0',
-        content: 'whoa whoa whoa he he he he',
-        timestamp: '0',
-        from: 'friend',
-        to: 'sender'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'im streaming marina electra heart i love her<3',
-        timestamp: '0',
-        from: 'sender',
-        to: 'friend'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'actually im just gonna start talking about my favorite artists',
-        timestamp: '0',
-        from: 'sender',
-        to: 'friend'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'miley cyrus is an icon, marina too, adele, sza, etc',
-        timestamp: '0',
-        from: 'sender',
-        to: 'friend'
-    },
-    {
-        id: '1',
-        user_id: '1',
-        content: 'everyone should listen to them asap',
-        timestamp: '0',
-        from: 'friend',
-        to: 'sender'
-    },
-]
+let data: Array<Message> | null = null;
+let user: User | null = null;
 
 function addMessage(message: Message, type: 'friend' | 'sender'): void {
     let container = document.createElement('div');
@@ -132,7 +60,7 @@ function switchMessages(): void {
         container_texts.lastChild!.remove()
     }
 
-    sample_data.forEach(m => {
+    data.forEach(m => {
         if (m.from === 'sender') {
             m.from = 'friend';
         } else {
@@ -150,7 +78,7 @@ function sendMessage(): void {
 
     let new_message = {from: 'sender', to: 'friend', content: input.value, timestamp: '0', id: '0', user_id: '0'};
 
-    sample_data.push(new_message);
+    data.push(new_message);
 
     addMessage(new_message, 'sender');
     input.value = '';
@@ -159,7 +87,7 @@ function sendMessage(): void {
     button.textContent = 'Switch';
 }
 
-sample_data.forEach(m => {
+data.forEach(m => {
     addMessage(m, m.from as 'friend' | 'sender')
 });
 
