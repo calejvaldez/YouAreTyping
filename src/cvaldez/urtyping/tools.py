@@ -58,7 +58,7 @@ class Message:
     def __init__(self, data: tuple):
         self.id = data[0]
         self.user_id = data[1]
-        self.content = Fernet(os.getenv("3_ENCRYPTION_KEY").encode('utf-8')).decrypt(data[2].encode('utf-8')).decode('utf-8')
+        self.content = Fernet(os.getenv("EK_3").encode('utf-8')).decrypt(data[2].encode('utf-8')).decode('utf-8')
         self.timestamp = data[3]
         self.message_from = data[4]
         self.to = data[5]
@@ -66,7 +66,7 @@ class Message:
     @staticmethod
     def new(content: str, *, sender: str, user_id: str) -> 'Message':
         u = User(user_id)
-        content = Fernet(os.getenv("3_ENCRYPTION_KEY").encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
+        content = Fernet(os.getenv("EK_3").encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
 
         if u.username == sender:
             send_to = 'friend'
