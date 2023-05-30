@@ -3,7 +3,7 @@ let button = document.getElementById('mainButton') as HTMLButtonElement;
 let input = document.getElementById('text-input') as HTMLInputElement;
 let current_delivered: HTMLParagraphElement | null = null;
 
-let mode = 'carlos';
+let mode = 'sender';
 
 interface Message {
     id: string
@@ -115,19 +115,13 @@ function switchMessages(): void {
     }
 
     if (mode === 'friend') {
-        mode = 'carlos';
+        mode = 'sender';
     } else {
         mode = 'friend'
     }
 
     data!.forEach(m => {
-        if (m.from === 'carlos') {
-            m.from = 'friend';
-            m.to = 'carlos';
-        } else {
-            m.from = 'carlos';
-            m.to = 'friend';
-        }
+        m.from = (m.from === 'friend') ? 'carlos' : 'friend';
 
         addMessage(m, determineMessageType(m.from))
     })
@@ -154,7 +148,7 @@ function sendMessage(): void {
     s_xhttp.open('POST', '/api/typing/send-message/')
     // s_xhttp.setRequestHeader('Bearer', '')
     s_xhttp.onreadystatechange = handleSendMessageRequest;
-    s_xhttp.send(JSON.stringify({'content': input.value, 'from': mode}));
+    s_xhttp.send(JSON.stringify({'content': input.value, 'from': (mode === 'sender') ? 'carlos':'friend'}));
 }
 
 input.addEventListener('input', () => {
