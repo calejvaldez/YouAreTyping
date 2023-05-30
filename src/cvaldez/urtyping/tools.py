@@ -61,7 +61,7 @@ class Message:
     def __init__(self, data: tuple):
         self.id = data[0]
         self.user_id = data[1]
-        self.content = data[2] # TODO: unencrypt
+        self.content = Fernet(os.getenv("3_ENCRYPTION_KEY").encode('utf-8')).decrypt(data[2].encode('utf-8')).decode('utf-8')
         self.timestamp = data[3]
         self.message_from = data[4]
         self.to = data[5]
@@ -69,7 +69,7 @@ class Message:
     @staticmethod
     def new(content: str, *, sender: str, user_id: str) -> 'Message':
         u = User(user_id)
-        content = content # TODO: encrypt
+        content = Fernet(os.getenv("3_ENCRYPTION_KEY").encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
 
         if u.username == sender:
             send_to = 'friend'
@@ -77,8 +77,15 @@ class Message:
             send_to = u.username
 
         with psycopg2.connect(os.getenv("DB_LINK")) as con:
+            message_id = uuid.uuid4()
+
             cur = con.cursor()
-            cur.execute("INSERT INTO 3_messages(id, user_id, content, timestamp, from, to) VALUES(%s, %s, %s, %s, %s, %s)", (uuid.uuid4(), user_id, content, time.time(), sender, send_to))
+            cur.execute("INSERT INTO 3_messages(id, user_id, content, timestamp, from, to) VALUES(%s, %s, %s, %s, %s, %s)", (message_id, user_id, content, time.time(), sender, send_to))
+            con.commit()
+
+            cur.execute("SELECT * FROM 3_messages WHERE id=%s", (message_id,))
+
+            return Message(cur.fetchone())
 
 
 def fetch_messages(user_id, amount=30) -> list[Message]:
