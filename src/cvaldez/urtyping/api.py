@@ -14,13 +14,9 @@ bp = Blueprint('You Are Typing API', __name__,
                url_prefix='/api/typing/')
 
 
-CARLOS_USER_ID = os.getenv("CARLOS_USER_ID")
-
-
 @bp.route('/register-user/', methods=['POST'])
 def register_user():
-    #user_id = get_uuid_by_token(request.headers['Bearer'])
-    user_id = CARLOS_USER_ID
+    user_id = get_uuid_by_token(request.headers['Bearer'])
 
     if not user_id:
         return Response(json.dumps({"ERROR": "Unauthorized"}), status=401)
@@ -36,10 +32,10 @@ def register_user():
 
 @bp.route('/get-messages/', methods=['GET'])
 def get_messages():
-    #user_id = get_uuid_by_token(request.headers['Bearer'])
+    user_id = get_uuid_by_token(request.headers['Bearer'])
 
-    #if not user_id:
-    #    return Response(json.dumps({'ERROR': 'Unauthorized.'}), status=401)
+    if not user_id:
+        return Response(json.dumps({'ERROR': 'Unauthorized.'}), status=401)
 
     return Response(json.dumps({'data': [{
         'id': x.id,
@@ -48,18 +44,18 @@ def get_messages():
         'timestamp': x.timestamp,
         'from': x.message_from,
         'to': x.to
-    } for x in fetch_messages(CARLOS_USER_ID)]}), status=200)
+    } for x in fetch_messages(user_id)]}), status=200)
 
 
 @bp.route("/send-message/", methods=['POST'])
 def send_message():
-    #user_id = get_uuid_by_token(request.headers['Bearer'])
+    user_id = get_uuid_by_token(request.headers['Bearer'])
     data = json.loads(request.data)
 
-    #if not user_id:
-    #    return Response(json.dumps(({'ERROR': 'Unauthorized'}), status=401))
+    if not user_id:
+        return Response(json.dumps(({'ERROR': 'Unauthorized'}), status=401))
 
-    m = Message.new(data['content'], sender=data['from'], user_id=CARLOS_USER_ID)
+    m = Message.new(data['content'], sender=data['from'], user_id=user_id)
 
     return Response(json.dumps({
         'id': m.id,
