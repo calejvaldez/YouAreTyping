@@ -22,12 +22,12 @@ interface User {
 let data: Array<Message> | null = null;
 let user: User | null = {id: '', username: 'carlos'}
 
-function determineMessageType(message_from: string): string {
-    if (message_from === 'friend') {
-        return 'friend';
+function determineMessageType(message_from: string): 'friend' | 'sender' {
+    if (mode === 'sender') {
+        return (message_from === 'friend') ? 'friend': 'sender';
     } else {
-        return 'sender';
-    }
+        return (message_from === 'friend') ? 'sender': 'friend';
+    };
 }
 
 function handleMessageRequest() {
@@ -74,7 +74,7 @@ e_xhttp.onreadystatechange = handleUserExistsRequest;
 e_xhttp.send();
 
 
-function addMessage(message: Message, type: string): void {
+function addMessage(message: Message, type: 'friend' | 'sender'): void {
     let container = document.createElement('div');
     container.className = `textdiv-${type}`;
 
@@ -114,15 +114,10 @@ function switchMessages(): void {
         container_texts.lastChild!.remove()
     }
 
-    if (mode === 'friend') {
-        mode = 'sender';
-    } else {
-        mode = 'friend'
-    }
+
+    mode = (mode === 'friend') ? 'sender': 'friend';
 
     data!.forEach(m => {
-        m.from = (m.from === 'friend') ? 'carlos' : 'friend';
-
         addMessage(m, determineMessageType(m.from))
     })
     
