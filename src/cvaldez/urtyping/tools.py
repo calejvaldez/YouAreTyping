@@ -9,6 +9,11 @@ import os
 import uuid
 
 
+DB_LINK = os.getenv("DB_LINK")
+EK_3 = os.getenv("EK_3")
+TOKEN_ENCRYPTION_KEY = os.getenv("TOKEN_ENCRYPTION_KEY")
+
+
 class UserExistsError(Exception):
     ...
 
@@ -19,7 +24,7 @@ class UserNotFoundError(Exception):
 
 class User:
     def __init__(self, user_id: str):
-        with psycopg2.connect(os.getenv("DB_LINK")) as con:
+        with psycopg2.connect(DB_LINK) as con:
             cur = con.cursor()
 
             cur.execute("SELECT * FROM p3_users WHERE id=%s", (user_id,))
@@ -36,7 +41,7 @@ class User:
 
     @staticmethod
     def create(*, username: str, user_id: str) -> 'User':
-        with psycopg2.connect(os.getenv("DB_LINK")) as con:
+        with psycopg2.connect(DB_LINK) as con:
             cur = con.cursor()
             cur.execute("SELECT * FROM p3_users WHERE id=%s", (user_id,))
 
@@ -58,7 +63,7 @@ class Message:
     def __init__(self, data: tuple):
         self.id = data[0]
         self.user_id = data[1]
-        self.content = Fernet(os.getenv("EK_3").encode('utf-8')).decrypt(data[2].encode('utf-8')).decode('utf-8')
+        self.content = Fernet(EK_3.encode('utf-8')).decrypt(data[2].encode('utf-8')).decode('utf-8')
         self.timestamp = data[3]
         self.message_from = data[4]
         self.to = data[5]
@@ -67,14 +72,14 @@ class Message:
     def new(content: str, *, sender: str, user_id: str) -> 'Message':
         u = User(user_id)
 
-        content = Fernet(os.getenv("EK_3").encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
+        content = Fernet(EK_3.encode('utf-8')).encrypt(content.encode('utf-8')).decode('utf-8')
 
         if u.username == sender:
             send_to = 'friend'
         else:
             send_to = u.username
 
-        with psycopg2.connect(os.getenv("DB_LINK")) as con:
+        with psycopg2.connect(DB_LINK) as con:
             message_id = str(uuid.uuid4())
 
             cur = con.cursor()
@@ -87,7 +92,7 @@ class Message:
 
 
 def fetch_messages(user_id, amount=30) -> list[Message]:
-    with psycopg2.connect(os.getenv("DB_LINK")) as con:
+    with psycopg2.connect(DB_LINK) as con:
         cur = con.cursor()
         cur.execute("SELECT * FROM p3_messages WHERE user_id=%s", (user_id,))
 
@@ -97,8 +102,8 @@ def fetch_messages(user_id, amount=30) -> list[Message]:
 
 
 def get_uuid_by_token(token: str) -> str | None:
-    with psycopg2.connect(os.getenv("DB_LINK")) as con:
-        f = Fernet(os.getenv("TOKEN_ENCRYPTION_KEY").encode('utf-8'))
+    with psycopg2.connect(DB_LINK) as con:
+        f = Fernet(TOKEN_ENCRYPTION_KEY.encode('utf-8'))
 
         cur = con.cursor()
         cur.execute("SELECT uuid, token FROM tokens")
