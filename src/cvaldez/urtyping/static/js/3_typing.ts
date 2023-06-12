@@ -1,10 +1,15 @@
+// DOM Variables
 let container_texts = document.getElementById('texts') as HTMLDivElement;
 let button = document.getElementById('mainButton') as HTMLButtonElement;
 let input = document.getElementById('text-input') as HTMLInputElement;
 let current_delivered: HTMLParagraphElement | null = null;
 
+// Variables
 let mode = 'sender';
+let data: Array<Message> | null = null;
+let user: User | null = {id: '', username: 'carlos'}
 
+// Interfaces
 interface Message {
     id: string
     user_id: string
@@ -19,35 +24,13 @@ interface User {
     username: string
 }
 
-let data: Array<Message> | null = null;
-let user: User | null = {id: '', username: 'carlos'}
-
+// Helper functions
 function determineMessageType(message_from: string): 'friend' | 'sender' {
     if (mode === 'sender') {
         return (message_from === 'friend') ? 'friend': 'sender';
     } else {
         return (message_from === 'friend') ? 'sender': 'friend';
     };
-}
-
-function handleMessageRequest() {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        let d = JSON.parse(this.responseText)['data'] as Array<Message>;
-
-        if (d['ERROR']) {
-            console.log("An error occured.");
-        } else {
-            data = d;
-            
-            data.forEach(m => {
-                addMessage(m, determineMessageType(m.from))
-            });
-            
-            container_texts.scrollTop = container_texts.scrollHeight;
-        }
-
-        
-    }
 }
 
 function loadMessages() {
@@ -58,21 +41,13 @@ function loadMessages() {
     m_xhttp.send();
 }
 
-
-function handleUserExistsRequest() {
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        loadMessages();
-    }
+function sendMessage(): void {
+    let s_xhttp = new XMLHttpRequest();
+    s_xhttp.open('POST', '/api/typing/send-message/')
+    // s_xhttp.setRequestHeader('Bearer', '')
+    s_xhttp.onreadystatechange = handleSendMessageRequest;
+    s_xhttp.send(JSON.stringify({'content': input.value, 'from': (mode === 'sender') ? 'carlos':'friend'}));
 }
-
-
-let e_xhttp = new XMLHttpRequest();
-e_xhttp.open("POST", '/api/typing/register-user/');
-// e_xhttp.setRequestHeader('Bearer', '');
-e_xhttp.setRequestHeader('username', 'carlos');
-e_xhttp.onreadystatechange = handleUserExistsRequest;
-e_xhttp.send();
-
 
 function addMessage(message: Message, type: 'friend' | 'sender'): void {
     let container = document.createElement('div');
@@ -123,6 +98,33 @@ function switchMessages(): void {
     
 }
 
+// Handle Request functions
+function handleMessageRequest() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        let d = JSON.parse(this.responseText)['data'] as Array<Message>;
+
+        if (d['ERROR']) {
+            console.log("An error occured.");
+        } else {
+            data = d;
+            
+            data.forEach(m => {
+                addMessage(m, determineMessageType(m.from))
+            });
+            
+            container_texts.scrollTop = container_texts.scrollHeight;
+        }
+
+        
+    }
+}
+
+function handleUserExistsRequest() {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        loadMessages();
+    }
+}
+
 function handleSendMessageRequest() {
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
         let d = JSON.parse(this.responseText) as Message;
@@ -138,14 +140,8 @@ function handleSendMessageRequest() {
     }
 }
 
-function sendMessage(): void {
-    let s_xhttp = new XMLHttpRequest();
-    s_xhttp.open('POST', '/api/typing/send-message/')
-    // s_xhttp.setRequestHeader('Bearer', '')
-    s_xhttp.onreadystatechange = handleSendMessageRequest;
-    s_xhttp.send(JSON.stringify({'content': input.value, 'from': (mode === 'sender') ? 'carlos':'friend'}));
-}
 
+// Event listeners
 input.addEventListener('input', () => {
     input.value = input.value.replace('`', '');
     if (input.value === '') {
@@ -172,3 +168,12 @@ button.addEventListener('click', () => {
         switchMessages();
     }
 })
+
+
+// When page loads
+let e_xhttp = new XMLHttpRequest();
+e_xhttp.open("POST", '/api/typing/register-user/');
+// e_xhttp.setRequestHeader('Bearer', '');
+e_xhttp.setRequestHeader('username', 'carlos');
+e_xhttp.onreadystatechange = handleUserExistsRequest;
+e_xhttp.send();
