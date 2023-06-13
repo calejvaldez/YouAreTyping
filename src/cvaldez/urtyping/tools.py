@@ -173,6 +173,6 @@ def fetch_messages(user_id, amount=30) -> list[Message]:
         cur = con.cursor()
         cur.execute("SELECT * FROM p3_messages WHERE user_id=%s", (user_id,))
 
-        fetched = cur.fetchall()[amount:]
+        fetched = cur.fetchall()
 
         return [Message(x) for x in fetched]
