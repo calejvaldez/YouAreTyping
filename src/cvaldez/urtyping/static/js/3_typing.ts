@@ -7,7 +7,7 @@ let current_delivered: HTMLParagraphElement | null = null;
 // Variables
 let mode = 'sender';
 let data: Array<Message> | null = null;
-let user: User | null = {id: '', username: 'carlos'}
+let user: User | null = null;
 
 // Interfaces
 interface Message {
@@ -24,6 +24,14 @@ interface User {
     username: string
 }
 
+interface Identity {
+    id: string
+    username: string
+    joined: string
+    type: string
+    has_totp: boolean
+}
+
 // Helper functions
 function determineMessageType(message_from: string): 'friend' | 'sender' {
     if (mode === 'sender') {
@@ -35,8 +43,8 @@ function determineMessageType(message_from: string): 'friend' | 'sender' {
 
 function loadMessages() {
     let m_xhttp = new XMLHttpRequest();
-    // m_xhttp.setRequestHeader('Bearer', '');
     m_xhttp.open('GET', '/api/typing/get-messages/')
+    m_xhttp.setRequestHeader('Bearer', localStorage.getItem('cvd_token') as string);
     m_xhttp.onreadystatechange = handleMessageRequest;
     m_xhttp.send();
 }
@@ -44,9 +52,9 @@ function loadMessages() {
 function sendMessage(): void {
     let s_xhttp = new XMLHttpRequest();
     s_xhttp.open('POST', '/api/typing/send-message/')
-    // s_xhttp.setRequestHeader('Bearer', '')
+    s_xhttp.setRequestHeader('Bearer', localStorage.getItem('cvd_token') as string)
     s_xhttp.onreadystatechange = handleSendMessageRequest;
-    s_xhttp.send(JSON.stringify({'content': input.value, 'from': (mode === 'sender') ? 'carlos':'friend'}));
+    s_xhttp.send(JSON.stringify({'content': input.value, 'from': (mode === 'sender') ? user!.id:'friend'}));
 }
 
 function addMessage(message: Message, type: 'friend' | 'sender'): void {
@@ -170,10 +178,19 @@ button.addEventListener('click', () => {
 })
 
 
-// When page loads
-let e_xhttp = new XMLHttpRequest();
-e_xhttp.open("POST", '/api/typing/register-user/');
-// e_xhttp.setRequestHeader('Bearer', '');
-e_xhttp.setRequestHeader('username', 'carlos');
-e_xhttp.onreadystatechange = handleUserExistsRequest;
-e_xhttp.send();
+// Automatically log user in.
+if (localStorage.getItem('cvd_token') !== null) {
+    if (localStorage.getItem('cvd_identity') !== null) {
+        let identity: Identity = JSON.parse(localStorage.getItem('cvd_identity') as string);
+        user = {id: identity.id, username: identity.username}
+
+        // When page loads
+        let e_xhttp = new XMLHttpRequest();
+        e_xhttp.open("POST", '/api/typing/register-user/');
+        e_xhttp.setRequestHeader('Bearer', localStorage.getItem('cvd_token') as string);
+        e_xhttp.onreadystatechange = handleUserExistsRequest;
+        e_xhttp.send();
+    }
+} else {
+    window.location.href = `/access/login/?app=3`
+}

@@ -87,7 +87,7 @@ class Identity:
         }, indent=2)
 
 
-def get_user_with_token(token: str) -> 'User' | None:
+def get_user_with_token(token: str) -> 'User | None':
     if not token:
         return None
 
