@@ -47,13 +47,13 @@ def get_messages():
 
 @bp.route("/send-message/", methods=['POST'])
 def send_message():
-    user = get_user_with_token(request.headers['Bearer'])
+    user: User = get_user_with_token(request.headers['Bearer'])
     data = json.loads(request.data)
 
     if not user:
         return Response(json.dumps(({'ERROR': 'Unauthorized'}), status=401))
 
-    m = Message.new(data['content'], sender=data['from'], user_id=user.id())
+    m = user.new_message(data['content'], sender=data['from'])
 
     return Response(json.dumps({
         'id': m.id,

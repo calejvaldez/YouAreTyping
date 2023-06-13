@@ -49,7 +49,7 @@ class Identity:
                 'username': d.username
             }
 
-    def id(self):
+    def id(self) -> str:
         return self._data['id']
 
     def username(self):
@@ -154,13 +154,13 @@ class Message:
         if u.username == sender:
             send_to = 'friend'
         else:
-            send_to = u.username
+            send_to = u.username()
 
         with psycopg2.connect(DB_LINK) as con:
             message_id = str(uuid.uuid4())
 
             cur = con.cursor()
-            cur.execute('INSERT INTO p3_messages(id, user_id, content, timestamp, "from", "to") VALUES(%s, %s, %s, %s, %s, %s)', (message_id, user_id, content, time.time(), sender, send_to))
+            cur.execute('INSERT INTO p3_messages(id, user_id, content, timestamp, "from", "to") VALUES(%s, %s, %s, %s, %s, %s)', (message_id, user_id, content, str(time.time()), sender, send_to))
             con.commit()
 
             cur.execute("SELECT * FROM p3_messages WHERE id=%s", (message_id,))
