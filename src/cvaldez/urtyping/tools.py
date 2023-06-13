@@ -5,13 +5,16 @@
 import time
 import psycopg2
 from cryptography.fernet import Fernet
+from collections import namedtuple
 import os
 import uuid
+import json
 
 
 DB_LINK = os.getenv("DB_LINK")
 EK_3 = os.getenv("EK_3")
 TOKEN_ENCRYPTION_KEY = os.getenv("TOKEN_ENCRYPTION_KEY")
+RawIdentity = namedtuple('RawIdentity', ['id', 'joined', 'type', 'username'])
 
 
 class UserExistsError(Exception):
@@ -22,22 +25,96 @@ class UserNotFoundError(Exception):
     ...
 
 
-class User:
-    def __init__(self, user_id: str):
+class Identity:
+    def __init__(self, identity_id=None, username=None):
+        assert identity_id or username, "Identity.__init__: identity_id or username is required."
+
+        with psycopg2.connect(DB_LINK) as con:
+            cur = con.cursor()
+            cur.execute('SELECT uuid, joined, type, username FROM users WHERE uuid=%s', (identity_id,)) if \
+                identity_id else cur.execute('SELECT uuid, joined, type, username FROM users WHERE username=%s',
+                                             (username,))
+
+            d = cur.fetchall()
+
+            if len(d) == 0:
+                raise UserNotFoundError
+            
+            d = RawIdentity(*d[0])
+
+            self._data = {
+                'id': d.id,
+                'joined': d.joined,
+                'type': d.type,
+                'username': d.username
+            }
+
+    def id(self):
+        return self._data['id']
+
+    def username(self):
+        return self._data['username']
+
+    def joined(self):
+        return self._data['joined']
+
+    def type(self):
+        return self._data['type']
+
+    def has_totp(self) -> bool:
         with psycopg2.connect(DB_LINK) as con:
             cur = con.cursor()
 
-            cur.execute("SELECT * FROM p3_users WHERE id=%s", (user_id,))
+            cur.execute("SELECT * FROM mfa WHERE uuid=%s AND type='SAVED'", (self.id(),))
 
-            fetched = cur.fetchall()
+            return bool(len(cur.fetchall()))
 
-            if not len(fetched):
-                raise UserNotFoundError
+    @staticmethod
+    def exists(username: str):
+        with psycopg2.connect(DB_LINK) as con:
+            cur = con.cursor()
+            cur.execute("SELECT username FROM users WHERE username=%s", (username,))
 
-            fetched = fetched[0]
+            return True if len(cur.fetchall()) > 0 else False
 
-        self.id = fetched[0]
-        self.username = fetched[1]
+    def json(self) -> str:
+        return json.dumps({
+            "id": self.id(),
+            "joined": self.joined(),
+            "type": self.type(),
+            "username": self.username(),
+            "has_totp": self.has_totp()
+        }, indent=2)
+
+
+def get_user_with_token(token: str) -> 'User' | None:
+    if not token:
+        return None
+
+    d = None
+    f = Fernet(TOKEN_ENCRYPTION_KEY.encode('utf-8'))
+
+    with psycopg2.connect(DB_LINK) as con:
+        cur = con.cursor()
+        cur.execute("SELECT uuid, token FROM tokens")
+
+        for dt in cur.fetchall():
+            if token == f.decrypt(dt[1].encode('utf-8')).decode('utf-8'):
+                d = dt
+                break
+
+        if not d:
+            return None
+
+        if token != f.decrypt(d[1].encode('utf-8')).decode('utf-8'):
+            return None
+
+    return User(d[0])
+
+
+class User(Identity):
+    def __init__(self, user_id: str):
+        super().__init__(identity_id=user_id)
 
     @staticmethod
     def create(*, username: str, user_id: str) -> 'User':
@@ -56,7 +133,7 @@ class User:
         return User(user_id)
 
     def new_message(self, content: str, *, sender: str) -> 'Message':
-        return Message.new(content, sender=sender, user_id=self.id)
+        return Message.new(content, sender=sender, user_id=self.id())
 
 
 class Message:
@@ -99,17 +176,3 @@ def fetch_messages(user_id, amount=30) -> list[Message]:
         fetched = cur.fetchall()[amount:]
 
         return [Message(x) for x in fetched]
-
-
-def get_uuid_by_token(token: str) -> str | None:
-    with psycopg2.connect(DB_LINK) as con:
-        f = Fernet(TOKEN_ENCRYPTION_KEY.encode('utf-8'))
-
-        cur = con.cursor()
-        cur.execute("SELECT uuid, token FROM tokens")
-
-        for t in cur.fetchall():
-            if f.decrypt(t[1]).decode('utf-8') == token:
-                return t[0]
-
-        return None
