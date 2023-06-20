@@ -6,18 +6,4 @@ Welcome to the You Are Typing repository. This hosts the source code for the app
 
 ## How can I use it?
 
-You Are Typing is available via my website! Start here:
-
-<html>
-    <head>
-        <link rel="stylesheet" href='./.github/button_style.css'>
-    </head>
-    <body lang="en">
-        <!--REMEMBER TO REPLACE `INTEGER` WTH YOUR APP ID-->
-        <a style="text-decoration: none; color: black;" href="https://cvaldez.dev/access/login/?app=3">
-            <div id="button-continue">
-                <img src="./.github/access_logo.svg" width="55" height="55" style="margin: 0 25px;"> <p>Continue with Access</p>
-            </div>
-        </a>
-    </body>
-</html>
+You Are Typing is available via my website! Start by [logging in with Access](https://cvaldez.dev/access/login/?app=3).
