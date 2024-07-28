@@ -55,8 +55,12 @@ export function Messages(props: {
 
     return (
         <div id="container_messages">
-            <p id="beginning-message">
+            <p className="beginning-message">
                 This is the beginning of your conversation.
+            </p>
+            <p className="beginning-message">Return to send a message.</p>
+            <p className="beginning-message">
+                Command+Return to switch perspectives.
             </p>
 
             {props.messages.map((message) => {

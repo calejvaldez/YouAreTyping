@@ -6,9 +6,12 @@
     flex-direction: column;
 }
 
-#beginning-message {
+.beginning-message {
     align-self: center;
     color: grey;
+
+    text-align: center;
+    margin: 5px 10px;
 }
 
 .message_self {
