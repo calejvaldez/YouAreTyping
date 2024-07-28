@@ -7,23 +7,37 @@ interface Message {
     author: "self" | "other";
 }
 
-function SelfMessage(props: { content: string; timestamp?: number }) {
+function Message(props: {
+    content: string;
+    author: "self" | "other";
+    timestamp?: number;
+}) {
     return (
-        <div className="message_self">
+        <div className={"message_" + props.author}>
             <p>{props.content}</p>
         </div>
     );
 }
 
-function OtherMessage(props: { content: string; timestamp?: number }) {
-    return (
-        <div className="message_other">
-            <p>{props.content}</p>
-        </div>
-    );
+function determine_author(
+    author: "self" | "other",
+    switched: boolean,
+): "self" | "other" {
+    if (switched) {
+        if (author === "self") {
+            return "other";
+        } else if (author === "other") {
+            return "self";
+        }
+    }
+
+    return author;
 }
 
-export default function Messages() {
+export default function Messages(props: {
+    switched: boolean;
+    setSwitched: Function;
+}) {
     const [messages, setMessages] = useState([] as Message[]);
 
     useEffect(() => {
@@ -71,11 +85,15 @@ export default function Messages() {
             </p>
 
             {messages.map((message) => {
-                if (message.author === "self") {
-                    return <SelfMessage content={message.content} />;
-                } else {
-                    return <OtherMessage content={message.content} />;
-                }
+                return (
+                    <Message
+                        content={message.content}
+                        author={determine_author(
+                            message.author,
+                            props.switched,
+                        )}
+                    />
+                );
             })}
         </div>
     );
