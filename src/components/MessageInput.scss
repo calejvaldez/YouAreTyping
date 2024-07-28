@@ -1,0 +1,26 @@
+#container_message_input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin: 15px 0;
+
+    // min-height: 150px;
+}
+
+#message_text_input {
+    font-size: 15px;
+    width: 90%;
+    padding: 10px;
+    height: 20px;
+
+    position: fixed;
+    bottom: 0;
+
+    border: none;
+    border-radius: 20px;
+
+    word-wrap: break-word;
+    resize: none;
+}
