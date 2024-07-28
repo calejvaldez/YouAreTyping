@@ -1,8 +1,11 @@
 import "./MessageInput.scss";
+import { Message, determine_author } from "./Messages";
 
 export default function MessageInput(props: {
     switched: boolean;
     setSwitched: Function;
+    messages: Message[];
+    setMessages: Function;
 }) {
     return (
         <div id="container_message_input">
@@ -12,7 +15,24 @@ export default function MessageInput(props: {
                     if (e.key === "Enter" && e.metaKey) {
                         props.setSwitched(props.switched ? false : true);
                     } else if (e.key === "Enter" && !e.metaKey) {
-                        // send message
+                        e.preventDefault();
+                        if (e.currentTarget.value === "") {
+                            return;
+                        }
+                        props.setMessages(
+                            props.messages.concat([
+                                {
+                                    author: determine_author(
+                                        "self",
+                                        props.switched,
+                                    ), // todo: check to see if this works appropriately
+                                    content: e.currentTarget.value,
+                                    timestamp: new Date().getUTCSeconds(),
+                                },
+                            ]),
+                        );
+
+                        e.currentTarget.value = "";
                     }
                 }}
             ></textarea>

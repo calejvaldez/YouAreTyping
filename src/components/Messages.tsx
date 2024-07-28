@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Messages.scss";
 
-interface Message {
+export interface Message {
     content: string;
     timestamp: number;
     author: "self" | "other";
@@ -19,7 +19,7 @@ function Message(props: {
     );
 }
 
-function determine_author(
+export function determine_author(
     author: "self" | "other",
     switched: boolean,
 ): "self" | "other" {
@@ -34,15 +34,15 @@ function determine_author(
     return author;
 }
 
-export default function Messages(props: {
+export function Messages(props: {
     switched: boolean;
     setSwitched: Function;
+    messages: Message[];
+    setMessages: Function;
 }) {
-    const [messages, setMessages] = useState([] as Message[]);
-
     useEffect(() => {
         // fetches messages
-        setMessages([
+        props.setMessages([
             {
                 content:
                     "I just don't feel so good right now. There's so much going on and so little time.",
@@ -84,7 +84,7 @@ export default function Messages(props: {
                 This is the beginning of your conversation.
             </p>
 
-            {messages.map((message) => {
+            {props.messages.map((message) => {
                 return (
                     <Message
                         content={message.content}
