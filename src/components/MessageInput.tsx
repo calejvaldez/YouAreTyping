@@ -12,6 +12,7 @@ export default function MessageInput(props: {
         <div id="container_message_input">
             <textarea
                 id="message_text_input"
+                placeholder="Start typing here!"
                 onKeyDown={(e) => {
                     if (e.key === "Enter" && e.metaKey) {
                         props.setSwitched(props.switched ? false : true);
