@@ -60,7 +60,7 @@ export function Messages(props: {
             </p>
             <p className="beginning-message">Return to send a message.</p>
             <p className="beginning-message">
-                Command+Return to switch perspectives.
+                Control+Return to switch perspectives.
             </p>
 
             {props.messages.map((message) => {

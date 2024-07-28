@@ -14,7 +14,8 @@ export default function MessageInput(props: {
                 id="message_text_input"
                 placeholder="Start typing here!"
                 onKeyDown={(e) => {
-                    if (e.key === "Enter" && e.metaKey) {
+                    if (e.key === "Enter" && e.ctrlKey) {
+                        e.preventDefault();
                         props.setSwitched(props.switched ? false : true);
                     } else if (e.key === "Enter" && !e.metaKey) {
                         e.preventDefault();
