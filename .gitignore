@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 
+messages.json
+
 # Editor directories and files
 .idea
 .DS_Store

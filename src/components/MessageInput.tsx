@@ -1,5 +1,6 @@
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";
+import { invoke } from "@tauri-apps/api/tauri";
 
 export default function MessageInput(props: {
     switched: boolean;
@@ -18,6 +19,7 @@ export default function MessageInput(props: {
                         e.preventDefault();
                         props.setSwitched(props.switched ? false : true);
                     } else if (e.key === "Enter" && !e.metaKey) {
+                        let timestamp = Math.floor(new Date().getTime() / 1000);
                         e.preventDefault();
                         if (e.currentTarget.value === "") {
                             return;
@@ -30,10 +32,16 @@ export default function MessageInput(props: {
                                         props.switched,
                                     ), // todo: check to see if this works appropriately
                                     content: e.currentTarget.value,
-                                    timestamp: new Date().getUTCSeconds(),
+                                    timestamp: timestamp,
                                 },
                             ]),
                         );
+
+                        invoke("save_message", {
+                            content: e.currentTarget.value,
+                            author: determine_author("self", props.switched),
+                            timestamp: timestamp,
+                        });
 
                         e.currentTarget.value = "";
                         props.scrollRef.current.scrollIntoView({

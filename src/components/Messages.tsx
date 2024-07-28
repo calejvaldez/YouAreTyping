@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./Messages.scss";
+import { invoke } from "@tauri-apps/api";
 
 export interface Message {
     content: string;
@@ -10,7 +11,7 @@ export interface Message {
 function Message(props: {
     content: string;
     author: "self" | "other";
-    timestamp?: number;
+    timestamp: number;
 }) {
     return (
         <div className={"message_" + props.author}>
@@ -42,8 +43,9 @@ export function Messages(props: {
     scrollRef: any;
 }) {
     useEffect(() => {
-        // fetches messages
-        props.setMessages([]);
+        invoke("get_messages").then((messages) => {
+            props.setMessages(messages);
+        });
 
         if (props.scrollRef.current) {
             props.scrollRef.current.scrollIntoView({
@@ -71,6 +73,7 @@ export function Messages(props: {
                             message.author,
                             props.switched,
                         )}
+                        timestamp={message.timestamp}
                     />
                 );
             })}
