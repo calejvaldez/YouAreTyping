@@ -4,7 +4,7 @@ import "./Messages.scss";
 interface Message {
     content: string;
     timestamp: number;
-    sender: "self" | "other";
+    author: "self" | "other";
 }
 
 function SelfMessage(props: { content: string; timestamp?: number }) {
@@ -32,33 +32,33 @@ export default function Messages() {
             {
                 content:
                     "I just don't feel so good right now. There's so much going on and so little time.",
-                sender: "self",
+                author: "self",
                 timestamp: 0,
             },
             {
                 content: "I want a break so bad right now.",
-                sender: "self",
+                author: "self",
                 timestamp: 1,
             },
             {
                 content: "Things need to change but they won't. It's over.",
-                sender: "self",
+                author: "self",
                 timestamp: 2,
             },
             {
                 content:
                     "Well, yeah things might not change today. But maybe they will at some point.",
-                sender: "other",
+                author: "other",
                 timestamp: 3,
             },
             {
                 content: "He was a great friend, but it's time to let go.",
-                sender: "other",
+                author: "other",
                 timestamp: 4,
             },
             {
                 content: "At some point.",
-                sender: "self",
+                author: "self",
                 timestamp: 5,
             },
         ]);
@@ -71,7 +71,7 @@ export default function Messages() {
             </p>
 
             {messages.map((message) => {
-                if (message.sender === "self") {
+                if (message.author === "self") {
                     return <SelfMessage content={message.content} />;
                 } else {
                     return <OtherMessage content={message.content} />;
