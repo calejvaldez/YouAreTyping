@@ -29,9 +29,9 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
 ## Roadmap
 
 - [x] Setting an event handler for "Enter" and "Command+Enter"
-- [ ] Connecting frontend and backend
-  - [ ] Get content from backend
-  - [ ] Send content to backend
+- [x] Connecting frontend and backend
+  - [x] Get content from backend
+  - [x] Send content to backend
 - [ ] Have program automatically scroll to end
 
 ## License
