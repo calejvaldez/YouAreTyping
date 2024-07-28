@@ -44,6 +44,7 @@ fn get_messages() -> Vec<Message> {
 }
 
 fn main() {
+  let _ = fix_path_env::fix();
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![save_message, get_messages])
     .run(tauri::generate_context!())
