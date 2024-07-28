@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./Messages.scss";
 
 export interface Message {
@@ -39,43 +39,18 @@ export function Messages(props: {
     setSwitched: Function;
     messages: Message[];
     setMessages: Function;
+    scrollRef: any;
 }) {
     useEffect(() => {
         // fetches messages
-        props.setMessages([
-            {
-                content:
-                    "I just don't feel so good right now. There's so much going on and so little time.",
-                author: "self",
-                timestamp: 0,
-            },
-            {
-                content: "I want a break so bad right now.",
-                author: "self",
-                timestamp: 1,
-            },
-            {
-                content: "Things need to change but they won't. It's over.",
-                author: "self",
-                timestamp: 2,
-            },
-            {
-                content:
-                    "Well, yeah things might not change today. But maybe they will at some point.",
-                author: "other",
-                timestamp: 3,
-            },
-            {
-                content: "He was a great friend, but it's time to let go.",
-                author: "other",
-                timestamp: 4,
-            },
-            {
-                content: "At some point.",
-                author: "self",
-                timestamp: 5,
-            },
-        ]);
+        props.setMessages([]);
+
+        if (props.scrollRef.current) {
+            props.scrollRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "end",
+            });
+        }
     }, []);
 
     return (

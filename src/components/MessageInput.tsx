@@ -6,6 +6,7 @@ export default function MessageInput(props: {
     setSwitched: Function;
     messages: Message[];
     setMessages: Function;
+    scrollRef: any;
 }) {
     return (
         <div id="container_message_input">
@@ -33,6 +34,10 @@ export default function MessageInput(props: {
                         );
 
                         e.currentTarget.value = "";
+                        props.scrollRef.current.scrollIntoView({
+                            behavior: "smooth",
+                            block: "end",
+                        });
                     }
                 }}
             ></textarea>
