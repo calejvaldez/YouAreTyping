@@ -4,7 +4,7 @@
 use std::{fs, path::Path};
 use serde::{Deserialize, Serialize};
 
-const INTERNAL_DATA_PATH: &str = "../messages.json";
+const INTERNAL_DATA_PATH: &str = "./.messages.json";
 
 #[derive(Serialize, Deserialize)]
 struct Message {
