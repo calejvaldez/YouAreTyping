@@ -77,6 +77,8 @@ export function Messages(props: {
                     />
                 );
             })}
+
+            <div id="invisible" ref={props.scrollRef}></div>
         </div>
     );
 }

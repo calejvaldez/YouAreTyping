@@ -24,7 +24,6 @@ function App() {
                 setMessages={setMessages}
                 scrollRef={scrollRef}
             />
-            <div id="invisible" ref={scrollRef}></div>
         </div>
     );
 }
