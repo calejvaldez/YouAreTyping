@@ -16,7 +16,7 @@
         "bundle": {
             "active": true,
             "category": "Entertainment",
-            "copyright": "Carlos Valdez",
+            "copyright": "© 2023-2024 Carlos Valdez. Licensed under the GNU GPL v3.",
             "deb": {
                 "depends": []
             },
