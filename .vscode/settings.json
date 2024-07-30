@@ -6,5 +6,6 @@
     },
     "files.associations": {
         "LICENSE": "plaintext"
-    }
+    },
+    "cSpell.words": ["tauri"]
 }
