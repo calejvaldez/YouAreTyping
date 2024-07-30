@@ -38,4 +38,4 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
 
 ## License
 
-No license for the moment, although the GNU GPLv3 is being considered.
+[GNU General Public License v3.0](https://choosealicense.com/licenses/gpl-3.0/)
