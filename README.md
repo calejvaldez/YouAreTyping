@@ -28,12 +28,19 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
 
 ## Roadmap
 
-- [x] Setting an event handler for "Enter" and "Command+Enter"
-- [x] Connecting frontend and backend
-  - [x] Get content from backend
-  - [x] Send content to backend
+### v1.0
+
 - [ ] Have program automatically scroll to end
+- [ ] Activate the
+      [Tauri Updater](https://tauri.app/v1/guides/distribution/updater)
+
+### v1.1
+
 - [ ] Add way to reply to messages
+- [ ] Convert from `.json` to `.db` for data storage
+
+### v1.2
+
 - [ ] Add way to bookmark/pin messages
 
 ## License
