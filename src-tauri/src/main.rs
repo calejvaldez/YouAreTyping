@@ -4,7 +4,7 @@
 use std::{fs, path::Path};
 use serde::{Deserialize, Serialize};
 
-const INTERNAL_DATA_PATH: &str = "./.messages.json";
+const INTERNAL_DATA_PATH: &str = "/Users/calejvaldez/.YouAreTyping/messages.json";
 
 #[derive(Serialize, Deserialize)]
 struct Message {
@@ -15,6 +15,7 @@ struct Message {
 
 fn get_internal_data() -> Vec<Message> {
   if !Path::new(INTERNAL_DATA_PATH).exists() {
+    fs::create_dir_all(&INTERNAL_DATA_PATH.replace("messages.json", "")).expect("Creating the .YouAreTyping folder failed.");
     fs::write(INTERNAL_DATA_PATH, r#"[]"#).expect("Writing default message.json failed.");
   }
 
