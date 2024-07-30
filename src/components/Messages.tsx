@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";
+import Markdown from "react-markdown";
 
 export interface Message {
     content: string;
@@ -15,7 +16,7 @@ function Message(props: {
 }) {
     return (
         <div className={"message_" + props.author}>
-            <p>{props.content}</p>
+            <Markdown>{props.content}</Markdown>
         </div>
     );
 }
