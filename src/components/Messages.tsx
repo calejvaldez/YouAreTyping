@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";
 import Markdown from "react-markdown";
+import { open } from "@tauri-apps/api/shell";
 
 export interface Message {
     content: string;
@@ -16,7 +17,25 @@ function Message(props: {
 }) {
     return (
         <div className={"message_" + props.author}>
-            <Markdown>{props.content}</Markdown>
+            <Markdown
+                components={{
+                    a: (props: any) => {
+                        return (
+                            <a
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    open(props.href);
+                                }}
+                                href={props.href}
+                            >
+                                {props.children}
+                            </a>
+                        );
+                    },
+                }}
+            >
+                {props.content}
+            </Markdown>
         </div>
     );
 }
