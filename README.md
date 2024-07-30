@@ -33,6 +33,8 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
   - [x] Get content from backend
   - [x] Send content to backend
 - [ ] Have program automatically scroll to end
+- [ ] Add way to reply to messages
+- [ ] Add way to bookmark/pin messages
 
 ## License
 
