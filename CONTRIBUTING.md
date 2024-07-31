@@ -84,6 +84,13 @@ Please follow
 [this guide by Tauri](https://tauri.app/v1/guides/getting-started/prerequisites)
 to get started.
 
+Once you've installed the prerequisites, clone the repository:
+
+```shell
+git clone https://github.com/calejvaldez/YouAreTyping.git
+cd YouAreTyping
+```
+
 ### Development
 
 Before you can start coding, you need to:
@@ -100,3 +107,5 @@ cargo tauri dev # run dev mode
 ```shell
 cargo tauri build
 ```
+
+Your build will be available in `/src-tauri/target/release/bundle/`
