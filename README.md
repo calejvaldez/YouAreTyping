@@ -2,7 +2,10 @@
 
 ![You Are Typing header](.github/header.png)
 
+## Table of Contents
+
 - [You Are Typing](#you-are-typing)
+  - [Table of Contents](#table-of-contents)
   - [Description](#description)
     - [Background](#background)
     - [Features](#features)
