@@ -17,7 +17,6 @@
 @mixin common_message_traits($color, $alignment) {
     max-width: 50%;
     padding: 1px 10px;
-    border-radius: 10px 10px 0 10px;
     margin: 10px;
 
     // differences (color and location)
@@ -27,8 +26,10 @@
 
 .message_self {
     @include common_message_traits(rgb(56, 118, 139), flex-end);
+    border-radius: 10px 10px 0 10px;
 }
 
 .message_other {
     @include common_message_traits(grey, flex-start);
+    border-radius: 10px 10px 10px 0;
 }
