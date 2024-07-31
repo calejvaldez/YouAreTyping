@@ -67,7 +67,7 @@ export function Messages(props: {
             props.setMessages(
                 // sorting by time sent
                 (messages as Message[]).sort((a, b) => {
-                    return a.timestamp - b.timestamp;
+                    return b.timestamp - a.timestamp;
                 }),
             );
         });
@@ -75,35 +75,27 @@ export function Messages(props: {
 
     return (
         <div id="container_messages">
-            <p className="beginning-message">
-                This is the beginning of your conversation.
-            </p>
-            <p className="beginning-message">Return to send a message.</p>
-            <p className="beginning-message">
-                Control+Return to switch perspectives.
-            </p>
-
-            {props.messages.map((message) => {
-                if (props.scrollRef.current) {
-                    props.scrollRef.current.scrollIntoView({
-                        block: "start",
-                        inline: "nearest",
-                        behavior: "smooth",
-                    });
-                }
-                return (
-                    <Message
-                        content={message.content}
-                        author={determine_author(
-                            message.author,
-                            props.switched,
-                        )}
-                        timestamp={message.timestamp}
-                    />
-                );
-            })}
-
-            <div id="invisible" ref={props.scrollRef}></div>
+            <div id="all_messages">
+                {props.messages.map((message) => {
+                    return (
+                        <Message
+                            content={message.content}
+                            author={determine_author(
+                                message.author,
+                                props.switched,
+                            )}
+                            timestamp={message.timestamp}
+                        />
+                    );
+                })}
+                <p className="beginning-message">
+                    This is the beginning of your conversation.
+                </p>
+                <p className="beginning-message">Return to send a message.</p>
+                <p className="beginning-message">
+                    Control+Return to switch perspectives.
+                </p>
+            </div>
         </div>
     );
 }

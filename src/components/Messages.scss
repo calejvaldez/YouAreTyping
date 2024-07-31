@@ -1,9 +1,8 @@
-#container_messages {
-    height: 85%;
-    max-height: 85%;
-
+#all_messages {
+    height: 90vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    overflow: auto;
 }
 
 .beginning-message {

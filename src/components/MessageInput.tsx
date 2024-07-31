@@ -25,7 +25,7 @@ export default function MessageInput(props: {
                             return;
                         }
                         props.setMessages(
-                            props.messages.concat([
+                            [
                                 {
                                     author: determine_author(
                                         "self",
@@ -34,7 +34,7 @@ export default function MessageInput(props: {
                                     content: e.currentTarget.value,
                                     timestamp: timestamp,
                                 },
-                            ]),
+                            ].concat(props.messages),
                         );
 
                         invoke("save_message", {
@@ -44,13 +44,6 @@ export default function MessageInput(props: {
                         });
 
                         e.currentTarget.value = "";
-                        if (props.scrollRef.current) {
-                            props.scrollRef.current.scrollIntoView({
-                                block: "start",
-                                inline: "nearest",
-                                behavior: "smooth",
-                            });
-                        }
                     }
                 }}
             ></textarea>
