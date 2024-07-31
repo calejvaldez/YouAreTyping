@@ -31,7 +31,7 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
 ### v1.0
 
 - [ ] Have program automatically scroll to end
-- [ ] Add Markdown support
+- [x] Add Markdown support
 - [ ] Activate the
       [Tauri Updater](https://tauri.app/v1/guides/distribution/updater)
 
