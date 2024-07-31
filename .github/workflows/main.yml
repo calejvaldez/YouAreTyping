@@ -55,7 +55,7 @@ jobs:
               with:
                   tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
                   releaseName: "Release v__VERSION__"
-                  releaseBody: "See the assets to download this version and install."
+                  releaseBody: "Updates are available! For full release notes, please go to https://github.com/calejvaldez/YouAreTyping/releases/"
                   releaseDraft: true
-                  prerelease: true
+                  prerelease: false
                   args: ${{ matrix.args }}
