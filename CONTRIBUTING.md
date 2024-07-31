@@ -17,6 +17,9 @@
     - [Setting up your environment](#setting-up-your-environment)
     - [Development](#development)
     - [Compiling](#compiling)
+  - [Structure](#structure)
+    - [Frontend v. Backend](#frontend-v-backend)
+    - [Saved Data](#saved-data)
 
 ## Introduction
 
@@ -109,3 +112,25 @@ cargo tauri build
 ```
 
 Your build will be available in `/src-tauri/target/release/bundle/`
+
+## Structure
+
+### Frontend v. Backend
+
+The frontend code is inside of the `src` folder. The backend code is in
+`/src-tauri/src/`.
+
+### Saved Data
+
+Until version 1.1, You Are Typing saves a `messages.json` file in your operating
+system's data directory as dictated by Tauri's `data_dir()` function.
+[Learn more here](https://docs.rs/tauri/1.7.1/tauri/api/path/fn.data_dir.html).
+Starting on version 1.1, it will instead be a  `.db` file.
+
+- On Windows, it is located in `{FOLDERID_RoamingAppData}`
+- On macOS, it is located in `$HOME/Library/Application Support/YouAreTyping/`
+- On Linux, it is located in `$HOME/.local/share/YouAreTyping/`
+
+> [!NOTE]
+> I do not test on Windows, so I do not know if the Windows path is accurate.
+> Let me know!
