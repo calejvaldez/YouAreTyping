@@ -6,7 +6,6 @@ authors = ["Carlos Valdez"]
 readme = "../README.md"
 license = "GPL-3.0-only"
 repository = "https://github.com/calejvaldez/YouAreTyping/"
-run = "yat"
 edition = "2021"
 rust-version = "1.60"
 
