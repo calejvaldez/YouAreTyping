@@ -10,6 +10,7 @@
     - [Background](#background)
     - [Features](#features)
   - [Installation](#installation)
+    - ["You Are Typing is damaged and can’t be opened" Error on macOS](#you-are-typing-is-damaged-and-cant-be-opened-error-on-macos)
   - [Support](#support)
   - [Roadmap](#roadmap)
     - [v1.0](#v10)
@@ -42,6 +43,18 @@ so maybe it'll be helpful to you too.
 In order to install the app, you have to compile it yourself. Please view the
 [`CONTRIBUTING`](./CONTRIBUTING.md#setting-up-your-environment) document for
 more information.
+
+### "You Are Typing is damaged and can’t be opened" Error on macOS
+
+If you get this error on macOS, it's because I am not an identified developer
+and will not spend the $100 for Apple. 💞
+
+After installing the application with the `.dmg` file, you must run the
+following command on the terminal:
+
+```shell
+xattr -c /Applications/'You Are Typing.app'
+```
 
 ## Support
 
