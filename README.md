@@ -2,29 +2,47 @@
 
 ![You Are Typing header](.github/header.png)
 
+- [You Are Typing](#you-are-typing)
+  - [Description](#description)
+    - [Background](#background)
+    - [Features](#features)
+  - [Installation](#installation)
+  - [Support](#support)
+  - [Roadmap](#roadmap)
+    - [v1.0](#v10)
+    - [v1.1](#v11)
+    - [v1.2](#v12)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+## Description
+
 You Are Typing allows you to have a conversation with yourself and be kinder to
 yourself. It does this by allowing you to send text messages and switching
 the perspective of the text messages, making it seem like the texts you sent are
 texts you received.
 
+### Background
+
+I created this program to help me get through rough moments in life. Sometimes
+checking in with yourself through a text conversation has been helpful for me,
+so maybe it'll be helpful to you too.
+
+### Features
+
+- A text messaging app-like experience
+- Switch perspectives with `Enter` + `Control`
+- Markdown support for sent messages
+
 ## Installation
 
-In order to install the app, you have to compile it yourself. You can do so by:
+In order to install the app, you have to compile it yourself. Please view the
+[`CONTRIBUTING`](./CONTRIBUTING.md#setting-up-your-environment) document for
+more information.
 
-```shell
-# cloning the repo
-git clone https://github.com/calejvaldez/YouAreTyping.git
-cd YouAreTyping
+## Support
 
-# installing dependencies
-npm i
-cargo install tauri-cli
-
-# and finally, building
-cargo tauri build
-```
-
-Your build will be available in `/src-tauri/target/release/bundle/`.
+If you need any help, please open a GitHub issue and I'll try to get on it soon.
 
 ## Roadmap
 
@@ -43,6 +61,11 @@ Your build will be available in `/src-tauri/target/release/bundle/`.
 ### v1.2
 
 - [ ] Add way to bookmark/pin messages
+
+## Contributing
+
+I don't expect people to contribute to this project, but if you're curious,
+please read the [`CONTRIBUTING`](./CONTRIBUTING.md) document.
 
 ## License
 
