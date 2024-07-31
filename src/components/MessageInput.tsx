@@ -44,10 +44,13 @@ export default function MessageInput(props: {
                         });
 
                         e.currentTarget.value = "";
-                        props.scrollRef.current.scrollIntoView({
-                            behavior: "smooth",
-                            block: "end",
-                        });
+                        if (props.scrollRef.current) {
+                            props.scrollRef.current.scrollIntoView({
+                                block: "start",
+                                inline: "nearest",
+                                behavior: "smooth",
+                            });
+                        }
                     }
                 }}
             ></textarea>

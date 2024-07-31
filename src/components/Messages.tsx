@@ -71,13 +71,6 @@ export function Messages(props: {
                 }),
             );
         });
-
-        if (props.scrollRef.current) {
-            props.scrollRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "end",
-            });
-        }
     }, []);
 
     return (
@@ -91,6 +84,13 @@ export function Messages(props: {
             </p>
 
             {props.messages.map((message) => {
+                if (props.scrollRef.current) {
+                    props.scrollRef.current.scrollIntoView({
+                        block: "start",
+                        inline: "nearest",
+                        behavior: "smooth",
+                    });
+                }
                 return (
                     <Message
                         content={message.content}
