@@ -14,20 +14,21 @@
     margin: 5px 10px;
 }
 
-.message_self {
+@mixin common_message_traits($color, $alignment) {
     max-width: 50%;
-    background-color: rgb(56, 118, 139);
     padding: 1px 10px;
     border-radius: 10px 10px 0 10px;
     margin: 10px;
-    align-self: flex-end;
+
+    // differences (color and location)
+    background-color: $color;
+    align-self: $alignment;
+}
+
+.message_self {
+    @include common_message_traits(rgb(56, 118, 139), flex-end);
 }
 
 .message_other {
-    max-width: 50%;
-    background-color: grey;
-    padding: 1px 10px;
-    border-radius: 10px 10px 10px 0px;
-    margin: 10px;
-    align-self: flex-start;
+    @include common_message_traits(grey, flex-start);
 }
