@@ -66,7 +66,7 @@ If you need any help, please open a GitHub issue and I'll try to get on it soon.
 
 - [ ] Have program automatically scroll to end
 - [x] Add Markdown support
-- [ ] Activate the
+- [x] Activate the
       [Tauri Updater](https://tauri.app/v1/guides/distribution/updater)
 
 ### v1.1
