@@ -15,7 +15,7 @@
 }
 
 .message_self {
-    max-width: 250px;
+    max-width: 50%;
     background-color: rgb(56, 118, 139);
     padding: 1px 10px;
     border-radius: 10px 10px 0 10px;
@@ -24,7 +24,7 @@
 }
 
 .message_other {
-    max-width: 250px;
+    max-width: 50%;
     background-color: grey;
     padding: 1px 10px;
     border-radius: 10px 10px 10px 0px;
