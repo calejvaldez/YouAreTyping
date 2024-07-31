@@ -53,7 +53,7 @@ jobs:
               with:
                   tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
                   releaseName: "Release v__VERSION__"
-                  releaseBody: "Updates are available! For full release notes, please go to https://github.com/calejvaldez/YouAreTyping/releases/"
+                  releaseBody: "For full release notes, please go to https://github.com/calejvaldez/YouAreTyping/releases/latest/."
                   releaseDraft: true
                   prerelease: false
                   args: ${{ matrix.args }}
