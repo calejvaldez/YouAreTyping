@@ -40,9 +40,8 @@ so maybe it'll be helpful to you too.
 
 ## Installation
 
-In order to install the app, you have to compile it yourself. Please view the
-[`CONTRIBUTING`](./CONTRIBUTING.md#setting-up-your-environment) document for
-more information.
+You can download the latest version on the
+[Releases page](https://github.com/calejvaldez/YouAreTyping/releases/latest/).
 
 ### "You Are Typing is damaged and can’t be opened" Error on macOS
 
