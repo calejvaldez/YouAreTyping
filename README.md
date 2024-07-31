@@ -13,7 +13,6 @@
     - ["You Are Typing is damaged and can’t be opened" Error on macOS](#you-are-typing-is-damaged-and-cant-be-opened-error-on-macos)
   - [Support](#support)
   - [Roadmap](#roadmap)
-    - [v1.0](#v10)
     - [v1.1](#v11)
     - [v1.2](#v12)
   - [Contributing](#contributing)
@@ -60,13 +59,6 @@ xattr -c /Applications/'You Are Typing.app'
 If you need any help, please open a GitHub issue and I'll try to get on it soon.
 
 ## Roadmap
-
-### v1.0
-
-- [ ] Have program automatically scroll to end
-- [x] Add Markdown support
-- [x] Activate the
-      [Tauri Updater](https://tauri.app/v1/guides/distribution/updater)
 
 ### v1.1
 
