@@ -39,6 +39,13 @@ so maybe it'll be helpful to you too.
 
 ## Installation
 
+> [!IMPORTANT]
+> I only create releases for
+> [Apple silicon Macs](https://support.apple.com/en-us/116943). I do this
+> because it is faster to make builds for them. However, if you'd like me to
+> create builds for any other OSs or architectures, please let me know and I'll
+> start creating them. 🙂‍↕️
+
 You can download the latest version on the
 [Releases page](https://github.com/calejvaldez/YouAreTyping/releases/latest/).
 
