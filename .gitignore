@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 messages.json
+*.session.sql
 
 # Editor directories and files
 .idea
