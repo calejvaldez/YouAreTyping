@@ -33,7 +33,8 @@ fn transition_json_to_db(data_dir: &PathBuf) {
     conn.execute("INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)", (Uuid::new_v4().to_string(), msg.author, msg.content, msg.timestamp)).expect("Inserting a message failed.");
   }
 
-  fs::remove_file(json_path).expect("Deleting old JSON failed.");
+  // ! fs::remove_file(json_path).expect("Deleting old JSON failed.");
+  // Avoid personal data loss, remove once in production.
 }
 
 fn get_internal_data(limit: i32) -> Vec<Message> {
