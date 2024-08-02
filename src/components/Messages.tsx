@@ -69,6 +69,11 @@ export function Messages(props: {
         );
     }, []);
 
+    // todo: detect when the top of the `all_messages` div has been reached
+    // todo: when it's been reached, run setMessageLimit(messageLimit+50)
+    // todo: create a handleMessageLimitChange function to set the limit and
+    // todo: ... invoke Tauri's backend
+
     return (
         <div id="container_messages">
             <div id="all_messages">
