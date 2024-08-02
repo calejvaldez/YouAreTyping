@@ -58,11 +58,15 @@ export function Messages(props: {
     messages: Message[];
     setMessages: Function;
     scrollRef: any;
+    messageLimit: number;
+    setMessageLimit: Function;
 }) {
     useEffect(() => {
-        invoke("get_messages", { limit: 50 }).then((messages) => {
-            props.setMessages(messages);
-        });
+        invoke("get_messages", { limit: props.messageLimit }).then(
+            (messages) => {
+                props.setMessages(messages);
+            },
+        );
     }, []);
 
     return (

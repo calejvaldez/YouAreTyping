@@ -6,6 +6,7 @@ import { Messages, Message } from "./components/Messages";
 function App() {
     const [switched, setSwitched] = useState(false);
     const [messages, setMessages] = useState([] as Message[]);
+    const [messageLimit, setMessageLimit] = useState(50);
     const scrollRef = useRef(null);
 
     return (
@@ -16,6 +17,8 @@ function App() {
                 messages={messages}
                 setMessages={setMessages}
                 scrollRef={scrollRef}
+                messageLimit={messageLimit}
+                setMessageLimit={setMessageLimit}
             />
             <MessageInput
                 switched={switched}
