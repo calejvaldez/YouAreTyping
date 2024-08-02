@@ -70,6 +70,7 @@ If you need any help, please open a GitHub issue and I'll try to get on it soon.
 ### v1.1
 
 - [ ] Add way to reply to messages
+- [ ] Load only 50 messages at a time
 - [ ] Convert from `.json` to `.db` for data storage
 
 ### v1.2
