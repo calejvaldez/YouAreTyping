@@ -93,9 +93,9 @@ fn save_message(content: String, author: String, timestamp: i64) {
   save_internal_data(Message {id: Uuid::new_v4().to_string(), content: content.to_string(), author: author.to_string(), timestamp});
 }
 
-#[tauri::command]
-fn get_messages() -> Vec<Message> {
-  get_internal_data(50)
+#[tauri::command(rename_all = "snake_case")]
+fn get_messages(limit: i32) -> Vec<Message> {
+  get_internal_data(limit)
 }
 
 fn main() {

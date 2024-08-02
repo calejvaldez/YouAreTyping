@@ -63,13 +63,8 @@ export function Messages(props: {
     scrollRef: any;
 }) {
     useEffect(() => {
-        invoke("get_messages").then((messages) => {
-            props.setMessages(
-                // sorting by time sent
-                (messages as Message[]).sort((a, b) => {
-                    return b.timestamp - a.timestamp;
-                }),
-            );
+        invoke("get_messages", { limit: 50 }).then((messages) => {
+            props.setMessages(messages);
         });
     }, []);
 
