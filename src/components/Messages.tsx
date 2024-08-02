@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";
 import Markdown from "react-markdown";
@@ -12,27 +12,48 @@ export interface Message {
 }
 
 function Message(props: Message) {
+    const [hovered, setHovered] = useState("");
+
     return (
-        <div className={"message_" + props.author}>
-            <Markdown
-                components={{
-                    a: (props: any) => {
-                        return (
-                            <a
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    open(props.href);
-                                }}
-                                href={props.href}
-                            >
-                                {props.children}
-                            </a>
-                        );
-                    },
+        <div
+            className={"message_container_" + props.author}
+            onMouseOver={() => {
+                setHovered(props.id);
+            }}
+            onMouseLeave={() => {
+                setHovered("");
+            }}
+            id={props.id}
+        >
+            <div className={"message_" + props.author}>
+                <Markdown
+                    components={{
+                        a: (props: any) => {
+                            return (
+                                <a
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        open(props.href);
+                                    }}
+                                    href={props.href}
+                                >
+                                    {props.children}
+                                </a>
+                            );
+                        },
+                    }}
+                >
+                    {props.content}
+                </Markdown>
+            </div>
+            <button
+                hidden={hovered !== props.id}
+                onClick={() => {
+                    props.content = "";
                 }}
             >
-                {props.content}
-            </Markdown>
+                Reply
+            </button>
         </div>
     );
 }

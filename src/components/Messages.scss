@@ -21,14 +21,37 @@
     // differences (color and location)
     background-color: $color;
     align-self: $alignment;
+
+    button {
+    }
 }
 
 .message_self {
     @include common_message_traits(rgb(56, 118, 139), flex-end);
-    border-radius: 10px 10px 0 10px;
+    & {
+        border-radius: 10px 10px 0 10px;
+    }
 }
 
 .message_other {
     @include common_message_traits(grey, flex-start);
-    border-radius: 10px 10px 10px 0;
+    & {
+        border-radius: 10px 10px 10px 0;
+    }
+}
+
+.message_container_self {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.message_container_other {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+button {
+    max-height: 30px;
 }
