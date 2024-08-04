@@ -3,7 +3,7 @@ name: "publish"
 on:
     push:
         branches:
-            - main
+            - release
 # https://tauri.app/v1/guides/building/cross-platform/#tauri-github-action
 
 jobs:
