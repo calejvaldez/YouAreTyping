@@ -33,7 +33,8 @@ like you're talking to someone else.
 
 I created this program to help me get through rough moments in life. Sometimes
 checking in with yourself through a text conversation has been helpful for me,
-so maybe it'll be helpful to you too.
+so maybe it'll be helpful to you too. Check the
+[`PROPOSAL.md`](.github/PROPOSAL.md) file for a more in-depth background.
 
 ### Features
 
@@ -44,9 +45,7 @@ so maybe it'll be helpful to you too.
 
 ## Visuals
 
-![Screenshot of the "Self" POV](.github/assets/screenshot-self-pov.png)
-
-![Screenshot of the "Other" POV](.github/assets/screenshot-other-pov.png)
+![Screenshot of the changed POV feature](.github/assets/screenshot-pov.png)
 
 By using `Enter` + `Control`, you can change the perspective and respond to your
 own messages!
