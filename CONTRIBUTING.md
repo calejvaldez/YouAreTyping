@@ -1,6 +1,6 @@
 # You Are Typing Contributing Guidelines
 
-![You Are Typing header](.github/header.png)
+![You Are Typing header](.github/assets/header.png)
 
 ## Table of Contents
 
