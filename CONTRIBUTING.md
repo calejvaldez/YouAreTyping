@@ -23,19 +23,18 @@
 
 ## Introduction
 
-I don't exactly expect anybody to contribute to this project. For the most part,
-I designed this for myself to help me organize my thoughts when I'm going
-through a rough patch. However, this guide is here for two reasons.
+I don't really expect anybody to contribute to this project. However, I wrote
+this guide for two reasons:
 
 1. You found this program useful and wanted to find a way to improve upon it
-2. I go another year without working on this program, have another mental health
-   crisis, and need to focus on something
+2. [I go another year without working on this program](https://github.com/calejvaldez/YouAreTyping/commits/main/?since=2023-06-20&until=2024-07-28)
+    and want to improve upon it myself
 
 So, here we go!
 
 ### License
 
-This work is under the GNU General Public License 3.0.
+This work is under the GNU General Public License v3.0.
 
 ## Non-code contributions
 
@@ -50,26 +49,27 @@ or not. Open an issue and see what happens!
 
 You can open an issue to report bugs. I'll try to fix them as soon as I can,
 though I don't promise anything. Here's a good example of a code report:
-ojosproject/website#24
+[ojosproject/website#24](https://github.com/ojosproject/website/issues/24/)
+
+This repository comes with templates to help you properly structure your bug
+report.
 
 ### Can I suggest a feature?
 
-You *can*, but unless it's something I'm particularly interested in making, then
-I won't add it. As of writing this, I'm a college student and don't code as
-often as I used to. Even now the reason why I'm focusing a lot on this is
-because I'm on summer break attempting to learn [Tauri](https://tauri.app/) for
-[my research project](https://ojosproject.org/iris/).
+You *can*, but I might not implement it myself. I'm a college student already
+struggling to keep up with everything, so it'll be difficult to find time to
+implement a suggested feature.
 
-You can suggest a feature by opening an issue and hoping someone decides to
-work on it.
+However, I recommend you open an issue and *hopefully* somebody will decide
+to code that feature and open a Pull Request. I'm more than open to merging
+Pull Requests for suggested features!
 
 ## Code Contributions
 
 ### Branching Rules
 
 If you plan to contribute code, please create a fork of this project and open
-a PR targeted towards the `dev` branch. **Do not aim at the `main` branch.**
-The `main` branch is for the latest, stable release.
+a PR targeted towards the `main` branch.
 
 ### Setting up your environment
 
@@ -102,10 +102,13 @@ Before you can start coding, you need to:
 npm i # install npm dependencies
 cargo install tauri-cli # install the Tauri CLI
 
-cargo tauri dev # run dev mode
+cargo tauri dev # run the dev environment
 ```
 
 ### Compiling
+
+Before finalizing your PR, please compile the program and make sure the build
+works.
 
 ```shell
 cargo tauri build
