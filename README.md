@@ -25,21 +25,21 @@ it fully active. I only ever make updates to this program if it's something I
 up with everything.
 
 If you want to contribute your own code, it is heavily encouraged! Please read
-the [`CONTRIBUTING.md`](./CONTRIBUTING.md) for more information.
+the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file for more information.
 
 ## Description
 
 You Are Typing allows you to have a conversation with yourself and
 [become your own best friend](https://www.instagram.com/reel/C50xlZcLRhu/). It
-does this by switching perspectives of the chat conversation to make it feel
+does this by switching the perspective of the chat conversation to make it feel
 like you're talking to someone else.
 
 ### Background
 
-I created this program to help me get through rough moments in life. Sometimes
-checking in with yourself through a text conversation has been helpful for me,
-so maybe it'll be helpful to you too. Check the
-[`PROPOSAL.md`](.github/PROPOSAL.md) file for a more in-depth background.
+I created this program to help integrate myself into my support system. Sometimes
+checking in with myself through a text conversation has been helpful, so maybe
+it'll be helpful to you too. Check the [`PROPOSAL.md`](.github/PROPOSAL.md) file
+for a more in-depth background.
 
 ### Features
 
@@ -52,8 +52,8 @@ so maybe it'll be helpful to you too. Check the
 
 ![Screenshot of the changed POV feature](.github/assets/screenshot-pov.png)
 
-By using `Enter` + `Control`, you can change the perspective and respond to your
-own messages!
+By using `Enter` + `Control`, you can change the perspective of the chat and
+respond to your own messages!
 
 ## Installation
 
@@ -64,11 +64,10 @@ You can download the latest version on the
 
 ![Screenshot of the macOS "App is damaged" error](.github/assets/screenshot-macos-damaged-error.png)
 
-If you get this error on macOS, it's because I am not an identified developer
-and will not spend the $100 for Apple. 💞
+If you get this error on macOS, it's because I am not an identified developer.
 
-After installing the application with the `.dmg` file, you must run the
-following command on the terminal:
+After installing the app by moving it to the `Applications` folder, you must run
+the following command on the Terminal:
 
 ```shell
 xattr -c /Applications/'You Are Typing.app'
@@ -81,7 +80,7 @@ If you need any help, please open a GitHub issue and I'll try to get on it soon.
 ## Contributing
 
 I don't expect people to contribute to this project, but if you're curious,
-please read the [`CONTRIBUTING.md`](./CONTRIBUTING.md) document.
+please read the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
 
 ## License
 
