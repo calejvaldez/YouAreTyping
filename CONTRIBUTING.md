@@ -27,7 +27,7 @@ I don't really expect anybody to contribute to this project. However, I wrote
 this guide for two reasons:
 
 1. You found this program useful and wanted to find a way to improve upon it
-2. [I go another year without working on this program](https://github.com/calejvaldez/YouAreTyping/commits/main/?since=2023-06-20&until=2024-07-28)
+2. [I go another year without working on this program](https://github.com/calejvaldez/YouAreTyping/commits/main/?since=2023-06-20&until=2024-07-27)
     and want to improve upon it myself
 
 So, here we go!
