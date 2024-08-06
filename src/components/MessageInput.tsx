@@ -18,7 +18,7 @@ export default function MessageInput(props: {
                     if (e.key === "Enter" && e.ctrlKey) {
                         e.preventDefault();
                         props.setSwitched(props.switched ? false : true);
-                    } else if (e.key === "Enter" && !e.metaKey) {
+                    } else if (e.key === "Enter" && !e.shiftKey) {
                         let timestamp = Math.floor(new Date().getTime() / 1000);
                         e.preventDefault();
                         if (e.currentTarget.value === "") {
