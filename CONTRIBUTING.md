@@ -125,15 +125,10 @@ The frontend code is inside of the `src` folder. The backend code is in
 
 ### Saved Data
 
-Until version 1.1, You Are Typing saves a `messages.json` file in your operating
-system's data directory as dictated by Tauri's `data_dir()` function.
-[Learn more here](https://docs.rs/tauri/1.7.1/tauri/api/path/fn.data_dir.html).
-Starting on version 1.1, it will instead be a  `.db` file.
+Starting in version 1.0.4, all data is saved in a `YouAreTyping.db` file saved
+in
+[the `data_dir()` folder](https://docs.rs/tauri/1.7.1/tauri/api/path/fn.data_dir.html).
 
-- On Windows, it is located in `{FOLDERID_RoamingAppData}`
-- On macOS, it is located in `$HOME/Library/Application Support/YouAreTyping/`
-- On Linux, it is located in `$HOME/.local/share/YouAreTyping/`
-
-> [!NOTE]
-> I do not test on Windows, so I do not know if the Windows path is accurate.
-> Let me know!
+- On Windows, it is located in `C:\Users\[username]\AppData\Roaming\YouAreTyping\`
+- On macOS, it is located in `/Users/[username]/Library/Application Support/YouAreTyping/`
+- On Linux, it is located in `/home/[username]/.local/share/YouAreTyping/`
