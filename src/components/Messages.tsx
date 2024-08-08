@@ -5,18 +5,20 @@ import Markdown from "react-markdown";
 import { open } from "@tauri-apps/api/shell";
 
 export interface Message {
+    id: string;
     content: string;
     timestamp: number;
     author: "self" | "other";
 }
 
 function Message(props: {
+    id: string;
     content: string;
-    author: "self" | "other";
     timestamp: number;
+    author: string;
 }) {
     return (
-        <div className={"message_" + props.author}>
+        <div id={props.id} className={"message_" + props.author}>
             <Markdown
                 components={{
                     a: (props: any) => {
@@ -79,6 +81,8 @@ export function Messages(props: {
                 {props.messages.map((message) => {
                     return (
                         <Message
+                            key={message.id}
+                            id={message.id}
                             content={message.content}
                             author={determine_author(
                                 message.author,
