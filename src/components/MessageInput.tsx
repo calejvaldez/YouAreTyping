@@ -44,6 +44,9 @@ export default function MessageInput(props: {
                         });
 
                         e.currentTarget.value = "";
+                    } else if (e.ctrlKey && e.key === "e") {
+                        console.log("Felt it.");
+                        invoke("export_messages");
                     }
                 }}
             ></textarea>

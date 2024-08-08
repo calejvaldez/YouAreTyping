@@ -3,7 +3,7 @@
 
 use std::{fs, path::PathBuf};
 use serde::{Deserialize, Serialize};
-use tauri::api::path::data_dir;
+use tauri::api::{dialog, path::data_dir};
 use rusqlite::Connection;
 use uuid::Uuid;
 
@@ -98,10 +98,39 @@ fn get_messages() -> Vec<Message> {
   get_internal_data()
 }
 
+#[tauri::command]
+fn export_messages() {
+  let db_path = data_dir().expect("data_dir() failed inside of save_internal_data.").join("YouAreTyping/YouAreTyping.db");
+  let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");
+
+  let mut messages : Vec<Message> = vec![];
+
+  let mut stmt = conn.prepare("SELECT * FROM message ORDER BY time_stamp ASC").expect("SELECT * FROM message failed.");
+
+  for msg in stmt.query_map([], |row| {
+    Ok(
+      Message {
+        id: row.get(0)?,
+        author: row.get(1)?,
+        content: row.get(2)?,
+        timestamp: row.get(3)?
+      }
+    )
+  }).expect("Transferring db to Message struct failed."){
+    messages.push(msg.unwrap());
+  };
+
+  let as_str = serde_json::to_string(&messages).expect("Converting from vec to string failed.");
+
+  dialog::FileDialogBuilder::new().pick_folder(|folder| {
+    fs::write(folder.expect("Folder failed to set.").join("messages.json"), as_str).expect("Saving file to folder failed.");
+  })
+}
+
 fn main() {
   let _ = fix_path_env::fix();
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![save_message, get_messages])
+    .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
