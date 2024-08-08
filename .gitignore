@@ -12,7 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Other stuff to get rid of
 messages.json
+tools/export-messages
 
 # Editor directories and files
 .idea
