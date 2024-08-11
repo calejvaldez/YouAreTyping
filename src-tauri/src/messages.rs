@@ -4,7 +4,7 @@ use rusqlite::Connection;
 use uuid::Uuid;
 use std::fs;
 
-use crate::conversion::transition_json_to_db;
+use crate::{config::create_config_file, conversion::transition_json_to_db};
 
 #[derive(Serialize, Deserialize)]
 pub struct Message {
@@ -23,6 +23,10 @@ pub fn get_internal_data() -> Vec<Message> {
       // create the path
         fs::create_dir_all(&p).expect("Creating YouAreTyping directory failed.");
         generate_table = true;
+    }
+
+    if !data_dir().expect("data_dir() failed to initiate.").join("YouAreTyping/config.json").exists() {
+        create_config_file();
     }
 
     let conn = Connection::open(p.join("YouAreTyping.db")).expect("YouAreTyping.db failed to open.");

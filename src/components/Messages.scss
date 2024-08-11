@@ -24,7 +24,7 @@
 }
 
 .message_self {
-    @include common_message_traits(rgb(56, 118, 139), flex-end);
+    @include common_message_traits(none, flex-end);
     border-radius: 10px 10px 0 10px;
 }
 

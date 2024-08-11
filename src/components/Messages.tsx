@@ -16,9 +16,18 @@ function Message(props: {
     content: string;
     timestamp: number;
     author: string;
+    messageColor: string;
 }) {
     return (
-        <div id={props.id} className={"message_" + props.author}>
+        <div
+            id={props.id}
+            className={"message_" + props.author}
+            style={
+                props.author === "self"
+                    ? { backgroundColor: props.messageColor }
+                    : {}
+            }
+        >
             <Markdown
                 components={{
                     a: (props: any) => {
@@ -63,6 +72,7 @@ export function Messages(props: {
     messages: Message[];
     setMessages: Function;
     scrollRef: any;
+    messageColor: string;
 }) {
     useEffect(() => {
         invoke("get_messages").then((messages) => {
@@ -82,6 +92,7 @@ export function Messages(props: {
                     return (
                         <Message
                             key={message.id}
+                            messageColor={props.messageColor}
                             id={message.id}
                             content={message.content}
                             author={determine_author(
