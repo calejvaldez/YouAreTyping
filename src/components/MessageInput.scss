@@ -1,3 +1,15 @@
+#color-container {
+    position: fixed;
+    top: 2%;
+    right: 2%;
+
+    color: black;
+    background-color: white;
+    padding: 0 5px;
+    border: none;
+    border-radius: 20px;
+}
+
 #message_text_input {
     font-size: 15px;
     width: 90%;

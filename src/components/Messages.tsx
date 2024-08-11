@@ -22,11 +22,10 @@ function Message(props: {
         <div
             id={props.id}
             className={"message_" + props.author}
-            style={
-                props.author === "self"
-                    ? { backgroundColor: props.messageColor }
-                    : {}
-            }
+            style={{
+                backgroundColor:
+                    props.author === "self" ? props.messageColor : "grey",
+            }}
         >
             <Markdown
                 components={{

@@ -13,22 +13,21 @@
     margin: 5px 10px;
 }
 
-@mixin common_message_traits($color, $alignment) {
+@mixin common_message_traits($alignment) {
     max-width: 50%;
     padding: 1px 10px;
     margin: 10px;
 
     // differences (color and location)
-    background-color: $color;
     align-self: $alignment;
 }
 
 .message_self {
-    @include common_message_traits(none, flex-end);
+    @include common_message_traits(flex-end);
     border-radius: 10px 10px 0 10px;
 }
 
 .message_other {
-    @include common_message_traits(grey, flex-start);
+    @include common_message_traits(flex-start);
     border-radius: 10px 10px 10px 0;
 }

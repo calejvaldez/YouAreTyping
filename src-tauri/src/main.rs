@@ -4,10 +4,11 @@
 mod conversion;
 mod messages;
 mod config;
+use tauri::{api::dialog, Manager};
 use uuid::Uuid;
 use messages::{save_internal_data, get_internal_data, Message};
 use conversion::export_to_json;
-use config::{get_color_from_config, get_full_config, set_color, set_color_asked, Config};
+use config::{get_full_config, set_color, set_color_asked, Config};
 
 #[tauri::command(rename_all = "snake_case")]
 fn save_message(content: String, author: String, timestamp: i64) {
@@ -41,7 +42,21 @@ fn set_color_config_asked(value: bool) {
 
 fn main() {
   let _ = fix_path_env::fix();
+
   tauri::Builder::default()
+    .setup(|app| {
+      let main_window = app.get_window("main").unwrap();
+
+      if !get_config().color_asked {
+        std::thread::spawn(move || {
+          dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
+        });
+
+        set_color_asked(true)
+      }
+
+      Ok(())
+    })
     .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages, get_config, set_color_config, set_color_config_asked])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

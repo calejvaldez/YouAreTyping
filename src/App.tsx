@@ -18,12 +18,6 @@ function App() {
     useEffect(() => {
         invoke("get_config")
             .then((config) => {
-                if (!(config as Config).color_asked) {
-                    // dialog, ask
-
-                    invoke("set_color_config_asked", { value: true });
-                }
-
                 setMessageColor((config as Config).color);
             })
             .catch((e) => {
@@ -47,6 +41,7 @@ function App() {
                 messages={messages}
                 setMessages={setMessages}
                 scrollRef={scrollRef}
+                setMessageColor={setMessageColor}
             />
         </div>
     );

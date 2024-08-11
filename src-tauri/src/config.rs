@@ -8,7 +8,7 @@ Meant to help with the configuration of the app, stored in a `config.json`
 file in the data_dir().
 */
 use serde::{Deserialize, Serialize};
-use tauri::api::{dialog, path::data_dir};
+use tauri::api::path::data_dir;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -24,10 +24,6 @@ pub fn create_config_file() {
     };
 
     commit(p, &template_config);
-}
-
-pub fn get_color_from_config() -> String {
-    get_full_config().color
 }
 
 pub fn set_color(color: String) {
@@ -56,6 +52,11 @@ pub fn set_color_asked(value: bool) {
 
 pub fn get_full_config() -> Config {
     let p = data_dir().expect("data_dir() failed.").join("YouAreTyping/config.json");
+
+    if !p.exists() {
+        create_config_file();
+    }
+
     let string_config = fs::read_to_string(&p).expect("Reading config file failed.");
     
     serde_json::from_str(&string_config).expect("Converting from str to JSON failed.")
