@@ -48,6 +48,7 @@ for a more in-depth background.
 - Markdown support for sent messages
 - Data saved on-device, so you always have access to your messages
 - Export your messages into a `.json` file with `Control` + `e`
+- Change the color of your messages with `Control` + `c`
 
 ## Visuals
 
