@@ -4,7 +4,7 @@
 mod conversion;
 mod messages;
 mod config;
-use tauri::{api::dialog, Manager};
+use tauri::{api::{dialog, path::data_dir}, Manager};
 use uuid::Uuid;
 use messages::{save_internal_data, get_internal_data, Message};
 use conversion::export_to_json;
@@ -47,7 +47,7 @@ fn main() {
     .setup(|app| {
       let main_window = app.get_window("main").unwrap();
 
-      if !get_config().color_asked {
+      if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
         std::thread::spawn(move || {
           dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
         });
