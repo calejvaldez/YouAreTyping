@@ -5,9 +5,15 @@
 
     color: black;
     background-color: white;
-    padding: 0 5px;
+    padding: 5px;
     border: none;
     border-radius: 20px;
+}
+
+#chosen_color {
+    border: none;
+    margin: 0 5px;
+    max-height: 20px;
 }
 
 #message_text_input {
