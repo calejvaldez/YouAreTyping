@@ -19,13 +19,15 @@
 
 ## Project Status
 
-Although I wouldn't consider this project abandoned, I also wouldn't consider
-it fully active. I only ever make updates to this program if it's something I
-*really* want to work on. Otherwise, I'm just a college student trying to keep
-up with everything.
-
-If you want to contribute your own code, it is heavily encouraged! Please read
-the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file for more information.
+> [!NOTE]
+>
+> Although I wouldn't consider this project abandoned, I also wouldn't consider
+> it fully active. I only ever make updates to this program if it's something I
+> *really* want to work on. Otherwise, I'm just a college student trying to keep
+> up with everything.
+>
+> If you want to contribute your own code, it is heavily encouraged! Please read
+> the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file for more information.
 
 ## Description
 
