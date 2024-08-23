@@ -4,6 +4,12 @@
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer"
+    },
+    "[typescriptreact][scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "files.associations": {
         "LICENSE": "plaintext"
     },
