@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import MessageInput from "./components/MessageInput";
 import { Messages, Message } from "./components/Messages";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 interface Config {
     color: string;

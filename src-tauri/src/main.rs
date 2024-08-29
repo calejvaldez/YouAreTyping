@@ -7,10 +7,8 @@ mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::export_to_json;
 use messages::{get_internal_data, save_internal_data, Message};
-use tauri::{
-    api::{dialog, path::data_dir},
-    Manager,
-};
+use tauri::Manager;
+use tauri_plugin_dialog::DialogExt;
 use uuid::Uuid;
 
 #[tauri::command(rename_all = "snake_case")]
@@ -52,20 +50,33 @@ fn main() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
-    .setup(|app| {
-      let main_window = app.get_window("main").unwrap();
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .setup(|app| {
+            if app
+                .path()
+                .data_dir()
+                .expect("Data dir failed")
+                .join("YouAreTyping/")
+                .exists()
+                && !get_config().color_asked
+            {
+                app.dialog().message(
+                    "Display the color picker using\n`Control` + `c`\nto change messages' colors!",
+                );
+                set_color_asked(true);
+            }
 
-      if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
-        std::thread::spawn(move || {
-          dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
-
-          set_color_asked(true);
-        });
-      }
-
-      Ok(())
-    })
-    .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages, get_config, set_color_config, set_color_config_asked])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            save_message,
+            get_messages,
+            export_messages,
+            get_config,
+            set_color_config,
+            set_color_config_asked
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

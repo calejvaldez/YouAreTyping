@@ -1,7 +1,7 @@
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use tauri::api::path::data_dir;
+use tauri::Manager;
 use uuid::Uuid;
 
 use crate::{config::create_config_file, conversion::transition_json_to_db};

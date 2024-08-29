@@ -1,6 +1,6 @@
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function MessageInput(props: {
     switched: boolean;
