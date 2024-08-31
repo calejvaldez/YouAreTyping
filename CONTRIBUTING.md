@@ -75,7 +75,7 @@ a PR targeted towards the `main` branch.
 
 The following tools are used for this program:
 
-- [Tauri](https://tauri.app/)
+- [Tauri v1](https://tauri.app/)
 - For the frontend...
   - [Vite](https://vitejs.dev/)
   - [React](https://react.dev/)
