@@ -17,7 +17,7 @@ mod conversion;
 mod menu;
 mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
-use conversion::{export_to_csv, export_to_json, import_as_csv, import_as_json};
+use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
 use messages::{get_internal_data, save_internal_data, Message};
 use tauri::{

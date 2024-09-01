@@ -184,5 +184,3 @@ pub fn import_as_json() {
         }
     })
 }
-
-pub fn import_as_csv() {}
