@@ -61,6 +61,11 @@ appear for you to change the color of your messages.
 
 ### Exporting your messages
 
+> [!IMPORTANT]
+> The difference between a `.csv` and a `.json` is that a `.csv` is more for
+> spreadsheet viewing programs, whereas `.json` is more for programming and
+> importing back into You Are Typing.
+
 You can export your messages as a comma separated values (`.csv`) file. This
 format is best used for spreadsheet programs.
 
@@ -83,3 +88,5 @@ objects, with the following keys:
 | `timestamp` | `number`              | The Epoch timestamp of your message  |
 | `author`    | `"self"` or `"other"` | The perspective the message was sent |
 | `content`   | `string`              | The content of the message           |
+
+There are no plans to support importing from a `.csv`.
