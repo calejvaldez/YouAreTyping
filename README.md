@@ -49,7 +49,7 @@ for a more in-depth background.
 - Switch perspectives with `Enter` + `Control`
 - Markdown support for sent messages
 - Data saved on-device, so you always have access to your messages
-- Export your messages into a `.json` file with `Control` + `e`
+- Export your messages into a `.csv` file with `Control` + `e`
 - Change the color of your messages with `Control` + `c`
 
 ## Visuals
