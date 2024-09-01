@@ -8,7 +8,7 @@ The idea is that this would include the textbox, and other buttons.
 For now, it's just the input box.
 
 Licensed under the GNU GPLv3 license.
-https://www.gnu.org/licenses/gpl-3.0.en.html
+https://www.gnu.org/licenses/gpl-3.0.html
 */
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";

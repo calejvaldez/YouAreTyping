@@ -6,7 +6,7 @@ https://github.com/calejvaldez/YouAreTyping/
 Has to do with converting the conversation from the database to JSON/CSV.
 
 Licensed under the GNU GPLv3 license.
-https://www.gnu.org/licenses/gpl-3.0.en.html
+https://www.gnu.org/licenses/gpl-3.0.html
 */
 use crate::messages::Message;
 use chrono::{DateTime, Local};

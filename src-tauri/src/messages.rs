@@ -6,7 +6,7 @@ https://github.com/calejvaldez/YouAreTyping/
 Has to do with managing messages users send.
 
 Licensed under the GNU GPLv3 license.
-https://www.gnu.org/licenses/gpl-3.0.en.html
+https://www.gnu.org/licenses/gpl-3.0.html
 */
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};

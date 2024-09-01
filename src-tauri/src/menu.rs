@@ -6,7 +6,7 @@ https://github.com/calejvaldez/YouAreTyping/
 Creates the menu for the program.
 
 Licensed under the GNU GPLv3 license.
-https://www.gnu.org/licenses/gpl-3.0.en.html
+https://www.gnu.org/licenses/gpl-3.0.html
 */
 use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 
