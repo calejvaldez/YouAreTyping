@@ -136,7 +136,7 @@ pub fn export_to_csv() {
     })
 }
 
-fn message_in_db(id: &str) -> bool {
+fn message_in_db(id: String) -> bool {
     let conn = Connection::open(data_dir().unwrap().join("YouAreTyping/YouAreTyping.db")).unwrap();
 
     let mut stmt = conn
@@ -172,11 +172,11 @@ pub fn import_as_json(event: WindowMenuEvent) {
             serde_json::from_str(&contents).expect("Converting str to JSON failed.");
 
         for message in messages {
-            if !message_in_db(&message.id) {
+            if !message_in_db(message.id.clone()) {
                 conn.execute(
                     "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
                     (
-                        Uuid::new_v4().to_string(),
+                        message.id,
                         message.author,
                         message.content,
                         message.timestamp,
