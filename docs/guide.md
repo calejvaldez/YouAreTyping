@@ -13,6 +13,7 @@
     - [Switching perspectives](#switching-perspectives)
     - [Changing message colors](#changing-message-colors)
     - [Exporting your messages](#exporting-your-messages)
+    - [Importing your messages](#importing-your-messages)
 
 ## Introduction
 
@@ -33,6 +34,7 @@ reading the entire guide, here's a quick table to use as reference:
 | `Control` + `Enter` | Switch perspectives       |
 | `Control` + `c`     | Toggle color picker       |
 | `Control` + `e`     | Export messages as `.csv` |
+| `Control` + `i`     | Import a `.json` file     |
 
 ## Features
 
@@ -63,3 +65,21 @@ You can export your messages as a comma separated values (`.csv`) file. This
 format is best used for spreadsheet programs.
 
 You can do so by using the `Control` and `e` keys at the same time.
+
+You can also export your messages as a `.json` file by using the menu under the
+"File" submenu.
+
+### Importing your messages
+
+You can only import a `.json` file. You can do so by pressing the `Control` +
+`i` key.
+
+In order to import a `.json` file, it has to be structured as a list of Message
+objects, with the following keys:
+
+| Key         | Type                  | Description                          |
+| ----------- | --------------------- | ------------------------------------ |
+| `id`        | `string`              | The UUID of the message              |
+| `timestamp` | `number`              | The Epoch timestamp of your message  |
+| `author`    | `"self"` or `"other"` | The perspective the message was sent |
+| `content`   | `string`              | The content of the message           |
