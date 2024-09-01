@@ -70,17 +70,17 @@ fn main() {
         }
     })
     .setup(|app| {
-      let main_window = app.get_window("main").unwrap();
+        let main_window = app.get_window("main").unwrap();
 
-      if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
-        std::thread::spawn(move || {
-          dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
+        if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
+            std::thread::spawn(move || {
+                dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
 
-          set_color_asked(true);
-        });
-      }
+                set_color_asked(true);
+            });
+        }
 
-      Ok(())
+        Ok(())
     })
     .invoke_handler(tauri::generate_handler![save_message, get_messages, get_config, set_color_config, set_color_config_asked])
     .run(tauri::generate_context!())
