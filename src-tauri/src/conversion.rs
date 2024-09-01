@@ -9,6 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.en.html
 */
 use crate::messages::Message;
+use chrono::{DateTime, Local};
 use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
@@ -111,6 +112,10 @@ pub fn export_to_csv() {
         .expect("Transferring db to Message struct failed.")
     {
         let unwrapped = msg.unwrap();
+        let ts = DateTime::from_timestamp(unwrapped.timestamp, 0)
+            .unwrap()
+            .with_timezone(&Local::now().timezone());
+
         let (id, author, content, timestamp) = (
             unwrapped.id,
             unwrapped.author,
@@ -121,7 +126,7 @@ pub fn export_to_csv() {
                     .replace("\n", r#"\n"#)
                     .replace("\"", "\"\"")
             ),
-            unwrapped.timestamp,
+            ts.format("%Y-%m-%d %I:%M %p %z").to_string(),
         );
 
         csv_string.push_str(format!("{id},{timestamp},{author},{content}\n").as_str());
