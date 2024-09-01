@@ -16,7 +16,7 @@ mod config;
 mod conversion;
 mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
-use conversion::{export_to_csv, export_to_json};
+use conversion::{export_to_csv, export_to_json, import_as_csv, import_as_json};
 use messages::{get_internal_data, save_internal_data, Message};
 use tauri::{
     api::{dialog, path::data_dir},
@@ -45,6 +45,15 @@ fn export_messages(as_format: String) {
         export_to_json();
     } else if as_format == "csv" {
         export_to_csv();
+    }
+}
+
+#[tauri::command(rename_all = "snake_case")]
+fn import_messages(as_format: String) {
+    if as_format == "json" {
+        import_as_json();
+    } else if as_format == "csv" {
+        import_as_csv();
     }
 }
 
@@ -80,7 +89,7 @@ fn main() {
 
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages, get_config, set_color_config, set_color_config_asked])
+    .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages, get_config, set_color_config, set_color_config_asked, import_messages])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

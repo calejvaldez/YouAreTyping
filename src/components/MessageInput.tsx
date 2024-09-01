@@ -64,6 +64,8 @@ export default function MessageInput(props: {
                             "color-container",
                         ) as HTMLDivElement;
                         c.hidden = !c.hidden;
+                    } else if (e.ctrlKey && e.key === "i") {
+                        invoke("import_messages", { as_format: "json" });
                     }
                 }}
             ></textarea>

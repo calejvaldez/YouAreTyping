@@ -9,7 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.en.html
 */
 use crate::messages::Message;
-use rusqlite::Connection;
+use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 use tauri::api::{dialog, path::data_dir};
@@ -132,3 +132,57 @@ pub fn export_to_csv() {
         .expect("Saving file to folder failed.");
     })
 }
+
+fn message_in_db(id: &str) -> bool {
+    let conn = Connection::open(data_dir().unwrap().join("YouAreTyping/YouAreTyping.db")).unwrap();
+
+    let mut stmt = conn
+        .prepare("SELECT * FROM message WHERE id = :id")
+        .unwrap();
+
+    for msg in stmt
+        .query_map(named_params! {":id": id}, |row| {
+            Ok(Message {
+                id: row.get(0)?,
+                author: row.get(1)?,
+                content: row.get(2)?,
+                timestamp: row.get(3)?,
+            })
+        })
+        .unwrap()
+    {
+        if msg.unwrap().id == id {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+pub fn import_as_json() {
+    dialog::FileDialogBuilder::new().pick_file(|file| {
+        let contents = fs::read_to_string(file.unwrap()).unwrap();
+        let conn =
+            Connection::open(data_dir().unwrap().join("YouAreTyping/YouAreTyping.db")).unwrap();
+
+        let messages: Vec<Message> =
+            serde_json::from_str(&contents).expect("Converting str to JSON failed.");
+
+        for message in messages {
+            if !message_in_db(&message.id) {
+                conn.execute(
+                    "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
+                    (
+                        Uuid::new_v4().to_string(),
+                        message.author,
+                        message.content,
+                        message.timestamp,
+                    ),
+                )
+                .unwrap();
+            }
+        }
+    })
+}
+
+pub fn import_as_csv() {}
