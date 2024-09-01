@@ -57,15 +57,11 @@ export default function MessageInput(props: {
                         });
 
                         e.currentTarget.value = "";
-                    } else if (e.ctrlKey && e.key === "e") {
-                        invoke("export_messages", { as_format: "csv" });
                     } else if (e.ctrlKey && e.key === "c") {
                         let c = document.getElementById(
                             "color-container",
                         ) as HTMLDivElement;
                         c.hidden = !c.hidden;
-                    } else if (e.ctrlKey && e.key === "i") {
-                        invoke("import_messages", { as_format: "json" });
                     }
                 }}
             ></textarea>
