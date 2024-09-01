@@ -14,9 +14,11 @@ https://www.gnu.org/licenses/gpl-3.0.en.html
 
 mod config;
 mod conversion;
+mod menu;
 mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::{export_to_csv, export_to_json, import_as_csv, import_as_json};
+use menu::menu;
 use messages::{get_internal_data, save_internal_data, Message};
 use tauri::{
     api::{dialog, path::data_dir},
@@ -76,6 +78,15 @@ fn main() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
+    .menu(menu())
+    .on_menu_event(|event| {
+        match event.menu_item_id() {
+            "import_json" => {import_as_json();},
+            "export_json" => {export_to_json();}
+            "export_csv" => {export_to_csv();}
+            _ => {}
+        }
+    })
     .setup(|app| {
       let main_window = app.get_window("main").unwrap();
 
