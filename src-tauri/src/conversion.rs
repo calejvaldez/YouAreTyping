@@ -101,7 +101,13 @@ pub fn export_to_csv() {
         let (id, author, content, timestamp) = (
             unwrapped.id,
             unwrapped.author,
-            format!("\"{}\"", unwrapped.content.replace("\n", r#"\n"#)),
+            format!(
+                "\"{}\"",
+                unwrapped
+                    .content
+                    .replace("\n", r#"\n"#)
+                    .replace("\"", "\"\"")
+            ),
             unwrapped.timestamp,
         );
 
