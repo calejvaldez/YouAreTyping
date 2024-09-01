@@ -1,3 +1,13 @@
+/*
+conversation.rs
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+Has to do with the importing and exporting of the entire conversation.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
 use crate::messages::Message;
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};

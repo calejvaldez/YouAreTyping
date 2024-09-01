@@ -1,3 +1,13 @@
+/*
+App.tsx
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+The first thing users see when they start You Are Typing.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
 import { useEffect, useRef, useState } from "react";
 import MessageInput from "./components/MessageInput";
 import { Messages, Message } from "./components/Messages";

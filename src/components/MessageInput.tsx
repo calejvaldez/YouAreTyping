@@ -1,3 +1,15 @@
+/*
+MessageInput.tsx
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+The bottom part of the program where the input box is.
+The idea is that this would include the textbox, and other buttons.
+For now, it's just the input box.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";
 import { invoke } from "@tauri-apps/api/tauri";

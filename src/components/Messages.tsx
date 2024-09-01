@@ -1,3 +1,13 @@
+/*
+Messages.tsx
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+Implements the messages' container, as well as the messages themselves.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
 import { useEffect } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";

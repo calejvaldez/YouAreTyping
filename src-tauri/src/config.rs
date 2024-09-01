@@ -1,3 +1,13 @@
+/*
+config.rs
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+Functions for interacting with the config file.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.en.html
+*/
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 use tauri::api::path::data_dir;
