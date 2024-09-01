@@ -41,24 +41,6 @@ fn get_messages() -> Vec<Message> {
     get_internal_data()
 }
 
-#[tauri::command(rename_all = "snake_case")]
-fn export_messages(as_format: String) {
-    if as_format == "json" {
-        export_to_json();
-    } else if as_format == "csv" {
-        export_to_csv();
-    }
-}
-
-#[tauri::command(rename_all = "snake_case")]
-fn import_messages(as_format: String) {
-    if as_format == "json" {
-        import_as_json();
-    } else if as_format == "csv" {
-        import_as_csv();
-    }
-}
-
 #[tauri::command]
 fn get_config() -> Config {
     get_full_config()
@@ -100,7 +82,7 @@ fn main() {
 
       Ok(())
     })
-    .invoke_handler(tauri::generate_handler![save_message, get_messages, export_messages, get_config, set_color_config, set_color_config_asked, import_messages])
+    .invoke_handler(tauri::generate_handler![save_message, get_messages, get_config, set_color_config, set_color_config_asked])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
