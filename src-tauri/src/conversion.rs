@@ -12,7 +12,10 @@ use crate::messages::Message;
 use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
-use tauri::api::{dialog, path::data_dir};
+use tauri::{
+    api::{dialog, path::data_dir},
+    Manager, WindowMenuEvent,
+};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
@@ -159,8 +162,8 @@ fn message_in_db(id: &str) -> bool {
     return false;
 }
 
-pub fn import_as_json() {
-    dialog::FileDialogBuilder::new().pick_file(|file| {
+pub fn import_as_json(event: WindowMenuEvent) {
+    dialog::FileDialogBuilder::new().pick_file(move |file| {
         let contents = fs::read_to_string(file.unwrap()).unwrap();
         let conn =
             Connection::open(data_dir().unwrap().join("YouAreTyping/YouAreTyping.db")).unwrap();
@@ -182,5 +185,7 @@ pub fn import_as_json() {
                 .unwrap();
             }
         }
-    })
+
+        event.window().app_handle().restart();
+    });
 }

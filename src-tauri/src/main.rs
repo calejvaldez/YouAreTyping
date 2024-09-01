@@ -63,7 +63,7 @@ fn main() {
     .menu(menu())
     .on_menu_event(|event| {
         match event.menu_item_id() {
-            "import_json" => {import_as_json();},
+            "import_json" => {import_as_json(event);},
             "export_json" => {export_to_json();}
             "export_csv" => {export_to_csv();}
             _ => {}
