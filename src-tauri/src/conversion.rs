@@ -74,3 +74,45 @@ pub fn export_to_json() {
         .expect("Saving file to folder failed.");
     })
 }
+
+pub fn export_to_csv() {
+    let mut csv_string = String::from("id,timestamp,author,content\n");
+    let db_path = data_dir()
+        .expect("data_dir() failed inside of save_internal_data.")
+        .join("YouAreTyping/YouAreTyping.db");
+    let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");
+
+    let mut stmt = conn
+        .prepare("SELECT * FROM message ORDER BY time_stamp ASC")
+        .expect("SELECT * FROM message failed.");
+
+    for msg in stmt
+        .query_map([], |row| {
+            Ok(Message {
+                id: row.get(0)?,
+                author: row.get(1)?,
+                content: row.get(2)?,
+                timestamp: row.get(3)?,
+            })
+        })
+        .expect("Transferring db to Message struct failed.")
+    {
+        let unwrapped = msg.unwrap();
+        let (id, author, content, timestamp) = (
+            unwrapped.id,
+            unwrapped.author,
+            format!("\"{}\"", unwrapped.content.replace("\n", r#"\n"#)),
+            unwrapped.timestamp,
+        );
+
+        csv_string.push_str(format!("{id},{timestamp},{author},{content}\n").as_str());
+    }
+
+    dialog::FileDialogBuilder::new().pick_folder(|folder| {
+        fs::write(
+            folder.expect("Folder failed to set.").join("messages.csv"),
+            csv_string,
+        )
+        .expect("Saving file to folder failed.");
+    })
+}

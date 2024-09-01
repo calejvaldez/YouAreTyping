@@ -5,7 +5,7 @@ mod config;
 mod conversion;
 mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
-use conversion::export_to_json;
+use conversion::{export_to_csv, export_to_json};
 use messages::{get_internal_data, save_internal_data, Message};
 use tauri::{
     api::{dialog, path::data_dir},
@@ -28,9 +28,13 @@ fn get_messages() -> Vec<Message> {
     get_internal_data()
 }
 
-#[tauri::command]
-fn export_messages() {
-    export_to_json();
+#[tauri::command(rename_all = "snake_case")]
+fn export_messages(as_format: String) {
+    if as_format == "json" {
+        export_to_json();
+    } else if as_format == "csv" {
+        export_to_csv();
+    }
 }
 
 #[tauri::command]
