@@ -12,7 +12,6 @@ use tauri::{
     menu::{AboutMetadataBuilder, Menu, MenuBuilder, MenuItemBuilder, Submenu, SubmenuBuilder},
     AppHandle, Manager, Wry,
 };
-// ! Transition docs: https://v2.tauri.app/start/migrate/from-tauri-1/#migrate-to-menu
 
 /// # "App" Submenu
 ///
