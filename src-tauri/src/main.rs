@@ -64,6 +64,7 @@ fn main() {
     tauri::Builder::default()
     .menu(menu(env::consts::OS))
     .on_menu_event(|event| {
+        // all menu item ids can be found in menu.rs
         match event.menu_item_id() {
             "import_json" => {import_as_json(event);},
             "export_json" => {export_to_json();}
