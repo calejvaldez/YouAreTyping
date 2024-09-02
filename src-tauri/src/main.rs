@@ -74,7 +74,7 @@ fn main() {
 
         if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
             std::thread::spawn(move || {
-                dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker using\n`Control` + `c`\nto change messages' colors!");
+                dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker pressing `Control` + `c` to change messages' colors!");
 
                 set_color_asked(true);
             });
