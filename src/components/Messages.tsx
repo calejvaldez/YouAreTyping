@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";
 import Markdown from "react-markdown";
-import { open } from "@tauri-apps/api/shell";
+import { open } from "@tauri-apps/plugin-shell";
 
 export interface Message {
     id: string;

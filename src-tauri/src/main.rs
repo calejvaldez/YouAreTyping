@@ -65,6 +65,8 @@ fn main() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
+    .plugin(tauri_plugin_updater::Builder::new().build())
+    .plugin(tauri_plugin_shell::init())
     .menu(menu(env::consts::OS))
     .on_menu_event(|event| {
         let shell_scope = event.window().app_handle().shell_scope();
