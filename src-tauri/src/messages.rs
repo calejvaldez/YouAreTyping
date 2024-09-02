@@ -31,7 +31,7 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
         .path_resolver()
         .app_data_dir()
         .unwrap()
-        .join("YouAreTyping/YouAreTyping.db");
+        .join("YouAreTyping.db");
 
     let conn = Connection::open(p).unwrap();
 
