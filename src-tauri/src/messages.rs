@@ -76,8 +76,6 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
     if old_yat_folder.exists() {
         for item in fs::read_dir(old_yat_folder).unwrap() {
             let u_item = item.unwrap();
-            println!("{:?}", u_item.file_name());
-
             fs::rename(
                 old_yat_folder.join(u_item.file_name()),
                 app_data_dir.join(u_item.file_name()),
