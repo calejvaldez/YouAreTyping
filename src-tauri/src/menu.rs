@@ -10,10 +10,20 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 
+/// # about_metadata()
+/// This is mostly required for Linux, though it isn't actually used in YAT.
 fn about_metadata() -> AboutMetadata {
     AboutMetadata::new()
 }
 
+/// # "App" Submenu
+///
+/// This includes the regular things you may find in a macOS App submenu, such
+/// as About App, Services, Hide, Hide Others, Show All, and Quit.
+///
+/// ## OS Support
+///
+/// - macOS: Fully supported
 fn submenu_app() -> Submenu {
     Submenu::new(
         "App",
@@ -33,6 +43,16 @@ fn submenu_app() -> Submenu {
     )
 }
 
+/// # "File" Submenu
+///
+/// This is a custom submenu for all operating systems. It includes options
+/// created for You Are Typing.
+///
+/// ## OS Support
+///
+/// - Windows: Fully supported
+/// - macOS: Fully supported
+/// - Linux: Fully supported
 fn submenu_file() -> Submenu {
     Submenu::new(
         "File",
@@ -51,6 +71,15 @@ fn submenu_file() -> Submenu {
     )
 }
 
+/// # "Edit" Submenu
+///
+/// A submenu that includes usually text-editing shortcuts, such as Cut, Copy,
+/// and Paste.
+///
+/// ## OS Support
+///
+/// - Windows: Partially (Cut, Copy, Paste, Select All)
+/// - macOS: Fully supported
 fn submenu_edit(target_os: &str) -> Submenu {
     match target_os {
         "windows" => Submenu::new(
@@ -76,6 +105,13 @@ fn submenu_edit(target_os: &str) -> Submenu {
     }
 }
 
+/// # "View" Submenu
+///
+/// The View submenu only includes the Enter Full Screen option.
+///
+/// ## OS Support
+///
+/// - macOS: Fully supported
 fn submenu_view() -> Submenu {
     Submenu::new(
         "View",
@@ -83,6 +119,14 @@ fn submenu_view() -> Submenu {
     )
 }
 
+/// # "Window" Submenu
+///
+/// Includes Minimize, Zoom, and Close Window.
+///
+/// ## OS Support
+///
+/// - Windows: Fully supported
+/// - macOS: Fully supported
 fn submenu_window() -> Submenu {
     Submenu::new(
         "Window",
@@ -94,6 +138,16 @@ fn submenu_window() -> Submenu {
     )
 }
 
+/// # "Help" Submenu
+///
+/// This submenu is used to provide support links, sending people to the GitHub
+/// repository.
+///
+/// ## OS Support
+///
+/// - Windows: Fully supported
+/// - macOS: Fully supported
+/// - Linux: Fully supported
 fn submenu_help() -> Submenu {
     Submenu::new(
         "Help",
