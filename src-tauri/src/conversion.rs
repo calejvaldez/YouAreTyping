@@ -84,7 +84,7 @@ pub fn export_to_json(app: AppHandle) {
         .file()
         .pick_folder(|folder| match folder.unwrap() {
             FilePath::Path(f) => {
-                fs::write(f.join("messages.json"), as_str);
+                fs::write(f.join("messages.json"), as_str).unwrap();
             }
             _ => {}
         })
@@ -136,7 +136,7 @@ pub fn export_to_csv(app: AppHandle) {
         .file()
         .pick_folder(|folder| match folder.unwrap() {
             FilePath::Path(f) => {
-                fs::write(f.join("messages.csv"), csv_string);
+                fs::write(f.join("messages.csv"), csv_string).unwrap();
             }
             _ => {}
         })
