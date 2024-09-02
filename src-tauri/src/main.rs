@@ -72,7 +72,7 @@ fn main() {
         app.on_menu_event(move |app, event| {
             // all menu item ids can be found in menu.rs
             if event.id() == "import_json" {
-                import_as_json(event);
+                import_as_json(app.to_owned());
             } else if event.id() == "export_json" {
                 export_to_json(app.to_owned());
             } else if event.id() == "export_csv" {

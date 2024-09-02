@@ -12,8 +12,12 @@ use crate::messages::Message;
 use chrono::{DateTime, Local};
 use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
-use std::{fs, path::PathBuf};
-use tauri::{api::dialog, AppHandle, Manager, WindowMenuEvent};
+use std::{
+    fs,
+    path::PathBuf,
+};
+use tauri::{AppHandle, Manager};
+use tauri_plugin_dialog::{DialogExt, FilePath};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
@@ -76,13 +80,14 @@ pub fn export_to_json(app: AppHandle) {
 
     let as_str = serde_json::to_string(&messages).expect("Converting from vec to string failed.");
 
-    dialog::FileDialogBuilder::new().pick_folder(|folder| {
-        fs::write(
-            folder.expect("Folder failed to set.").join("messages.json"),
-            as_str,
-        )
-        .expect("Saving file to folder failed.");
-    })
+    app.dialog()
+        .file()
+        .pick_folder(|folder| match folder.unwrap() {
+            FilePath::Path(f) => {
+                fs::write(f.join("messages.json"), as_str);
+            }
+            _ => {}
+        })
 }
 
 pub fn export_to_csv(app: AppHandle) {
@@ -127,13 +132,14 @@ pub fn export_to_csv(app: AppHandle) {
         csv_string.push_str(format!("{id},{timestamp},{author},{content}\n").as_str());
     }
 
-    dialog::FileDialogBuilder::new().pick_folder(|folder| {
-        fs::write(
-            folder.expect("Folder failed to set.").join("messages.csv"),
-            csv_string,
-        )
-        .expect("Saving file to folder failed.");
-    })
+    app.dialog()
+        .file()
+        .pick_folder(|folder| match folder.unwrap() {
+            FilePath::Path(f) => {
+                fs::write(f.join("messages.csv"), csv_string);
+            }
+            _ => {}
+        })
 }
 
 fn message_in_db(app_data_dir: &PathBuf, id: String) -> bool {
@@ -162,36 +168,36 @@ fn message_in_db(app_data_dir: &PathBuf, id: String) -> bool {
     return false;
 }
 
-pub fn import_as_json(event: WindowMenuEvent) {
-    dialog::FileDialogBuilder::new().pick_file(move |file| {
-        let app_data_dir = event
-            .window()
-            .app_handle()
-            .path_resolver()
-            .app_data_dir()
-            .unwrap();
+pub fn import_as_json(app: AppHandle) {
+    app.dialog().file().pick_file(move |file| {
+        match file.unwrap() {
+            FilePath::Path(f) => {
+                let app_data_dir = app.path().app_data_dir().unwrap();
 
-        let contents = fs::read_to_string(file.unwrap()).unwrap();
-        let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
-
-        let messages: Vec<Message> =
-            serde_json::from_str(&contents).expect("Converting str to JSON failed.");
-
-        for message in messages {
-            if !message_in_db(&app_data_dir, message.id.clone()) {
-                conn.execute(
-                    "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
-                    (
-                        message.id,
-                        message.author,
-                        message.content,
-                        message.timestamp,
-                    ),
-                )
-                .unwrap();
+                let contents = fs::read_to_string(f).unwrap();
+                let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
+        
+                let messages: Vec<Message> =
+                    serde_json::from_str(&contents).expect("Converting str to JSON failed.");
+        
+                for message in messages {
+                    if !message_in_db(&app_data_dir, message.id.clone()) {
+                        conn.execute(
+                            "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
+                            (
+                                message.id,
+                                message.author,
+                                message.content,
+                                message.timestamp,
+                            ),
+                        )
+                        .unwrap();
+                    }
+                }
+        
+                app.restart();
             }
+            _ => {}
         }
-
-        event.window().app_handle().restart();
     });
 }
