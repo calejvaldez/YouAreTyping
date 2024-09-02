@@ -8,7 +8,10 @@ Creates the menu for the program.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
+use tauri::{
+    menu::{AboutMetadataBuilder, Menu, MenuBuilder, MenuItemBuilder, Submenu, SubmenuBuilder},
+    AppHandle, Manager, Wry,
+};
 // ! Transition docs: https://v2.tauri.app/start/migrate/from-tauri-1/#migrate-to-menu
 
 /// # "App" Submenu
@@ -19,23 +22,19 @@ use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 /// ## OS Support
 ///
 /// - macOS: Fully supported
-fn submenu_app() -> Submenu {
-    Submenu::new(
-        "App",
-        Menu::new()
-            .add_native_item(MenuItem::About(
-                "You Are Typing".to_string(),
-                AboutMetadata::new(), // needed for function, but not used
-            ))
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Services)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Hide)
-            .add_native_item(MenuItem::HideOthers)
-            .add_native_item(MenuItem::ShowAll)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Quit),
-    )
+fn submenu_app(handle: &AppHandle) -> Submenu<Wry> {
+    SubmenuBuilder::new(handle, "App")
+        .about(Some(AboutMetadataBuilder::new().build()))
+        .separator()
+        .services()
+        .separator()
+        .hide()
+        .hide_others()
+        .show_all()
+        .separator()
+        .quit()
+        .build()
+        .unwrap()
 }
 
 /// # "File" Submenu
@@ -48,22 +47,40 @@ fn submenu_app() -> Submenu {
 /// - Windows: Fully supported
 /// - macOS: Fully supported
 /// - Linux: Fully supported
-fn submenu_file() -> Submenu {
-    Submenu::new(
-        "File",
-        Menu::new()
-            .add_item(CustomMenuItem::new("import_json", "Import JSON...").accelerator("Ctrl+I"))
-            .add_native_item(MenuItem::Separator)
-            .add_item(CustomMenuItem::new("export_json", "Export JSON..."))
-            .add_item(CustomMenuItem::new("export_csv", "Export CSV...").accelerator("Ctrl+E"))
-            .add_native_item(MenuItem::Separator)
-            .add_item(CustomMenuItem::new(
-                "delete_messages",
-                "Delete All Messages",
-            ))
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::CloseWindow),
-    )
+fn submenu_file(handle: &AppHandle) -> Submenu<Wry> {
+    SubmenuBuilder::new(handle, "File")
+        .item(
+            &MenuItemBuilder::new("Import JSON...")
+                .id("import_json")
+                .accelerator("Ctrl+I")
+                .build(handle)
+                .unwrap(),
+        )
+        .separator()
+        .item(
+            &MenuItemBuilder::new("Export JSON...")
+                .id("export_json")
+                .build(handle)
+                .unwrap(),
+        )
+        .item(
+            &MenuItemBuilder::new("Export CSV...")
+                .id("export_csv")
+                .accelerator("Ctrl+E")
+                .build(handle)
+                .unwrap(),
+        )
+        .separator()
+        .item(
+            &MenuItemBuilder::new("Delete All Messages")
+                .id("delete_messages")
+                .build(handle)
+                .unwrap(),
+        )
+        .separator()
+        .close_window()
+        .build()
+        .unwrap()
 }
 
 /// # "Edit" Submenu
@@ -75,27 +92,25 @@ fn submenu_file() -> Submenu {
 ///
 /// - Windows: Partially (Cut, Copy, Paste, Select All)
 /// - macOS: Fully supported
-fn submenu_edit(target_os: &str) -> Submenu {
+fn submenu_edit(handle: &AppHandle, target_os: &str) -> Submenu<Wry> {
     match target_os {
-        "windows" => Submenu::new(
-            "Edit",
-            Menu::new()
-                .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Copy)
-                .add_native_item(MenuItem::Paste)
-                .add_native_item(MenuItem::SelectAll),
-        ),
-        "macos" => Submenu::new(
-            "Edit",
-            Menu::new()
-                .add_native_item(MenuItem::Undo)
-                .add_native_item(MenuItem::Redo)
-                .add_native_item(MenuItem::Separator)
-                .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Copy)
-                .add_native_item(MenuItem::Paste)
-                .add_native_item(MenuItem::SelectAll),
-        ),
+        "windows" => SubmenuBuilder::new(handle, "Edit")
+            .cut()
+            .copy()
+            .paste()
+            .select_all()
+            .build()
+            .unwrap(),
+        "macos" => SubmenuBuilder::new(handle, "Edit")
+            .undo()
+            .redo()
+            .separator()
+            .cut()
+            .copy()
+            .paste()
+            .select_all()
+            .build()
+            .unwrap(),
         _ => panic!("Unsupported operating system attempting to use Edit submenu."),
     }
 }
@@ -107,11 +122,11 @@ fn submenu_edit(target_os: &str) -> Submenu {
 /// ## OS Support
 ///
 /// - macOS: Fully supported
-fn submenu_view() -> Submenu {
-    Submenu::new(
-        "View",
-        Menu::new().add_native_item(MenuItem::EnterFullScreen),
-    )
+fn submenu_view(handle: &AppHandle) -> Submenu<Wry> {
+    SubmenuBuilder::new(handle, "View")
+        .fullscreen()
+        .build()
+        .unwrap()
 }
 
 /// # "Window" Submenu
@@ -122,15 +137,14 @@ fn submenu_view() -> Submenu {
 ///
 /// - Windows: Fully supported
 /// - macOS: Fully supported
-fn submenu_window() -> Submenu {
-    Submenu::new(
-        "Window",
-        Menu::new()
-            .add_native_item(MenuItem::Minimize)
-            .add_native_item(MenuItem::Zoom)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::CloseWindow),
-    )
+fn submenu_window(handle: &AppHandle) -> Submenu<Wry> {
+    // ? where's MenuItem::Zoom?
+    SubmenuBuilder::new(handle, "Window")
+        .minimize()
+        .separator()
+        .close_window()
+        .build()
+        .unwrap()
 }
 
 /// # "Help" Submenu
@@ -143,37 +157,60 @@ fn submenu_window() -> Submenu {
 /// - Windows: Fully supported
 /// - macOS: Fully supported
 /// - Linux: Fully supported
-fn submenu_help() -> Submenu {
-    Submenu::new(
-        "Help",
-        Menu::new()
-            .add_item(CustomMenuItem::new("help_user_guide", "User Guide"))
-            .add_item(CustomMenuItem::new(
-                "help_release_notes",
-                "Show Release Notes",
-            ))
-            .add_item(CustomMenuItem::new("help_report_bug", "Report a Bug"))
-            .add_item(CustomMenuItem::new("help_github", "View on GitHub")),
-    )
+fn submenu_help(handle: &AppHandle) -> Submenu<Wry> {
+    SubmenuBuilder::new(handle, "Help")
+        .item(
+            &MenuItemBuilder::new("User Guide")
+                .id("help_user_guide")
+                .build(handle)
+                .unwrap(),
+        )
+        .item(
+            &MenuItemBuilder::new("Show Release Notes")
+                .id("help_release_notes")
+                .build(handle)
+                .unwrap(),
+        )
+        .item(
+            &MenuItemBuilder::new("Report a Bug")
+                .id("help_report_bug")
+                .build(handle)
+                .unwrap(),
+        )
+        .item(
+            &MenuItemBuilder::new("View on GitHub")
+                .id("help_github")
+                .build(handle)
+                .unwrap(),
+        )
+        .build()
+        .unwrap()
 }
 
-pub fn menu(target_os: &str) -> Menu {
+pub fn menu(app: AppHandle, target_os: &str) -> Menu<Wry> {
+    let handle = app.app_handle();
     match target_os {
-        "windows" => Menu::new()
-            .add_submenu(submenu_file())
-            .add_submenu(submenu_edit(target_os))
-            .add_submenu(submenu_window())
-            .add_submenu(submenu_help()),
-        "macos" => Menu::new()
-            .add_submenu(submenu_app())
-            .add_submenu(submenu_file())
-            .add_submenu(submenu_edit(target_os))
-            .add_submenu(submenu_view())
-            .add_submenu(submenu_window())
-            .add_submenu(submenu_help()),
-        "linux" => Menu::new()
-            .add_submenu(submenu_file())
-            .add_submenu(submenu_help()),
+        "windows" => MenuBuilder::new(handle)
+            .item(&submenu_file(handle))
+            .item(&submenu_edit(handle, target_os))
+            .item(&submenu_window(handle))
+            .item(&submenu_help(handle))
+            .build()
+            .unwrap(),
+        "macos" => MenuBuilder::new(handle)
+            .item(&submenu_app(handle))
+            .item(&submenu_file(handle))
+            .item(&submenu_edit(handle, target_os))
+            .item(&submenu_view(handle))
+            .item(&submenu_window(handle))
+            .item(&submenu_help(handle))
+            .build()
+            .unwrap(),
+        "linux" => MenuBuilder::new(handle)
+            .item(&submenu_file(handle))
+            .item(&submenu_help(handle))
+            .build()
+            .unwrap(),
         _ => panic!("Unsupported operating system attempting to create a Menu."),
     }
 }

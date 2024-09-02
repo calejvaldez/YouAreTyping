@@ -22,7 +22,7 @@ use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
 use messages::{delete_all_messages, get_internal_data, save_internal_data, Message};
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_shell::ShellExt;
 use uuid::Uuid;
@@ -64,40 +64,46 @@ fn main() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
-    .plugin(tauri_plugin_dialog::init())
-    .plugin(tauri_plugin_updater::Builder::new().build())
-    .plugin(tauri_plugin_shell::init())
-    .menu(menu(env::consts::OS))
-    .setup(|app| {
-        app.on_menu_event(move |app, event| {
-            // all menu item ids can be found in menu.rs
-            if event.id() == "import_json" {
-                import_as_json(app.to_owned());
-            } else if event.id() == "export_json" {
-                export_to_json(app.to_owned());
-            } else if event.id() == "export_csv" {
-                export_to_csv(app.to_owned());
-            } else if event.id() == "delete_messages" {
-                std::thread::spawn(move || {
-                    let should_continue = app.dialog().message("Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.").title("Delete all messages?").ok_button_label("Yes").cancel_button_label("Never mind").blocking_show();
-                    if should_continue {
-                        delete_all_messages(app.to_owned());
-                    }
-                });
-            } else if event.id() == "help_user_guide" {
-                app.shell().open("https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md", None).unwrap();
-            } else if event.id() == "help_report_bug" {
-                app.shell().open("https://github.com/calejvaldez/YouAreTyping/issues/new/choose/", None).unwrap();
-            } else if event.id() == "help_release_notes" {
-                app.shell().open("https://github.com/calejvaldez/YouAreTyping/releases/", None).unwrap();
-            } else if event.id() == "help_github" {
-                app.shell().open("https://github.com/calejvaldez/YouAreTyping/", None).unwrap();
-            }
-        });
-
-        Ok(())
-    })
-    .invoke_handler(tauri::generate_handler![save_message, get_messages, get_config, set_color_config, set_color_config_asked])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_shell::init())
+        .setup(|app| {
+            app.set_menu(menu(app.app_handle().to_owned(), env::consts::OS)).unwrap();
+            app.on_menu_event(move |app, event| {
+                // all menu item ids can be found in menu.rs
+                if event.id() == "import_json" {
+                    import_as_json(app.to_owned());
+                } else if event.id() == "export_json" {
+                    export_to_json(app.to_owned());
+                } else if event.id() == "export_csv" {
+                    export_to_csv(app.to_owned());
+                } else if event.id() == "delete_messages" {
+                    let owned = app.to_owned();
+                    std::thread::spawn(move || {
+                        let should_continue = owned.dialog().message("Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.").title("Delete all messages?").ok_button_label("Yes").cancel_button_label("Never mind").blocking_show();
+                        if should_continue {
+                        delete_all_messages(owned);
+                        }
+                    });
+                } else if event.id() == "help_user_guide" {
+                    app.shell().open("https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md", None).unwrap();
+                } else if event.id() == "help_report_bug" {
+                    app.shell().open("https://github.com/calejvaldez/YouAreTyping/issues/new/choose/", None).unwrap();
+                } else if event.id() == "help_release_notes" {
+                    app.shell().open("https://github.com/calejvaldez/YouAreTyping/releases/", None).unwrap();
+                } else if event.id() == "help_github" {
+                    app.shell().open("https://github.com/calejvaldez/YouAreTyping/", None).unwrap();
+                }
+            });
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            save_message,
+            get_messages,
+            get_config,
+            set_color_config,
+            set_color_config_asked
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }
