@@ -10,7 +10,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 import { useEffect } from "react";
 import "./Messages.scss";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 import Markdown from "react-markdown";
 import { open } from "@tauri-apps/plugin-shell";
 

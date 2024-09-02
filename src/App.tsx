@@ -11,7 +11,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 import { useEffect, useRef, useState } from "react";
 import MessageInput from "./components/MessageInput";
 import { Messages, Message } from "./components/Messages";
-import { invoke } from "@tauri-apps/api";
+import { invoke } from "@tauri-apps/api/core";
 
 interface Config {
     color: string;
