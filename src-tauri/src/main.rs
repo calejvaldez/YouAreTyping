@@ -70,7 +70,7 @@ fn main() {
             "export_csv" => {export_to_csv();}
             "delete_messages" => {
                 std::thread::spawn(move || {
-                    let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you exported your messages in JSON before continuing.");
+                    let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
                     if should_continue {
                         delete_all_messages(event);
                     }
