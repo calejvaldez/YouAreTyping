@@ -23,39 +23,42 @@ use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
 use messages::{delete_all_messages, get_internal_data, save_internal_data, Message};
 use tauri::{
-    api::{dialog, path::data_dir, shell},
-    Manager,
+    api::{dialog, shell},
+    AppHandle, Manager,
 };
 use uuid::Uuid;
 
 #[tauri::command(rename_all = "snake_case")]
-fn save_message(content: String, author: String, timestamp: i64) {
-    save_internal_data(Message {
-        id: Uuid::new_v4().to_string(),
-        content: content.to_string(),
-        author: author.to_string(),
-        timestamp,
-    });
+fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) {
+    save_internal_data(
+        app.path_resolver().app_data_dir().unwrap(),
+        Message {
+            id: Uuid::new_v4().to_string(),
+            content: content.to_string(),
+            author: author.to_string(),
+            timestamp,
+        },
+    );
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn get_messages() -> Vec<Message> {
-    get_internal_data()
+fn get_messages(app: AppHandle) -> Vec<Message> {
+    get_internal_data(app.path_resolver().app_data_dir().unwrap())
 }
 
 #[tauri::command]
-fn get_config() -> Config {
-    get_full_config()
+fn get_config(app: AppHandle) -> Config {
+    get_full_config(app.path_resolver().app_data_dir().unwrap())
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn set_color_config(color: String) {
-    set_color(color);
+fn set_color_config(app: AppHandle, color: String) {
+    set_color(app.path_resolver().app_data_dir().unwrap(), color);
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn set_color_config_asked(value: bool) {
-    set_color_asked(value);
+fn set_color_config_asked(app: AppHandle, value: bool) {
+    set_color_asked(app.path_resolver().app_data_dir().unwrap(), value);
 }
 
 fn main() {
@@ -67,8 +70,8 @@ fn main() {
         // all menu item ids can be found in menu.rs
         match event.menu_item_id() {
             "import_json" => {import_as_json(event);},
-            "export_json" => {export_to_json();}
-            "export_csv" => {export_to_csv();}
+            "export_json" => {export_to_json(event.window().app_handle().path_resolver().app_data_dir().unwrap());}
+            "export_csv" => {export_to_csv(event.window().app_handle().path_resolver().app_data_dir().unwrap());}
             "delete_messages" => {
                 std::thread::spawn(move || {
                     let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
@@ -83,19 +86,6 @@ fn main() {
             "help_github" => {shell::open(&event.window().app_handle().shell_scope(), "https://github.com/calejvaldez/YouAreTyping/", None).unwrap();}
             _ => {}
         }
-    })
-    .setup(|app| {
-        let main_window = app.get_window("main").unwrap();
-
-        if data_dir().expect("Data dir failed").join("YouAreTyping/").exists() && !get_config().color_asked {
-            std::thread::spawn(move || {
-                dialog::blocking::message(Some(&main_window), "Choose a color!", "Display the color picker pressing `Control` + `c` to change messages' colors!");
-
-                set_color_asked(true);
-            });
-        }
-
-        Ok(())
     })
     .invoke_handler(tauri::generate_handler![save_message, get_messages, get_config, set_color_config, set_color_config_asked])
     .run(tauri::generate_context!())

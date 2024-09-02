@@ -10,8 +10,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
-use std::fs;
-use tauri::{api::path::data_dir, Manager, WindowMenuEvent};
+use std::{fs, path::PathBuf};
+use tauri::{Manager, WindowMenuEvent};
 use uuid::Uuid;
 
 use crate::{config::create_config_file, conversion::transition_json_to_db};
@@ -25,7 +25,13 @@ pub struct Message {
 }
 
 pub fn delete_all_messages(event: WindowMenuEvent) {
-    let p = data_dir().unwrap().join("YouAreTyping/YouAreTyping.db");
+    let p = event
+        .window()
+        .app_handle()
+        .path_resolver()
+        .app_data_dir()
+        .unwrap()
+        .join("YouAreTyping/YouAreTyping.db");
 
     let conn = Connection::open(p).unwrap();
 
@@ -33,29 +39,25 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
     event.window().app_handle().restart();
 }
 
-pub fn get_internal_data() -> Vec<Message> {
-    let p = data_dir()
-        .expect("data_dir() failed.")
-        .join("YouAreTyping/");
+pub fn get_internal_data(app_data_dir: PathBuf) -> Vec<Message> {
     let mut generate_table = false;
-    let old_json_file = p.join("messages.json");
+    let old_json_file = app_data_dir
+        .parent()
+        .unwrap()
+        .join("YouAreTyping/messages.json");
 
-    if !p.exists() || !p.join("YouAreTyping.db").exists() {
+    if !app_data_dir.exists() || !app_data_dir.join("YouAreTyping.db").exists() {
         // create the path
-        fs::create_dir_all(&p).expect("Creating YouAreTyping directory failed.");
+        fs::create_dir_all(&app_data_dir).expect("Creating YouAreTyping directory failed.");
         generate_table = true;
     }
 
-    if !data_dir()
-        .expect("data_dir() failed to initiate.")
-        .join("YouAreTyping/config.json")
-        .exists()
-    {
-        create_config_file();
+    if !app_data_dir.join("config.json").exists() {
+        create_config_file(app_data_dir.clone());
     }
 
-    let conn =
-        Connection::open(p.join("YouAreTyping.db")).expect("YouAreTyping.db failed to open.");
+    let conn = Connection::open(app_data_dir.join("YouAreTyping.db"))
+        .expect("YouAreTyping.db failed to open.");
 
     if generate_table {
         conn.execute(
@@ -71,7 +73,24 @@ pub fn get_internal_data() -> Vec<Message> {
     }
 
     if old_json_file.exists() {
-        transition_json_to_db(&p);
+        transition_json_to_db(&app_data_dir);
+    }
+
+    let old_yat_folder = old_json_file.parent().unwrap();
+
+    if old_yat_folder.exists() {
+        for item in fs::read_dir(old_yat_folder).unwrap() {
+            let u_item = item.unwrap();
+            println!("{:?}", u_item.file_name());
+
+            fs::rename(
+                old_yat_folder.join(u_item.file_name()),
+                app_data_dir.join(u_item.file_name()),
+            )
+            .unwrap();
+        }
+
+        fs::remove_dir(old_yat_folder).unwrap();
     }
 
     let mut messages: Vec<Message> = vec![];
@@ -96,10 +115,8 @@ pub fn get_internal_data() -> Vec<Message> {
     return messages;
 }
 
-pub fn save_internal_data(message: Message) {
-    let db_path = data_dir()
-        .expect("data_dir() failed inside of save_internal_data.")
-        .join("YouAreTyping/YouAreTyping.db");
+pub fn save_internal_data(app_data_dir: PathBuf, message: Message) {
+    let db_path = app_data_dir.join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection in save_internal_data failed.");
 
     conn.execute(

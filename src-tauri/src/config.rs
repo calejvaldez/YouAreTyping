@@ -10,7 +10,6 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
-use tauri::api::path::data_dir;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -18,10 +17,8 @@ pub struct Config {
     pub color_asked: bool,
 }
 
-pub fn create_config_file() {
-    let p = data_dir()
-        .expect("data_dir() failed.")
-        .join("YouAreTyping/config.json");
+pub fn create_config_file(app_data_dir: PathBuf) {
+    let p = app_data_dir.join("config.json");
     let template_config = Config {
         color: "#38768b".to_string(),
         color_asked: false,
@@ -30,11 +27,9 @@ pub fn create_config_file() {
     commit(p, &template_config);
 }
 
-pub fn set_color(color: String) {
-    let p = data_dir()
-        .expect("data_dir() failed.")
-        .join("YouAreTyping/config.json");
-    let config = get_full_config();
+pub fn set_color(app_data_dir: PathBuf, color: String) {
+    let p = app_data_dir.join("config.json");
+    let config = get_full_config(app_data_dir);
 
     let new_config = Config {
         color,
@@ -44,11 +39,9 @@ pub fn set_color(color: String) {
     commit(p, &new_config);
 }
 
-pub fn set_color_asked(value: bool) {
-    let p = data_dir()
-        .expect("data_dir() failed.")
-        .join("YouAreTyping/config.json");
-    let config = get_full_config();
+pub fn set_color_asked(app_data_dir: PathBuf, value: bool) {
+    let p = app_data_dir.join("config.json");
+    let config = get_full_config(app_data_dir);
 
     let new_config = Config {
         color: config.color,
@@ -58,13 +51,11 @@ pub fn set_color_asked(value: bool) {
     commit(p, &new_config);
 }
 
-pub fn get_full_config() -> Config {
-    let p = data_dir()
-        .expect("data_dir() failed.")
-        .join("YouAreTyping/config.json");
+pub fn get_full_config(app_data_dir: PathBuf) -> Config {
+    let p = app_data_dir.join("config.json");
 
     if !p.exists() {
-        create_config_file();
+        create_config_file(app_data_dir);
     }
 
     let string_config = fs::read_to_string(&p).expect("Reading config file failed.");
