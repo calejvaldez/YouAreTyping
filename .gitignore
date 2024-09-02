@@ -15,6 +15,7 @@ dist-ssr
 # Other stuff to get rid of
 messages.json
 tools/export-messages
+src-tauri/gen/schemas/
 
 # Editor directories and files
 .idea
