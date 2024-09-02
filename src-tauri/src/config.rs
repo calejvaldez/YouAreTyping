@@ -10,7 +10,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -29,7 +29,7 @@ pub fn create_config_file(app_data_dir: PathBuf) {
 }
 
 pub fn set_color(app: AppHandle, color: String) {
-    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+    let app_data_dir = app.path().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
     let config = get_full_config(app);
 
@@ -42,7 +42,7 @@ pub fn set_color(app: AppHandle, color: String) {
 }
 
 pub fn set_color_asked(app: AppHandle, value: bool) {
-    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+    let app_data_dir = app.path().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
     let config = get_full_config(app);
 
@@ -55,7 +55,7 @@ pub fn set_color_asked(app: AppHandle, value: bool) {
 }
 
 pub fn get_full_config(app: AppHandle) -> Config {
-    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+    let app_data_dir = app.path().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
 
     if !p.exists() {

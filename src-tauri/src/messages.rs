@@ -28,7 +28,7 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
     let p = event
         .window()
         .app_handle()
-        .path_resolver()
+        .path()
         .app_data_dir()
         .unwrap()
         .join("YouAreTyping.db");
@@ -40,7 +40,7 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
 }
 
 pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
-    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+    let app_data_dir = app.path().app_data_dir().unwrap();
     let mut generate_table = false;
     let old_json_file = app_data_dir
         .parent()
@@ -117,11 +117,7 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
 }
 
 pub fn save_internal_data(app: AppHandle, message: Message) {
-    let db_path = app
-        .path_resolver()
-        .app_data_dir()
-        .unwrap()
-        .join("YouAreTyping.db");
+    let db_path = app.path().app_data_dir().unwrap().join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection in save_internal_data failed.");
 
     conn.execute(
