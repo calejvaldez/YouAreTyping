@@ -81,7 +81,7 @@ fn main() {
                 std::thread::spawn(move || {
                     let should_continue = app.dialog().message("Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.").title("Delete all messages?").ok_button_label("Yes").cancel_button_label("Never mind").blocking_show();
                     if should_continue {
-                        delete_all_messages(event);
+                        delete_all_messages(app.to_owned());
                     }
                 });
             } else if event.id() == "help_user_guide" {

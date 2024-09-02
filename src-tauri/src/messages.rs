@@ -11,7 +11,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::fs;
-use tauri::{AppHandle, Manager, WindowMenuEvent};
+use tauri::{AppHandle, Manager};
 use uuid::Uuid;
 
 use crate::{config::create_config_file, conversion::transition_json_to_db};
@@ -24,19 +24,13 @@ pub struct Message {
     pub timestamp: i64,
 }
 
-pub fn delete_all_messages(event: WindowMenuEvent) {
-    let p = event
-        .window()
-        .app_handle()
-        .path()
-        .app_data_dir()
-        .unwrap()
-        .join("YouAreTyping.db");
+pub fn delete_all_messages(app: AppHandle) {
+    let p = app.path().app_data_dir().unwrap().join("YouAreTyping.db");
 
     let conn = Connection::open(p).unwrap();
 
     conn.execute("DELETE FROM message", []).unwrap();
-    event.window().app_handle().restart();
+    app.restart();
 }
 
 pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
