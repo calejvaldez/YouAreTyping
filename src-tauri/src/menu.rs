@@ -9,6 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
+// ! Transition docs: https://v2.tauri.app/start/migrate/from-tauri-1/#migrate-to-menu
 
 /// # "App" Submenu
 ///
