@@ -23,7 +23,7 @@ use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
 use messages::{delete_all_messages, get_internal_data, save_internal_data, Message};
 use tauri::{
-    api::{dialog, path::data_dir},
+    api::{dialog, path::data_dir, shell},
     Manager,
 };
 use uuid::Uuid;
@@ -77,6 +77,10 @@ fn main() {
                     }
                 });
             }
+            "help_user_guide" => {shell::open(&event.window().app_handle().shell_scope(), "https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md", None).unwrap();}
+            "help_report_bug" => {shell::open(&event.window().app_handle().shell_scope(), "https://github.com/calejvaldez/YouAreTyping/issues/new/choose/", None).unwrap();}
+            "help_release_notes" => {shell::open(&event.window().app_handle().shell_scope(), "https://github.com/calejvaldez/YouAreTyping/releases/", None).unwrap();}
+            "help_github" => {shell::open(&event.window().app_handle().shell_scope(), "https://github.com/calejvaldez/YouAreTyping/", None).unwrap();}
             _ => {}
         }
     })

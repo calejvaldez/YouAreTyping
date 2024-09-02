@@ -105,22 +105,39 @@ fn submenu_window() -> Submenu {
     )
 }
 
+fn submenu_help() -> Submenu {
+    Submenu::new(
+        "Help",
+        Menu::new()
+            .add_item(CustomMenuItem::new("help_user_guide", "User Guide"))
+            .add_item(CustomMenuItem::new("help_report_bug", "Report a Bug"))
+            .add_item(CustomMenuItem::new(
+                "help_release_notes",
+                "Show Release Notes",
+            ))
+            .add_item(CustomMenuItem::new("help_github", "View on GitHub")),
+    )
+}
+
 pub fn menu(target_os: &str) -> Menu {
     match target_os {
         "windows" => Menu::new()
             .add_submenu(submenu_file())
             .add_submenu(submenu_edit(target_os))
-            .add_submenu(submenu_window()),
+            .add_submenu(submenu_window())
+            .add_submenu(submenu_help()),
         "macos" => Menu::new()
             .add_submenu(submenu_app())
             .add_submenu(submenu_file())
             .add_submenu(submenu_edit(target_os))
             .add_submenu(submenu_view())
-            .add_submenu(submenu_window()),
+            .add_submenu(submenu_window())
+            .add_submenu(submenu_help()),
         "linux" => Menu::new()
             .add_submenu(submenu_file())
             .add_submenu(submenu_edit(target_os))
-            .add_submenu(submenu_window()),
+            .add_submenu(submenu_window())
+            .add_submenu(submenu_help()),
         _ => Menu::new(),
     }
 }
