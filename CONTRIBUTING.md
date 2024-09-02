@@ -125,10 +125,10 @@ The frontend code is inside of the `src` folder. The backend code is in
 
 ### Saved Data
 
-Starting in version 1.0.4, all data is saved in a `YouAreTyping.db` file saved
+Starting in version 1.3.3, all data is saved in a `YouAreTyping.db` file saved
 in
-[the `data_dir()` folder](https://docs.rs/tauri/1.7.1/tauri/api/path/fn.data_dir.html).
+[the `app_data_dir()` folder](https://docs.rs/tauri/latest/tauri/api/path/fn.app_data_dir.html).
 
-- On Windows, it is located in `C:\Users\[username]\AppData\Roaming\YouAreTyping\`
-- On macOS, it is located in `/Users/[username]/Library/Application Support/YouAreTyping/`
-- On Linux, it is located in `/home/[username]/.local/share/YouAreTyping/`
+- On Windows, it is located in `C:\Users\[username]\AppData\Roaming\com.calejvaldez.YouAreTyping\`
+- On macOS, it is located in `/Users/[username]/Library/Application Support/com.calejvaldez.YouAreTyping/`
+- On Linux, it is located in `/home/[username]/.local/share/com.calejvaldez.YouAreTyping/`
