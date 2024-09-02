@@ -14,6 +14,7 @@
     - [Changing message colors](#changing-message-colors)
     - [Exporting your messages](#exporting-your-messages)
     - [Importing your messages](#importing-your-messages)
+    - [Deleting your messages](#deleting-your-messages)
 
 ## Introduction
 
@@ -90,3 +91,8 @@ objects, with the following keys:
 | `content`   | `string`              | The content of the message           |
 
 There are no plans to support importing from a `.csv`.
+
+### Deleting your messages
+
+Sometimes you may want to clear your message history. You can do so by using the
+"Delete all messages" button inside of the "File" menu.
