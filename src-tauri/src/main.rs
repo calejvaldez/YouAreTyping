@@ -19,7 +19,7 @@ mod messages;
 use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
-use messages::{get_internal_data, save_internal_data, Message};
+use messages::{delete_all_messages, get_internal_data, save_internal_data, Message};
 use tauri::{
     api::{dialog, path::data_dir},
     Manager,
@@ -66,6 +66,14 @@ fn main() {
             "import_json" => {import_as_json(event);},
             "export_json" => {export_to_json();}
             "export_csv" => {export_to_csv();}
+            "delete_messages" => {
+                std::thread::spawn(move || {
+                    let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you exported your messages in JSON before continuing.");
+                    if should_continue {
+                        delete_all_messages(event);
+                    }
+                });
+            }
             _ => {}
         }
     })

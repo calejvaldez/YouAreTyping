@@ -45,6 +45,11 @@ fn submenu_file() -> Submenu {
             .add_item(CustomMenuItem::new("export_json", "Export JSON..."))
             .add_item(CustomMenuItem::new("export_csv", "Export CSV...").accelerator("Ctrl+E"))
             .add_native_item(MenuItem::Separator)
+            .add_item(CustomMenuItem::new(
+                "delete_messages",
+                "Delete all messages",
+            ))
+            .add_native_item(MenuItem::Separator)
             .add_native_item(MenuItem::CloseWindow),
     )
 }
