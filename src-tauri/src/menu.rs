@@ -12,9 +12,6 @@ use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 
 fn about_metadata() -> AboutMetadata {
     AboutMetadata::new()
-        .authors(vec!["Carlos Valdez".to_string()])
-        .license("GNU GPLv3")
-        .website("https://github.com/calejvaldez/YouAreTyping/")
 }
 
 fn submenu_app() -> Submenu {
