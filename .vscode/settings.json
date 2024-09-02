@@ -13,5 +13,13 @@
     "files.associations": {
         "LICENSE": "plaintext"
     },
-    "cSpell.words": ["FOLDERID", "ojosproject", "rusqlite", "tauri", "xattr"]
+    "cSpell.words": [
+        "FOLDERID",
+        "github",
+        "linux",
+        "ojosproject",
+        "rusqlite",
+        "tauri",
+        "xattr"
+    ]
 }
