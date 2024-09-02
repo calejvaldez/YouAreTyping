@@ -95,7 +95,7 @@ fn submenu_edit(target_os: &str) -> Submenu {
                 .add_native_item(MenuItem::Paste)
                 .add_native_item(MenuItem::SelectAll),
         ),
-        _ => Submenu::new("Edit", Menu::new()),
+        _ => panic!("Unsupported operating system attempting to use Edit submenu."),
     }
 }
 
@@ -173,6 +173,6 @@ pub fn menu(target_os: &str) -> Menu {
         "linux" => Menu::new()
             .add_submenu(submenu_file())
             .add_submenu(submenu_help()),
-        _ => Menu::new(),
+        _ => panic!("Unsupported operating system attempting to create a Menu."),
     }
 }
