@@ -10,12 +10,6 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
 
-/// # about_metadata()
-/// This is mostly required for Linux, though it isn't actually used in YAT.
-fn about_metadata() -> AboutMetadata {
-    AboutMetadata::new()
-}
-
 /// # "App" Submenu
 ///
 /// This includes the regular things you may find in a macOS App submenu, such
@@ -30,7 +24,7 @@ fn submenu_app() -> Submenu {
         Menu::new()
             .add_native_item(MenuItem::About(
                 "You Are Typing".to_string(),
-                about_metadata(),
+                AboutMetadata::new(), // needed for function, but not used
             ))
             .add_native_item(MenuItem::Separator)
             .add_native_item(MenuItem::Services)
