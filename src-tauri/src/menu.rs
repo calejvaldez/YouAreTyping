@@ -54,18 +54,37 @@ fn submenu_file() -> Submenu {
     )
 }
 
-fn submenu_edit() -> Submenu {
-    Submenu::new(
-        "Edit",
-        Menu::new()
-            .add_native_item(MenuItem::Undo)
-            .add_native_item(MenuItem::Redo)
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::Cut)
-            .add_native_item(MenuItem::Copy)
-            .add_native_item(MenuItem::Paste)
-            .add_native_item(MenuItem::SelectAll),
-    )
+fn submenu_edit(target_os: &str) -> Submenu {
+    match target_os {
+        "windows" => Submenu::new(
+            "Edit",
+            Menu::new()
+                .add_native_item(MenuItem::Cut)
+                .add_native_item(MenuItem::Copy)
+                .add_native_item(MenuItem::Paste)
+                .add_native_item(MenuItem::SelectAll),
+        ),
+        "macos" => Submenu::new(
+            "Edit",
+            Menu::new()
+                .add_native_item(MenuItem::Undo)
+                .add_native_item(MenuItem::Redo)
+                .add_native_item(MenuItem::Separator)
+                .add_native_item(MenuItem::Cut)
+                .add_native_item(MenuItem::Copy)
+                .add_native_item(MenuItem::Paste)
+                .add_native_item(MenuItem::SelectAll),
+        ),
+        "linux" => Submenu::new(
+            "Edit",
+            Menu::new()
+                .add_native_item(MenuItem::Cut)
+                .add_native_item(MenuItem::Copy)
+                .add_native_item(MenuItem::Paste)
+                .add_native_item(MenuItem::SelectAll),
+        ),
+        _ => Submenu::new("Edit", Menu::new()),
+    }
 }
 
 fn submenu_view() -> Submenu {
@@ -86,11 +105,22 @@ fn submenu_window() -> Submenu {
     )
 }
 
-pub fn menu() -> Menu {
-    Menu::new()
-        .add_submenu(submenu_app())
-        .add_submenu(submenu_file())
-        .add_submenu(submenu_edit())
-        .add_submenu(submenu_view())
-        .add_submenu(submenu_window())
+pub fn menu(target_os: &str) -> Menu {
+    match target_os {
+        "windows" => Menu::new()
+            .add_submenu(submenu_file())
+            .add_submenu(submenu_edit(target_os))
+            .add_submenu(submenu_window()),
+        "macos" => Menu::new()
+            .add_submenu(submenu_app())
+            .add_submenu(submenu_file())
+            .add_submenu(submenu_edit(target_os))
+            .add_submenu(submenu_view())
+            .add_submenu(submenu_window()),
+        "linux" => Menu::new()
+            .add_submenu(submenu_file())
+            .add_submenu(submenu_edit(target_os))
+            .add_submenu(submenu_window()),
+        _ => Menu::new(),
+    }
 }

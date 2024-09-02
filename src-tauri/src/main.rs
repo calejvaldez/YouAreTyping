@@ -16,6 +16,8 @@ mod config;
 mod conversion;
 mod menu;
 mod messages;
+use std::env;
+
 use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
@@ -60,7 +62,7 @@ fn main() {
     let _ = fix_path_env::fix();
 
     tauri::Builder::default()
-    .menu(menu())
+    .menu(menu(env::consts::OS))
     .on_menu_event(|event| {
         match event.menu_item_id() {
             "import_json" => {import_as_json(event);},
