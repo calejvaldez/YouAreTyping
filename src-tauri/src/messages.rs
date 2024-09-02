@@ -10,8 +10,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
-use std::{fs, path::PathBuf};
-use tauri::{Manager, WindowMenuEvent};
+use std::fs;
+use tauri::{AppHandle, Manager, WindowMenuEvent};
 use uuid::Uuid;
 
 use crate::{config::create_config_file, conversion::transition_json_to_db};
@@ -39,7 +39,8 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
     event.window().app_handle().restart();
 }
 
-pub fn get_internal_data(app_data_dir: PathBuf) -> Vec<Message> {
+pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let mut generate_table = false;
     let old_json_file = app_data_dir
         .parent()
@@ -115,8 +116,12 @@ pub fn get_internal_data(app_data_dir: PathBuf) -> Vec<Message> {
     return messages;
 }
 
-pub fn save_internal_data(app_data_dir: PathBuf, message: Message) {
-    let db_path = app_data_dir.join("YouAreTyping.db");
+pub fn save_internal_data(app: AppHandle, message: Message) {
+    let db_path = app
+        .path_resolver()
+        .app_data_dir()
+        .unwrap()
+        .join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection in save_internal_data failed.");
 
     conn.execute(

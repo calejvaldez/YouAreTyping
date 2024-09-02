@@ -13,7 +13,7 @@ use chrono::{DateTime, Local};
 use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
-use tauri::{api::dialog, Manager, WindowMenuEvent};
+use tauri::{api::dialog, AppHandle, Manager, WindowMenuEvent};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
@@ -49,7 +49,8 @@ pub fn transition_json_to_db(data_dir: &PathBuf) {
     fs::remove_file(json_path).expect("Deleting old JSON failed.");
 }
 
-pub fn export_to_json(app_data_dir: PathBuf) {
+pub fn export_to_json(app: AppHandle) {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let db_path = app_data_dir.join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");
 
@@ -84,7 +85,8 @@ pub fn export_to_json(app_data_dir: PathBuf) {
     })
 }
 
-pub fn export_to_csv(app_data_dir: PathBuf) {
+pub fn export_to_csv(app: AppHandle) {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let mut csv_string = String::from("id,timestamp,author,content\n");
     let db_path = app_data_dir.join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");

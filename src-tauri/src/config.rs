@@ -10,6 +10,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
+use tauri::AppHandle;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -27,9 +28,10 @@ pub fn create_config_file(app_data_dir: PathBuf) {
     commit(p, &template_config);
 }
 
-pub fn set_color(app_data_dir: PathBuf, color: String) {
+pub fn set_color(app: AppHandle, color: String) {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
-    let config = get_full_config(app_data_dir);
+    let config = get_full_config(app);
 
     let new_config = Config {
         color,
@@ -39,9 +41,10 @@ pub fn set_color(app_data_dir: PathBuf, color: String) {
     commit(p, &new_config);
 }
 
-pub fn set_color_asked(app_data_dir: PathBuf, value: bool) {
+pub fn set_color_asked(app: AppHandle, value: bool) {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
-    let config = get_full_config(app_data_dir);
+    let config = get_full_config(app);
 
     let new_config = Config {
         color: config.color,
@@ -51,7 +54,8 @@ pub fn set_color_asked(app_data_dir: PathBuf, value: bool) {
     commit(p, &new_config);
 }
 
-pub fn get_full_config(app_data_dir: PathBuf) -> Config {
+pub fn get_full_config(app: AppHandle) -> Config {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
 
     if !p.exists() {
