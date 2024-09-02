@@ -110,11 +110,11 @@ fn submenu_help() -> Submenu {
         "Help",
         Menu::new()
             .add_item(CustomMenuItem::new("help_user_guide", "User Guide"))
-            .add_item(CustomMenuItem::new("help_report_bug", "Report a Bug"))
             .add_item(CustomMenuItem::new(
                 "help_release_notes",
                 "Show Release Notes",
             ))
+            .add_item(CustomMenuItem::new("help_report_bug", "Report a Bug"))
             .add_item(CustomMenuItem::new("help_github", "View on GitHub")),
     )
 }
