@@ -75,14 +75,6 @@ fn submenu_edit(target_os: &str) -> Submenu {
                 .add_native_item(MenuItem::Paste)
                 .add_native_item(MenuItem::SelectAll),
         ),
-        "linux" => Submenu::new(
-            "Edit",
-            Menu::new()
-                .add_native_item(MenuItem::Cut)
-                .add_native_item(MenuItem::Copy)
-                .add_native_item(MenuItem::Paste)
-                .add_native_item(MenuItem::SelectAll),
-        ),
         _ => Submenu::new("Edit", Menu::new()),
     }
 }
@@ -135,8 +127,6 @@ pub fn menu(target_os: &str) -> Menu {
             .add_submenu(submenu_help()),
         "linux" => Menu::new()
             .add_submenu(submenu_file())
-            .add_submenu(submenu_edit(target_os))
-            .add_submenu(submenu_window())
             .add_submenu(submenu_help()),
         _ => Menu::new(),
     }
