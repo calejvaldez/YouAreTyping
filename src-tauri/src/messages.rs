@@ -84,6 +84,7 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
         }
 
         fs::remove_dir(old_yat_folder).unwrap();
+        app.restart();
     }
 
     let mut messages: Vec<Message> = vec![];
