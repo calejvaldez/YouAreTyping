@@ -1,8 +1,7 @@
+use crate::{config::create_config_file, conversion::transition_json_to_db};
 use rusqlite::Connection;
 use std::{env, error::Error, fs, path::PathBuf};
 use tauri::{App, AppHandle, Manager};
-
-use crate::{config::create_config_file, conversion::transition_json_to_db};
 
 fn create_database(app_data_dir: &PathBuf) {
     let path = app_data_dir.join("YouAreTyping.db");

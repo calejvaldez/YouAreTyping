@@ -8,18 +8,10 @@ Has to do with managing messages users send.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
+use crate::structs::Message;
 use rusqlite::Connection;
-use serde::{Deserialize, Serialize};
 use tauri::AppHandle;
 use uuid::Uuid;
-
-#[derive(Serialize, Deserialize)]
-pub struct Message {
-    pub id: String,
-    pub content: String,
-    pub author: String,
-    pub timestamp: i64,
-}
 
 pub fn delete_all_messages(app: &AppHandle) {
     let p = app

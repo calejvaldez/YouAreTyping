@@ -8,15 +8,9 @@ Functions for interacting with the config file.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-use serde::{Deserialize, Serialize};
+use crate::structs::Config;
 use std::{fs, path::PathBuf};
 use tauri::AppHandle;
-
-#[derive(Serialize, Deserialize)]
-pub struct Config {
-    pub color: String,
-    pub color_asked: bool,
-}
 
 pub fn create_config_file(app_data_dir: &PathBuf) {
     let p = app_data_dir.join("config.json");

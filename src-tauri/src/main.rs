@@ -17,11 +17,13 @@ mod conversion;
 mod menu;
 mod messages;
 mod setup;
-use config::{get_full_config, set_color, set_color_asked, Config};
+mod structs;
+use config::{get_full_config, set_color, set_color_asked};
 use menu::{handle_menu_event, menu};
-use messages::{get_all_messages, save_message as save_to_db, Message};
+use messages::{get_all_messages, save_message as save_to_db};
 use setup::handle_setup;
 use std::env;
+use structs::{Config, Message};
 use tauri::AppHandle;
 
 #[tauri::command(rename_all = "snake_case")]

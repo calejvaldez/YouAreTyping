@@ -8,20 +8,12 @@ Has to do with converting the conversation from the database to JSON/CSV.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-use crate::messages::Message;
+use crate::structs::{JsonMessage, Message};
 use chrono::{DateTime, Local};
 use rusqlite::{named_params, Connection};
-use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 use tauri::{api::dialog, AppHandle};
 use uuid::Uuid;
-
-#[derive(Serialize, Deserialize)]
-struct JsonMessage {
-    content: String,
-    author: String,
-    timestamp: i64,
-}
 
 pub fn transition_json_to_db(old_yat_folder: &PathBuf, app_data_dir: &PathBuf) {
     let json_path = old_yat_folder.join("messages.json");
