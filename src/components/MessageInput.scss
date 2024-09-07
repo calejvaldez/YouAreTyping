@@ -41,4 +41,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
     word-wrap: break-word;
     resize: none;
+
+    &:focus {
+        outline: none;
+    }
 }
