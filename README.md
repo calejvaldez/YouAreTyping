@@ -40,7 +40,7 @@ like you're talking to someone else.
 
 I created this program to help integrate myself into my support system. Sometimes
 checking in with myself through a text conversation has been helpful, so maybe
-it'll be helpful to you too. Check the [`PROPOSAL.md`](.github/PROPOSAL.md) file
+it'll be helpful to you too. Check the [`proposal.md`](docs/proposal.md) file
 for a more in-depth background.
 
 ### Features

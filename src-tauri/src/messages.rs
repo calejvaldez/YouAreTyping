@@ -10,7 +10,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
-use std::fs;
+use std::{env, fs};
 use tauri::{AppHandle, Manager, WindowMenuEvent};
 use uuid::Uuid;
 
@@ -79,10 +79,9 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
 
     let old_yat_folder = old_json_file.parent().unwrap();
 
-    if old_yat_folder.exists() {
+    if old_yat_folder.exists() && env::consts::OS != "windows" {
         for item in fs::read_dir(old_yat_folder).unwrap() {
             let u_item = item.unwrap();
-            println!("{:?}", u_item.file_name());
 
             fs::rename(
                 old_yat_folder.join(u_item.file_name()),
@@ -92,6 +91,7 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
         }
 
         fs::remove_dir(old_yat_folder).unwrap();
+        app.restart();
     }
 
     let mut messages: Vec<Message> = vec![];

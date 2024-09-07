@@ -7,7 +7,7 @@
     },
     "package": {
         "productName": "You Are Typing",
-        "version": "1.3.2"
+        "version": "1.3.5"
     },
     "tauri": {
         "allowlist": {
@@ -15,9 +15,14 @@
             "shell": { "open": true }
         },
         "bundle": {
-            "active": true,
+            "identifier": "com.calejvaldez.YouAreTyping",
+            "publisher": "Carlos Valdez",
+            "copyright": "© 2023-2024 Carlos Valdez",
             "category": "Entertainment",
-            "copyright": "© 2023-2024 Carlos Valdez. Licensed under the GNU GPLv3.",
+            "shortDescription": "Have a conversation with yourself.",
+            "longDescription": "You Are Typing allows you to have a conversation with yourself and become your own best friend. It does this by switching the perspective of the chat conversation to make it feel like you're talking to someone else.",
+            "targets": ["dmg", "msi", "deb", "rpm"],
+            "active": true,
             "deb": {
                 "depends": []
             },
@@ -29,8 +34,6 @@
                 "icons/icon.icns",
                 "icons/icon.ico"
             ],
-            "identifier": "com.calejvaldez.YouAreTyping",
-            "longDescription": "You Are Typing allows you to have a conversation with yourself and be kinder to yourself.",
             "macOS": {
                 "entitlements": null,
                 "exceptionDomain": "",
@@ -39,8 +42,6 @@
                 "signingIdentity": null
             },
             "resources": [],
-            "shortDescription": "Have a conversation with yourself.",
-            "targets": "all",
             "windows": {
                 "certificateThumbprint": null,
                 "digestAlgorithm": "sha256",
