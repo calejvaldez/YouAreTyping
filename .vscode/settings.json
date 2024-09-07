@@ -14,13 +14,25 @@
         "LICENSE": "plaintext"
     },
     "cSpell.words": [
+        "aarch",
         "calejvaldez",
+        "chrono",
+        "consts",
+        "dtolnay",
         "FOLDERID",
+        "fullscreen",
         "github",
+        "icns",
+        "libappindicator",
+        "librsvg",
+        "libwebkit",
         "linux",
         "ojosproject",
+        "patchelf",
         "rusqlite",
         "tauri",
+        "tsbuildinfo",
+        "webkitgtk",
         "xattr"
     ]
 }
