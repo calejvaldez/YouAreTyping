@@ -17,6 +17,7 @@
     - [Setting up your environment](#setting-up-your-environment)
     - [Development](#development)
     - [Compiling](#compiling)
+    - [Testing](#testing)
   - [Structure](#structure)
     - [Frontend v. Backend](#frontend-v-backend)
     - [Saved Data](#saved-data)
@@ -115,6 +116,23 @@ cargo tauri build
 ```
 
 Your build will be available in `/src-tauri/target/release/bundle/`
+
+### Testing
+
+You must test on every OS that YAT exists on. I don't expect you to test on
+every architecture, though.
+
+As of September 2024, releases are made for **macOS** and **Windows**.
+
+> [!IMPORTANT]
+> If you're submitting a PR and don't have access to both operating systems,
+> please find a friend to test with and vouch for you.
+
+It's safe to assume that any previous changes work on all operating systems.
+However, it is *not* safe to assume that your changes work on every system.
+
+Test only your changes, unless you're attempting to find bugs, which is cool
+too.
 
 ## Structure
 
