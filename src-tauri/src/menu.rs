@@ -8,7 +8,14 @@ Creates the menu for the program.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-use tauri::{AboutMetadata, CustomMenuItem, Menu, MenuItem, Submenu};
+use crate::{
+    conversion::{export_to_csv, export_to_json, import_as_json},
+    messages::delete_all_messages,
+};
+use tauri::{
+    api::{dialog, shell},
+    AboutMetadata, CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowMenuEvent,
+};
 
 /// # "App" Submenu
 ///
@@ -172,5 +179,63 @@ pub fn menu(target_os: &str) -> Menu {
             .add_submenu(submenu_file())
             .add_submenu(submenu_help()),
         _ => panic!("Unsupported operating system attempting to create a Menu."),
+    }
+}
+
+/// Handles all the menu events.
+pub fn handle_menu_event(event: WindowMenuEvent) {
+    let app = event.window().app_handle();
+    // all menu item ids can be found in menu.rs
+    match event.menu_item_id() {
+        "import_json" => {
+            import_as_json(&app);
+        }
+        "export_json" => {
+            export_to_json(&app);
+        }
+        "export_csv" => {
+            export_to_csv(&app);
+        }
+        "delete_messages" => {
+            std::thread::spawn(move || {
+                let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
+                if should_continue {
+                    delete_all_messages(&app);
+                }
+            });
+        }
+        "help_user_guide" => {
+            shell::open(
+                &app.shell_scope(),
+                "https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md",
+                None,
+            )
+            .unwrap();
+        }
+        "help_report_bug" => {
+            shell::open(
+                &app.shell_scope(),
+                "https://github.com/calejvaldez/YouAreTyping/issues/new/choose/",
+                None,
+            )
+            .unwrap();
+        }
+        "help_release_notes" => {
+            shell::open(
+                &app.shell_scope(),
+                "https://github.com/calejvaldez/YouAreTyping/releases/",
+                None,
+            )
+            .unwrap();
+        }
+        "help_github" => {
+            shell::open(
+                &app.shell_scope(),
+                "https://github.com/calejvaldez/YouAreTyping/",
+                None,
+            )
+            .unwrap();
+        }
+        _ => {}
     }
 }

@@ -23,9 +23,9 @@ struct JsonMessage {
     timestamp: i64,
 }
 
-pub fn transition_json_to_db(data_dir: &PathBuf) {
-    let json_path = data_dir.join("messages.json");
-    let conn = Connection::open(data_dir.join("YouAreTyping.db"))
+pub fn transition_json_to_db(old_yat_folder: &PathBuf, app_data_dir: &PathBuf) {
+    let json_path = old_yat_folder.join("messages.json");
+    let conn = Connection::open(app_data_dir.join("YouAreTyping.db"))
         .expect("Establishing connection in transition_json_to_db failed.");
 
     let data = fs::read_to_string(&json_path)
