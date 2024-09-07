@@ -11,7 +11,7 @@
             "category": "Entertainment",
             "shortDescription": "Have a conversation with yourself.",
             "longDescription": "You Are Typing allows you to have a conversation with yourself and become your own best friend. It does this by switching the perspective of the chat conversation to make it feel like you're talking to someone else.",
-            "targets": ["dmg", "msi", "deb", "rpm"],
+            "targets": "all",
             "active": true,
             "deb": {
                 "depends": []
