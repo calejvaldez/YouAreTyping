@@ -16,12 +16,11 @@ mod config;
 mod conversion;
 mod menu;
 mod messages;
-use std::env;
-
 use config::{get_full_config, set_color, set_color_asked, Config};
 use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::menu;
 use messages::{delete_all_messages, get_internal_data, save_internal_data, Message};
+use std::env;
 use tauri::{
     api::{dialog, shell},
     AppHandle, Manager,
@@ -31,7 +30,7 @@ use uuid::Uuid;
 #[tauri::command(rename_all = "snake_case")]
 fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) {
     save_internal_data(
-        app,
+        &app,
         Message {
             id: Uuid::new_v4().to_string(),
             content: content.to_string(),
@@ -43,22 +42,22 @@ fn save_message(app: AppHandle, content: String, author: String, timestamp: i64)
 
 #[tauri::command(rename_all = "snake_case")]
 fn get_messages(app: AppHandle) -> Vec<Message> {
-    get_internal_data(app)
+    get_internal_data(&app)
 }
 
 #[tauri::command]
 fn get_config(app: AppHandle) -> Config {
-    get_full_config(app)
+    get_full_config(&app)
 }
 
 #[tauri::command(rename_all = "snake_case")]
 fn set_color_config(app: AppHandle, color: String) {
-    set_color(app, color);
+    set_color(&app, color);
 }
 
 #[tauri::command(rename_all = "snake_case")]
 fn set_color_config_asked(app: AppHandle, value: bool) {
-    set_color_asked(app, value);
+    set_color_asked(&app, value);
 }
 
 fn main() {
@@ -67,24 +66,24 @@ fn main() {
     tauri::Builder::default()
     .menu(menu(env::consts::OS))
     .on_menu_event(|event| {
-        let shell_scope = event.window().app_handle().shell_scope();
+        let app = event.window().app_handle();
         // all menu item ids can be found in menu.rs
         match event.menu_item_id() {
-            "import_json" => {import_as_json(event);},
-            "export_json" => {export_to_json(event.window().app_handle());}
-            "export_csv" => {export_to_csv(event.window().app_handle());}
+            "import_json" => {import_as_json(&app);},
+            "export_json" => {export_to_json(&app);}
+            "export_csv" => {export_to_csv(&app);}
             "delete_messages" => {
                 std::thread::spawn(move || {
                     let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
                     if should_continue {
-                        delete_all_messages(event);
+                        delete_all_messages(&app);
                     }
                 });
             }
-            "help_user_guide" => {shell::open(&shell_scope, "https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md", None).unwrap();}
-            "help_report_bug" => {shell::open(&shell_scope, "https://github.com/calejvaldez/YouAreTyping/issues/new/choose/", None).unwrap();}
-            "help_release_notes" => {shell::open(&shell_scope, "https://github.com/calejvaldez/YouAreTyping/releases/", None).unwrap();}
-            "help_github" => {shell::open(&shell_scope, "https://github.com/calejvaldez/YouAreTyping/", None).unwrap();}
+            "help_user_guide" => {shell::open(&app.shell_scope(), "https://github.com/calejvaldez/YouAreTyping/blob/release/docs/guide.md", None).unwrap();}
+            "help_report_bug" => {shell::open(&app.shell_scope(), "https://github.com/calejvaldez/YouAreTyping/issues/new/choose/", None).unwrap();}
+            "help_release_notes" => {shell::open(&app.shell_scope(), "https://github.com/calejvaldez/YouAreTyping/releases/", None).unwrap();}
+            "help_github" => {shell::open(&app.shell_scope(), "https://github.com/calejvaldez/YouAreTyping/", None).unwrap();}
             _ => {}
         }
     })

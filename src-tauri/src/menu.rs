@@ -59,9 +59,7 @@ fn submenu_file() -> Submenu {
             .add_item(CustomMenuItem::new(
                 "delete_messages",
                 "Delete All Messages",
-            ))
-            .add_native_item(MenuItem::Separator)
-            .add_native_item(MenuItem::CloseWindow),
+            )),
     )
 }
 

@@ -11,7 +11,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::{env, fs};
-use tauri::{AppHandle, Manager, WindowMenuEvent};
+use tauri::AppHandle;
 use uuid::Uuid;
 
 use crate::{config::create_config_file, conversion::transition_json_to_db};
@@ -24,10 +24,8 @@ pub struct Message {
     pub timestamp: i64,
 }
 
-pub fn delete_all_messages(event: WindowMenuEvent) {
-    let p = event
-        .window()
-        .app_handle()
+pub fn delete_all_messages(app: &AppHandle) {
+    let p = app
         .path_resolver()
         .app_data_dir()
         .unwrap()
@@ -36,10 +34,10 @@ pub fn delete_all_messages(event: WindowMenuEvent) {
     let conn = Connection::open(p).unwrap();
 
     conn.execute("DELETE FROM message", []).unwrap();
-    event.window().app_handle().restart();
+    app.restart();
 }
 
-pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
+pub fn get_internal_data(app: &AppHandle) -> Vec<Message> {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let mut generate_table = false;
     let old_json_file = app_data_dir
@@ -54,7 +52,7 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
     }
 
     if !app_data_dir.join("config.json").exists() {
-        create_config_file(app_data_dir.clone());
+        create_config_file(&app_data_dir);
     }
 
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db"))
@@ -116,7 +114,7 @@ pub fn get_internal_data(app: AppHandle) -> Vec<Message> {
     return messages;
 }
 
-pub fn save_internal_data(app: AppHandle, message: Message) {
+pub fn save_internal_data(app: &AppHandle, message: Message) {
     let db_path = app
         .path_resolver()
         .app_data_dir()

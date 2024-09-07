@@ -18,7 +18,7 @@ pub struct Config {
     pub color_asked: bool,
 }
 
-pub fn create_config_file(app_data_dir: PathBuf) {
+pub fn create_config_file(app_data_dir: &PathBuf) {
     let p = app_data_dir.join("config.json");
     let template_config = Config {
         color: "#38768b".to_string(),
@@ -28,7 +28,7 @@ pub fn create_config_file(app_data_dir: PathBuf) {
     commit(p, &template_config);
 }
 
-pub fn set_color(app: AppHandle, color: String) {
+pub fn set_color(app: &AppHandle, color: String) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
     let config = get_full_config(app);
@@ -41,7 +41,7 @@ pub fn set_color(app: AppHandle, color: String) {
     commit(p, &new_config);
 }
 
-pub fn set_color_asked(app: AppHandle, value: bool) {
+pub fn set_color_asked(app: &AppHandle, value: bool) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
     let config = get_full_config(app);
@@ -54,12 +54,12 @@ pub fn set_color_asked(app: AppHandle, value: bool) {
     commit(p, &new_config);
 }
 
-pub fn get_full_config(app: AppHandle) -> Config {
+pub fn get_full_config(app: &AppHandle) -> Config {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
 
     if !p.exists() {
-        create_config_file(app_data_dir);
+        create_config_file(&app_data_dir);
     }
 
     let string_config = fs::read_to_string(&p).expect("Reading config file failed.");

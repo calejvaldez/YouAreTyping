@@ -13,7 +13,7 @@ use chrono::{DateTime, Local};
 use rusqlite::{named_params, Connection};
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
-use tauri::{api::dialog, AppHandle, Manager, WindowMenuEvent};
+use tauri::{api::dialog, AppHandle};
 use uuid::Uuid;
 
 #[derive(Serialize, Deserialize)]
@@ -49,7 +49,7 @@ pub fn transition_json_to_db(data_dir: &PathBuf) {
     fs::remove_file(json_path).expect("Deleting old JSON failed.");
 }
 
-pub fn export_to_json(app: AppHandle) {
+pub fn export_to_json(app: &AppHandle) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let db_path = app_data_dir.join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");
@@ -85,7 +85,7 @@ pub fn export_to_json(app: AppHandle) {
     })
 }
 
-pub fn export_to_csv(app: AppHandle) {
+pub fn export_to_csv(app: &AppHandle) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let mut csv_string = String::from("id,timestamp,author,content\n");
     let db_path = app_data_dir.join("YouAreTyping.db");
@@ -136,7 +136,7 @@ pub fn export_to_csv(app: AppHandle) {
     })
 }
 
-fn message_in_db(app_data_dir: &PathBuf, id: String) -> bool {
+fn message_in_db(app_data_dir: &PathBuf, id: &String) -> bool {
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
 
     let mut stmt = conn
@@ -154,7 +154,7 @@ fn message_in_db(app_data_dir: &PathBuf, id: String) -> bool {
         })
         .unwrap()
     {
-        if msg.unwrap().id == id {
+        if &msg.unwrap().id == id {
             return true;
         }
     }
@@ -162,14 +162,10 @@ fn message_in_db(app_data_dir: &PathBuf, id: String) -> bool {
     return false;
 }
 
-pub fn import_as_json(event: WindowMenuEvent) {
+pub fn import_as_json(app: &AppHandle) {
+    let app_cloned = app.clone();
     dialog::FileDialogBuilder::new().pick_file(move |file| {
-        let app_data_dir = event
-            .window()
-            .app_handle()
-            .path_resolver()
-            .app_data_dir()
-            .unwrap();
+        let app_data_dir = app_cloned.path_resolver().app_data_dir().unwrap();
 
         let contents = fs::read_to_string(file.unwrap()).unwrap();
         let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
@@ -178,7 +174,7 @@ pub fn import_as_json(event: WindowMenuEvent) {
             serde_json::from_str(&contents).expect("Converting str to JSON failed.");
 
         for message in messages {
-            if !message_in_db(&app_data_dir, message.id.clone()) {
+            if !message_in_db(&app_data_dir, &message.id) {
                 conn.execute(
                     "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
                     (
@@ -192,6 +188,6 @@ pub fn import_as_json(event: WindowMenuEvent) {
             }
         }
 
-        event.window().app_handle().restart();
+        app_cloned.restart();
     });
 }
