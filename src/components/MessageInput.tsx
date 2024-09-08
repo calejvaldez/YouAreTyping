@@ -19,7 +19,6 @@ export default function MessageInput(props: {
     setSwitched: Function;
     messages: Message[];
     setMessages: Function;
-    scrollRef: any;
     setMessageColor: Function;
 }) {
     return (

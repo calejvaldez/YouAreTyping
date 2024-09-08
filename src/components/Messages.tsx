@@ -80,7 +80,6 @@ export function Messages(props: {
     setSwitched: Function;
     messages: Message[];
     setMessages: Function;
-    scrollRef: any;
     messageColor: string;
 }) {
     useEffect(() => {
