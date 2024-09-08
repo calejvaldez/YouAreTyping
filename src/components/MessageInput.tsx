@@ -42,7 +42,7 @@ export default function MessageInput(props: {
                                     author: determine_author(
                                         "self",
                                         props.switched,
-                                    ), // todo: check to see if this works appropriately
+                                    ),
                                     content: e.currentTarget.value,
                                     timestamp: timestamp,
                                 },
