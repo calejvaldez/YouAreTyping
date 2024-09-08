@@ -52,7 +52,7 @@ jobs:
                   TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
               with:
                   tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-                  releaseName: "Release v__VERSION__"
+                  releaseName: "v__VERSION__"
                   releaseBody: "https://github.com/calejvaldez/YouAreTyping/releases/latest/"
                   releaseDraft: true
                   prerelease: false
