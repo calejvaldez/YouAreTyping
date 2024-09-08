@@ -43,6 +43,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
     resize: none;
 
     &:focus {
-        outline: none;
+        outline: rgb(21, 51, 118) solid 3px;
+        outline-offset: 1px;
     }
 }
