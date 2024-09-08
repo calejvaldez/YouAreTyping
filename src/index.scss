@@ -18,4 +18,12 @@ https://www.gnu.org/licenses/gpl-3.0.html
     a {
         color: white;
     }
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: grey;
+        border-radius: 20px;
+    }
 }
