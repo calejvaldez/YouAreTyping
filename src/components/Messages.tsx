@@ -111,13 +111,17 @@ export function Messages(props: {
                         />
                     );
                 })}
-                <p className="beginning-message">
-                    This is the beginning of your conversation.
-                </p>
-                <p className="beginning-message">Return to send a message.</p>
-                <p className="beginning-message">
-                    Control+Return to switch perspectives.
-                </p>
+                <div style={{ marginBottom: "25px" }}>
+                    <p className="beginning-message">
+                        Return to send a message.
+                    </p>
+                    <p className="beginning-message">
+                        Control+Return to switch perspectives.
+                    </p>
+                    <p className="beginning-message">
+                        This is the beginning of your conversation.
+                    </p>
+                </div>
             </div>
         </div>
     );
