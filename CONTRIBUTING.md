@@ -18,6 +18,7 @@
     - [Development](#development)
     - [Compiling](#compiling)
     - [Testing](#testing)
+      - [Scenario Testing](#scenario-testing)
   - [Structure](#structure)
     - [Frontend v. Backend](#frontend-v-backend)
     - [Saved Data](#saved-data)
@@ -133,6 +134,18 @@ However, it is *not* safe to assume that your changes work on every system.
 
 Test only your changes, unless you're attempting to find bugs, which is cool
 too.
+
+#### [Scenario Testing](https://en.wikipedia.org/wiki/Scenario_testing)
+
+Come up with specific scenarios that relate to your feature / bug fix. For
+example, with commit b41e4c80e497d6f6957b2d4306e3ec4440f60c12, here is a
+scenario I used to test my features:
+
+- A user has an old `YouAreTyping` data folder with `YouAreTyping.db` full of
+  messages. Ensure that all of those messages are properly imported to
+  `com.calejvaldez.YouAreTyping/YouAreTyping.db`
+
+You should test each scenario on every OS that YAT releases on.
 
 ## Structure
 
