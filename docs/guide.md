@@ -12,6 +12,8 @@
     - [Texting yourself](#texting-yourself)
     - [Switching perspectives](#switching-perspectives)
     - [Changing message colors](#changing-message-colors)
+    - [Bookmarking a message](#bookmarking-a-message)
+    - [Filtering messages](#filtering-messages)
     - [Exporting your messages](#exporting-your-messages)
     - [Importing your messages](#importing-your-messages)
     - [Deleting your messages](#deleting-your-messages)
@@ -59,6 +61,20 @@ If you'd like to customize your experience, you can change the color of the
 messages on the right. You can toggle the color selector by pressing the
 `Control` and `c` keys. On the top-right of the screen, a color selector will
 appear for you to change the color of your messages.
+
+### Bookmarking a message
+
+When you hover over a message, you're presented with a bookmark icon and the
+timestamp. To bookmark your a message, just press the bookmark icon and you're
+all set!
+
+### Filtering messages
+
+You can filter your messages by going to the "Search" submenu on the Menu bar.
+You will find options for filtering by bookmarks or by messages that include a
+link.
+
+Once you're done, you can select "Reset filters" to go back to normal messages.
 
 ### Exporting your messages
 
