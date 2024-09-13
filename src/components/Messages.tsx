@@ -98,7 +98,7 @@ export function Messages(props: {
     const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
         // Inspired by:
         // https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport/
-        if (props.messages.length >= 100 && loadNewMessagesRef.current) {
+        if (props.messages.length >= 50 && loadNewMessagesRef.current) {
             let rect = loadNewMessagesRef.current.getBoundingClientRect();
 
             if (
@@ -110,7 +110,11 @@ export function Messages(props: {
                 rect.right <=
                     (window.innerWidth || document.documentElement.clientWidth)
             ) {
-                console.log("Ref is in view!");
+                invoke("get_messages", {
+                    limit: props.messages.length + 50,
+                }).then((messages) => {
+                    props.setMessages(messages);
+                });
             }
         }
     };

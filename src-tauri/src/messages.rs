@@ -9,7 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 use crate::structs::Message;
-use rusqlite::Connection;
+use rusqlite::{named_params, Connection};
 use tauri::AppHandle;
 use uuid::Uuid;
 
@@ -26,16 +26,17 @@ pub fn delete_all_messages(app: &AppHandle) {
     app.restart();
 }
 
-pub fn get_all_messages(app: &AppHandle) -> Vec<Message> {
+pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages: Vec<Message> = vec![];
+    let count = if limit.is_none() { 50 } else { limit.unwrap() };
 
     let mut stmt = conn
-        .prepare("SELECT * FROM message ORDER BY time_stamp DESC")
-        .expect("SELECT * FROM message statement failed.");
+        .prepare("SELECT * FROM message ORDER BY time_stamp DESC LIMIT :count")
+        .unwrap();
     for msg in stmt
-        .query_map([], |row| {
+        .query_map(named_params! {":count": count}, |row| {
             Ok(Message {
                 id: row.get(0)?,
                 author: row.get(1)?,
