@@ -13,6 +13,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";
 import { invoke } from "@tauri-apps/api/tauri";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function MessageInput(props: {
     switched: boolean;
@@ -23,9 +24,10 @@ export default function MessageInput(props: {
 }) {
     return (
         <div id="container_message_input">
-            <textarea
+            <TextareaAutosize
                 id="message_text_input"
                 placeholder="Start typing here!"
+                maxRows={10}
                 onKeyDown={(e) => {
                     if (e.key === "Enter" && e.ctrlKey) {
                         e.preventDefault();
@@ -63,7 +65,7 @@ export default function MessageInput(props: {
                         c.hidden = !c.hidden;
                     }
                 }}
-            ></textarea>
+            />
             <div id="color-container" hidden={true}>
                 <label htmlFor="chosen_color" id="label_chosen_color">
                     Color:
