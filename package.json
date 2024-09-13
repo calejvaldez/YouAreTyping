@@ -1,16 +1,5 @@
 {
     "name": "you-are-typing",
-    "description": "Have a conversation with yourself.",
-    "author": {
-        "name": "Carlos Valdez",
-        "email": "calejvaldez@proton.me",
-        "url": "https://calejvaldez.com/"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/calejvaldez/YouAreTyping/"
-    },
-    "license": "GPL-3.0-only",
     "private": true,
     "version": "0.0.0",
     "type": "module",
