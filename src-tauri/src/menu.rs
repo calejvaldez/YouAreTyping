@@ -149,8 +149,11 @@ fn submenu_window() -> Submenu {
 /// - Linux: Fully supported
 fn submenu_filter() -> Submenu {
     Submenu::new(
-        "Filter",
-        Menu::new().add_item(CustomMenuItem::new("filter_urls", "Filter by URLs")),
+        "Search",
+        Menu::new()
+            .add_item(CustomMenuItem::new("filter_urls", "Search for links"))
+            .add_native_item(MenuItem::Separator)
+            .add_item(CustomMenuItem::new("filter_reset", "Reset filters")),
     )
 }
 
