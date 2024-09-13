@@ -21,12 +21,18 @@ export default function MessageInput(props: {
     messages: Message[];
     setMessages: Function;
     setMessageColor: Function;
+    inputEnabled: boolean;
 }) {
     return (
         <div id="container_message_input">
             <TextareaAutosize
                 id="message_text_input"
-                placeholder="Start typing here!"
+                placeholder={
+                    props.inputEnabled
+                        ? "Start typing here!"
+                        : "You cannot send a message in Search mode."
+                }
+                disabled={!props.inputEnabled}
                 maxRows={10}
                 onKeyDown={(e) => {
                     if (e.key === "Enter" && e.ctrlKey) {

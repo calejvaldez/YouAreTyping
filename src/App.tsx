@@ -23,23 +23,27 @@ function App() {
     const [switched, setSwitched] = useState(false);
     const [messages, setMessages] = useState([] as Message[]);
     const [messageColor, setMessageColor] = useState("");
+    const [inputEnabled, setInputEnabled] = useState(true);
 
     listen("tauri://menu", (event) => {
         if (event.payload === "filter_urls") {
             invoke("get_filtered_messages", { filter: "URL" }).then(
                 (messages) => {
                     setMessages(messages as Message[]);
+                    setInputEnabled(false);
                 },
             );
         } else if (event.payload === "filter_bookmarks") {
             invoke("get_filtered_messages", { filter: "bookmarks" }).then(
                 (messages) => {
                     setMessages(messages as Message[]);
+                    setInputEnabled(false);
                 },
             );
         } else if (event.payload === "filter_reset") {
             invoke("get_messages").then((messages) => {
                 setMessages(messages as Message[]);
+                setInputEnabled(true);
             });
         }
     });
@@ -68,6 +72,7 @@ function App() {
                 messages={messages}
                 setMessages={setMessages}
                 setMessageColor={setMessageColor}
+                inputEnabled={inputEnabled}
             />
         </div>
     );
