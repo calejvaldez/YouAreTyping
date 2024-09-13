@@ -19,6 +19,7 @@ export interface Message {
     content: string;
     timestamp: number;
     author: "self" | "other";
+    bookmarked: 0 | 1;
 }
 
 function Message(props: {
