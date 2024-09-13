@@ -49,8 +49,11 @@ for a more in-depth background.
 - Switch perspectives with `Enter` + `Control`
 - Markdown support for sent messages
 - Data saved on-device, so you always have access to your messages
+- Bookmark messages that are important to you
+- Filter your messages by bookmarks or links
 - Export your messages into a `.csv` file with `Control` + `e`
 - Change the color of your messages with `Control` + `c`
+- ... and more! Read the [User Guide](./docs/guide.md)!
 
 ## Visuals
 
