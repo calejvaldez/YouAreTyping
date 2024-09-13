@@ -59,6 +59,7 @@ pub fn export_to_json(app: &AppHandle) {
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .expect("Transferring db to Message struct failed.")
@@ -79,7 +80,7 @@ pub fn export_to_json(app: &AppHandle) {
 
 pub fn export_to_csv(app: &AppHandle) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
-    let mut csv_string = String::from("id,timestamp,author,content\n");
+    let mut csv_string = String::from("id,timestamp,bookmarked,author,content\n");
     let db_path = app_data_dir.join("YouAreTyping.db");
     let conn = Connection::open(db_path).expect("Connection for exporting failed to open.");
 
@@ -94,6 +95,7 @@ pub fn export_to_csv(app: &AppHandle) {
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .expect("Transferring db to Message struct failed.")
@@ -103,7 +105,7 @@ pub fn export_to_csv(app: &AppHandle) {
             .unwrap()
             .with_timezone(&Local::now().timezone());
 
-        let (id, author, content, timestamp) = (
+        let (id, author, content, timestamp, bookmarked) = (
             unwrapped.id,
             unwrapped.author,
             format!(
@@ -114,9 +116,14 @@ pub fn export_to_csv(app: &AppHandle) {
                     .replace("\"", "\"\"")
             ),
             ts.format("%Y-%m-%d %I:%M %p %z").to_string(),
+            if unwrapped.bookmarked == 0 {
+                "no"
+            } else {
+                "yes"
+            },
         );
 
-        csv_string.push_str(format!("{id},{timestamp},{author},{content}\n").as_str());
+        csv_string.push_str(format!("{id},{timestamp},{bookmarked},{author},{content}\n").as_str());
     }
 
     dialog::FileDialogBuilder::new().pick_folder(|folder| {
@@ -142,6 +149,7 @@ fn message_in_db(app_data_dir: &PathBuf, id: &String) -> bool {
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .unwrap()
@@ -168,12 +176,13 @@ pub fn import_as_json(app: &AppHandle) {
         for message in messages {
             if !message_in_db(&app_data_dir, &message.id) {
                 conn.execute(
-                    "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
+                    "INSERT INTO message(id, author, content, time_stamp, bookmarked) VALUES (?1, ?2, ?3, ?4, ?5)",
                     (
                         message.id,
                         message.author,
                         message.content,
                         message.timestamp,
+                        message.bookmarked
                     ),
                 )
                 .unwrap();

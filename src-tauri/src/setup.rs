@@ -12,11 +12,27 @@ fn create_database(app_data_dir: &PathBuf) {
         id TEXT PRIMARY KEY NOT NULL,
         author TEXT NOT NULL,
         content TEXT NOT NULL,
-        time_stamp INTEGER NOT NULL
+        time_stamp INTEGER NOT NULL,
+        bookmarked TEXT NOT NULL
         )",
         (),
     )
     .expect("Creating message table failed.");
+}
+
+fn add_bookmarked(app_data_dir: &PathBuf) {
+    let path = app_data_dir.join("YouAreTyping.db");
+    let conn = Connection::open(path).unwrap();
+
+    conn.execute_batch(
+        "ALTER TABLE message ADD bookmarked INTEGER;
+            UPDATE message SET bookmarked=0;",
+    )
+    .unwrap_or_else(|error| {
+        if error.to_string().contains("duplicate") {
+            println!("Duplicate column found. Success!")
+        }
+    })
 }
 
 /// Files used to be stored in an old JSON file. This function exists to
@@ -56,6 +72,7 @@ fn transfer_db(app: &AppHandle, old_db_path: &PathBuf) {
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .expect("Transferring db to Message struct failed.")
@@ -64,7 +81,7 @@ fn transfer_db(app: &AppHandle, old_db_path: &PathBuf) {
 
         new_conn
             .execute(
-                "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
+                "INSERT INTO message(id, author, content, time_stamp, bookmarked) VALUES (?1, ?2, ?3, ?4, 0)",
                 (
                     message.id,
                     message.author,
@@ -112,6 +129,8 @@ pub fn handle_setup(app: &mut App) -> Result<(), Box<dyn Error>> {
         fs::create_dir_all(&app_data_dir).unwrap();
         create_database(&app_data_dir);
     }
+
+    add_bookmarked(&app_data_dir);
 
     if !app_data_dir.join("config.json").exists() {
         create_config_file(&app_data_dir);

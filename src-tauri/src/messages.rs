@@ -42,6 +42,7 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .expect("Transferring db to Message struct failed.")
@@ -74,6 +75,7 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
                 author: row.get(1)?,
                 content: row.get(2)?,
                 timestamp: row.get(3)?,
+                bookmarked: row.get(4)?,
             })
         })
         .expect("Transferring db to Message struct failed.")
@@ -94,7 +96,7 @@ pub fn save_message(app: &AppHandle, content: String, author: String, timestamp:
         .expect("Connection in save_message failed.");
 
     conn.execute(
-        "INSERT INTO message(id, author, content, time_stamp) VALUES (?1, ?2, ?3, ?4)",
+        "INSERT INTO message(id, author, content, time_stamp, bookmarked) VALUES (?1, ?2, ?3, ?4, 0)",
         (Uuid::new_v4().to_string(), author, content, timestamp),
     )
     .unwrap();
