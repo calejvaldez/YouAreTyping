@@ -9,7 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 use crate::structs::Message;
-use rusqlite::{named_params, Connection, Statement};
+use rusqlite::{named_params, Connection};
 use tauri::AppHandle;
 use uuid::Uuid;
 
@@ -68,30 +68,49 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages = vec![];
-    let mut stmt: Statement<'_>;
 
     match filter.as_str() {
         "URL" => {
-            stmt = conn
+            let mut stmt = conn
                 .prepare("SELECT * FROM message WHERE content LIKE '%' || ? || '%' ORDER BY time_stamp DESC")
                 .unwrap();
+
+            for msg in stmt
+                .query_map(["https://"], |row| {
+                    Ok(Message {
+                        id: row.get(0)?,
+                        author: row.get(1)?,
+                        content: row.get(2)?,
+                        timestamp: row.get(3)?,
+                        bookmarked: row.get(4)?,
+                    })
+                })
+                .expect("Transferring db to Message struct failed.")
+            {
+                messages.push(msg.unwrap());
+            }
+        }
+        "bookmarks" => {
+            let mut stmt = conn
+                .prepare("SELECT * FROM message WHERE bookmarked = 1 ORDER BY time_stamp DESC")
+                .unwrap();
+
+            for msg in stmt
+                .query_map([], |row| {
+                    Ok(Message {
+                        id: row.get(0)?,
+                        author: row.get(1)?,
+                        content: row.get(2)?,
+                        timestamp: row.get(3)?,
+                        bookmarked: row.get(4)?,
+                    })
+                })
+                .expect("Transferring db to Message struct failed.")
+            {
+                messages.push(msg.unwrap());
+            }
         }
         _ => panic!("This filter type is unknown."),
-    }
-
-    for msg in stmt
-        .query_map(["https://"], |row| {
-            Ok(Message {
-                id: row.get(0)?,
-                author: row.get(1)?,
-                content: row.get(2)?,
-                timestamp: row.get(3)?,
-                bookmarked: row.get(4)?,
-            })
-        })
-        .expect("Transferring db to Message struct failed.")
-    {
-        messages.push(msg.unwrap());
     }
 
     messages

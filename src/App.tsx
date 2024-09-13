@@ -31,6 +31,12 @@ function App() {
                     setMessages(messages as Message[]);
                 },
             );
+        } else if (event.payload === "filter_bookmarks") {
+            invoke("get_filtered_messages", { filter: "bookmarks" }).then(
+                (messages) => {
+                    setMessages(messages as Message[]);
+                },
+            );
         } else if (event.payload === "filter_reset") {
             invoke("get_messages").then((messages) => {
                 setMessages(messages as Message[]);

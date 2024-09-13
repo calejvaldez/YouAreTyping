@@ -152,6 +152,10 @@ fn submenu_filter() -> Submenu {
         "Search",
         Menu::new()
             .add_item(CustomMenuItem::new("filter_urls", "Search for links"))
+            .add_item(CustomMenuItem::new(
+                "filter_bookmarks",
+                "Search for bookmarks",
+            ))
             .add_native_item(MenuItem::Separator)
             .add_item(CustomMenuItem::new("filter_reset", "Reset filters")),
     )
