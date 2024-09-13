@@ -20,7 +20,7 @@ mod setup;
 mod structs;
 use config::{get_full_config, set_color, set_color_asked};
 use menu::{handle_menu_event, menu};
-use messages::{fetch_messages, save_message as save_to_db};
+use messages::{fetch_messages, get_messages_filtered_by, save_message as save_to_db};
 use setup::handle_setup;
 use std::env;
 use structs::{Config, Message};
@@ -34,6 +34,11 @@ fn save_message(app: AppHandle, content: String, author: String, timestamp: i64)
 #[tauri::command(rename_all = "snake_case")]
 fn get_messages(app: AppHandle, limit: Option<i32>) -> Vec<Message> {
     fetch_messages(&app, limit)
+}
+
+#[tauri::command(rename_all = "snake_case")]
+fn get_filtered_messages(app: AppHandle, filter: String) -> Vec<Message> {
+    get_messages_filtered_by(&app, filter)
 }
 
 #[tauri::command]
@@ -63,7 +68,8 @@ fn main() {
             get_messages,
             get_config,
             set_color_config,
-            set_color_config_asked
+            set_color_config_asked,
+            get_filtered_messages
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

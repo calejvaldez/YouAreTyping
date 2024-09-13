@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import MessageInput from "./components/MessageInput";
 import { Messages, Message } from "./components/Messages";
 import { invoke } from "@tauri-apps/api";
+import { listen } from "@tauri-apps/api/event";
 
 interface Config {
     color: string;
@@ -22,6 +23,20 @@ function App() {
     const [switched, setSwitched] = useState(false);
     const [messages, setMessages] = useState([] as Message[]);
     const [messageColor, setMessageColor] = useState("");
+
+    listen("tauri://menu", (event) => {
+        if (event.payload === "filter_urls") {
+            invoke("get_filtered_messages", { filter: "URL" }).then(
+                (messages) => {
+                    setMessages(messages as Message[]);
+                },
+            );
+        } else if (event.payload === "filter_reset") {
+            invoke("get_messages").then((messages) => {
+                setMessages(messages as Message[]);
+            });
+        }
+    });
 
     useEffect(() => {
         invoke("get_config")
