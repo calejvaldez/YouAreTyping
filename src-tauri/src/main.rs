@@ -20,7 +20,9 @@ mod setup;
 mod structs;
 use config::{get_full_config, set_color, set_color_asked};
 use menu::{handle_menu_event, menu};
-use messages::{fetch_messages, get_messages_filtered_by, save_message as save_to_db};
+use messages::{
+    change_message_bookmark, fetch_messages, get_messages_filtered_by, save_message as save_to_db,
+};
 use setup::handle_setup;
 use std::env;
 use structs::{Config, Message};
@@ -56,6 +58,11 @@ fn set_color_config_asked(app: AppHandle, value: bool) {
     set_color_asked(&app, value);
 }
 
+#[tauri::command(rename_all = "snake_case")]
+fn toggle_bookmark_message(app: AppHandle, id: String, bookmark: bool) {
+    change_message_bookmark(&app, id, bookmark);
+}
+
 fn main() {
     let _ = fix_path_env::fix();
 
@@ -69,7 +76,8 @@ fn main() {
             get_config,
             set_color_config,
             set_color_config_asked,
-            get_filtered_messages
+            get_filtered_messages,
+            toggle_bookmark_message
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -28,9 +28,19 @@ https://www.gnu.org/licenses/gpl-3.0.html
     padding: 1px 10px;
     margin: 10px;
     overflow-wrap: anywhere;
+}
 
-    // differences (color and location)
-    align-self: $alignment;
+@mixin message_container_common_traits() {
+    display: flex;
+}
+
+.message-container-self {
+    @include message_container_common_traits();
+    flex-direction: row-reverse;
+}
+
+.message-container-other {
+    @include message_container_common_traits();
 }
 
 .message_self {
@@ -41,4 +51,24 @@ https://www.gnu.org/licenses/gpl-3.0.html
 .message_other {
     @include common_message_traits(flex-start);
     border-radius: 10px 10px 10px 0;
+}
+
+.message-toolbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    line-height: 0;
+
+    .message-timestamp {
+        font-size: 10px;
+    }
+}
+
+.bookmark {
+    filter: invert(1);
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
 }

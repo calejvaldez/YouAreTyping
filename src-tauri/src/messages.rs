@@ -53,6 +53,17 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     return messages;
 }
 
+pub fn change_message_bookmark(app: &AppHandle, id: String, bookmark: bool) {
+    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
+    let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
+
+    conn.execute(
+        "UPDATE message SET bookmarked = ?1 WHERE id = ?2",
+        (if bookmark { 1 } else { 0 }, id),
+    )
+    .unwrap();
+}
+
 pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message> {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
