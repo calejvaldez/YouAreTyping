@@ -137,6 +137,23 @@ fn submenu_window() -> Submenu {
     )
 }
 
+/// # "Filters" Submenu
+///
+/// This submenu is used to provide filter options to the types of messages that
+/// are displayed.
+///
+/// ## OS Support
+///
+/// - Windows: Fully supported
+/// - macOS: Fully supported
+/// - Linux: Fully supported
+fn submenu_filter() -> Submenu {
+    Submenu::new(
+        "Filter",
+        Menu::new().add_item(CustomMenuItem::new("filter_urls", "Filter by URLs")),
+    )
+}
+
 /// # "Help" Submenu
 ///
 /// This submenu is used to provide support links, sending people to the GitHub
@@ -167,6 +184,7 @@ pub fn menu(target_os: &str) -> Menu {
             .add_submenu(submenu_file())
             .add_submenu(submenu_edit(target_os))
             .add_submenu(submenu_window())
+            .add_submenu(submenu_filter())
             .add_submenu(submenu_help()),
         "macos" => Menu::new()
             .add_submenu(submenu_app())
@@ -174,9 +192,11 @@ pub fn menu(target_os: &str) -> Menu {
             .add_submenu(submenu_edit(target_os))
             .add_submenu(submenu_view())
             .add_submenu(submenu_window())
+            .add_submenu(submenu_filter())
             .add_submenu(submenu_help()),
         "linux" => Menu::new()
             .add_submenu(submenu_file())
+            .add_submenu(submenu_filter())
             .add_submenu(submenu_help()),
         _ => panic!("Unsupported operating system attempting to create a Menu."),
     }
