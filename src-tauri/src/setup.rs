@@ -13,7 +13,7 @@ fn create_database(app_data_dir: &PathBuf) {
         author TEXT NOT NULL,
         content TEXT NOT NULL,
         time_stamp INTEGER NOT NULL,
-        bookmarked TEXT NOT NULL
+        bookmarked INTEGER NOT NULL
         )",
         (),
     )
