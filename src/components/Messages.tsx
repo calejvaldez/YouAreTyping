@@ -8,7 +8,7 @@ Implements the messages' container, as well as the messages themselves.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./Messages.scss";
 import { invoke } from "@tauri-apps/api";
 import Markdown from "react-markdown";
@@ -82,6 +82,8 @@ export function Messages(props: {
     setMessages: Function;
     messageColor: string;
 }) {
+    const loadNewMessagesRef = useRef<null | HTMLDivElement>(null);
+
     useEffect(() => {
         invoke("get_messages").then((messages) => {
             props.setMessages(
@@ -93,9 +95,29 @@ export function Messages(props: {
         });
     }, []);
 
+    const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+        // Inspired by:
+        // https://www.javascripttutorial.net/dom/css/check-if-an-element-is-visible-in-the-viewport/
+        if (props.messages.length >= 100 && loadNewMessagesRef.current) {
+            let rect = loadNewMessagesRef.current.getBoundingClientRect();
+
+            if (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <=
+                    (e.currentTarget.scrollHeight ||
+                        document.documentElement.clientHeight) &&
+                rect.right <=
+                    (window.innerWidth || document.documentElement.clientWidth)
+            ) {
+                console.log("Ref is in view!");
+            }
+        }
+    };
+
     return (
         <div id="container_messages">
-            <div id="all_messages">
+            <div id="all_messages" onScroll={handleScroll}>
                 {props.messages.map((message) => {
                     return (
                         <Message
@@ -112,6 +134,10 @@ export function Messages(props: {
                     );
                 })}
                 <div style={{ marginBottom: "25px" }}>
+                    <div
+                        ref={loadNewMessagesRef}
+                        style={{ background: "transparent" }}
+                    ></div>
                     <p className="beginning-message">
                         Return to send a message.
                     </p>
