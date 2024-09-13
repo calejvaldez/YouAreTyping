@@ -8,6 +8,12 @@ Styles the bottom part of the program where the input box is.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
+#container_message_input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 #color-container {
     position: fixed;
     top: 2%;
