@@ -55,10 +55,12 @@
         "windows": [
             {
                 "fullscreen": false,
-                "height": 600,
                 "resizable": true,
                 "title": "You Are Typing",
-                "width": 400
+                "height": 600,
+                "width": 400,
+                "minHeight": 600,
+                "minWidth": 400
             }
         ]
     },
