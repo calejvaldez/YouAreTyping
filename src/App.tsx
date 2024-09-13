@@ -52,7 +52,6 @@ function App() {
         <div id="view">
             <Messages
                 switched={switched}
-                setSwitched={setSwitched}
                 messages={messages}
                 setMessages={setMessages}
                 messageColor={messageColor}

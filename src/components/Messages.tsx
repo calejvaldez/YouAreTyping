@@ -72,134 +72,128 @@ function get_readable_timestamp(
     }
 }
 
+function Tools(props: {
+    isHovered: boolean;
+    timestamp: number;
+    isBookmarked: boolean;
+    setIsBookmarked: Function;
+    messageId: string;
+}) {
+    const [bookmarkIcon, setBookmarkIcon] = useState(BookmarkOutline);
+
+    useEffect(() => {
+        setBookmarkIcon(props.isBookmarked ? Bookmark : BookmarkOutline);
+    }, [props.isBookmarked]);
+
+    function handleBookmarkClick() {
+        props.setIsBookmarked(!props.isBookmarked);
+
+        invoke("toggle_bookmark_message", {
+            id: props.messageId,
+            bookmark: !props.isBookmarked,
+        }).catch((e) => console.log(e));
+    }
+
+    return (
+        <div className={"message-toolbar"}>
+            <img
+                className="bookmark"
+                hidden={!props.isHovered}
+                src={bookmarkIcon}
+                onClick={() => {
+                    handleBookmarkClick();
+                }}
+            />
+            <p className="message-timestamp" hidden={!props.isHovered}>
+                {get_readable_timestamp(props.timestamp, "time")}
+            </p>
+        </div>
+    );
+}
+
+function Message(props: {
+    author: string;
+    messageColor: string;
+    content: string;
+}) {
+    return (
+        <div
+            className={"message_" + props.author}
+            style={{
+                backgroundColor:
+                    props.author === "self" ? props.messageColor : "grey",
+            }}
+        >
+            <Markdown
+                components={{
+                    a: (props: any) => {
+                        return (
+                            <a
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    open(props.href);
+                                }}
+                                href={props.href}
+                            >
+                                {props.children}
+                            </a>
+                        );
+                    },
+                }}
+            >
+                {props.content}
+            </Markdown>
+        </div>
+    );
+}
+
+function MessageContainer(props: {
+    id: string;
+    content: string;
+    timestamp: number;
+    author: string;
+    messageColor: string;
+    bookmarked: boolean;
+}) {
+    const [isHovered, setIsHovered] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
+
+    return (
+        <div
+            id={props.id}
+            className={"message-container-" + props.author}
+            onMouseOver={() => {
+                setIsHovered(true);
+            }}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            <Message
+                content={props.content}
+                messageColor={props.messageColor}
+                author={props.author}
+            />
+            <Tools
+                isHovered={isHovered}
+                timestamp={props.timestamp}
+                isBookmarked={isBookmarked}
+                setIsBookmarked={setIsBookmarked}
+                messageId={props.id}
+            />
+        </div>
+    );
+}
+
 export function Messages(props: {
     switched: boolean;
-    setSwitched: Function;
     messages: Message[];
     setMessages: Function;
     messageColor: string;
 }) {
     const loadNewMessagesRef = useRef<null | HTMLDivElement>(null);
 
-    function Tools(props: {
-        isHovered: boolean;
-        timestamp: number;
-        isBookmarked: boolean;
-        messageId: string;
-    }) {
-        const [bookmarkIcon, setBookmarkIcon] = useState(BookmarkOutline);
-        const [isBookmarked, setIsBookmarked] = useState(props.isBookmarked);
-
-        useEffect(() => {
-            setBookmarkIcon(isBookmarked ? Bookmark : BookmarkOutline);
-        }, [isBookmarked]);
-
-        function handleBookmarkClick() {
-            setIsBookmarked(!isBookmarked);
-
-            invoke("toggle_bookmark_message", {
-                id: props.messageId,
-                bookmark: !isBookmarked,
-            })
-                .then(() => {})
-                .catch((e) => console.log(e));
-        }
-
-        return (
-            <div className={"message-toolbar"}>
-                <img
-                    className="bookmark"
-                    hidden={!props.isHovered}
-                    src={bookmarkIcon}
-                    onClick={() => {
-                        handleBookmarkClick();
-                    }}
-                />
-                <p className="message-timestamp" hidden={!props.isHovered}>
-                    {get_readable_timestamp(props.timestamp, "time")}
-                </p>
-            </div>
-        );
-    }
-
-    function Message(props: {
-        author: string;
-        messageColor: string;
-        content: string;
-    }) {
-        return (
-            <div
-                className={"message_" + props.author}
-                style={{
-                    backgroundColor:
-                        props.author === "self" ? props.messageColor : "grey",
-                }}
-            >
-                <Markdown
-                    components={{
-                        a: (props: any) => {
-                            return (
-                                <a
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        open(props.href);
-                                    }}
-                                    href={props.href}
-                                >
-                                    {props.children}
-                                </a>
-                            );
-                        },
-                    }}
-                >
-                    {props.content}
-                </Markdown>
-            </div>
-        );
-    }
-
-    function MessageContainer(props: {
-        id: string;
-        content: string;
-        timestamp: number;
-        author: string;
-        messageColor: string;
-        bookmarked: boolean;
-    }) {
-        const [isHovered, setIsHovered] = useState(false);
-
-        return (
-            <div
-                id={props.id}
-                className={"message-container-" + props.author}
-                onMouseOver={() => {
-                    setIsHovered(true);
-                }}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <Message
-                    content={props.content}
-                    messageColor={props.messageColor}
-                    author={props.author}
-                />
-                <Tools
-                    isHovered={isHovered}
-                    timestamp={props.timestamp}
-                    isBookmarked={props.bookmarked}
-                    messageId={props.id}
-                />
-            </div>
-        );
-    }
-
     useEffect(() => {
         invoke("get_messages").then((messages) => {
-            props.setMessages(
-                // sorting by time sent
-                (messages as Message[]).sort((a, b) => {
-                    return b.timestamp - a.timestamp;
-                }),
-            );
+            props.setMessages(messages as Message[]);
         });
     }, []);
 
