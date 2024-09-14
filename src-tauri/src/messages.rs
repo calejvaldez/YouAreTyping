@@ -78,7 +78,7 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages: Vec<Message> = vec![];
-    let count = if limit.is_none() { 100 } else { limit.unwrap() };
+    let count = if limit.is_none() { 50 } else { limit.unwrap() };
     let mut old_timestamp = 0;
 
     let mut stmt = conn
