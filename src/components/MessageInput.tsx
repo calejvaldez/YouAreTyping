@@ -21,6 +21,8 @@ export default function MessageInput(props: {
     messages: Message[];
     setMessages: Function;
     setMessageColor: Function;
+    messagesHeight: number;
+    setMessagesHeight: Function;
     inputEnabled: boolean;
 }) {
     return (
@@ -34,6 +36,10 @@ export default function MessageInput(props: {
                 }
                 disabled={!props.inputEnabled}
                 maxRows={10}
+                onHeightChange={(height) => {
+                    let height_change = (height / 17) * 3;
+                    props.setMessagesHeight(93 - height_change);
+                }}
                 onKeyDown={(e) => {
                     if (e.key === "Enter" && e.ctrlKey) {
                         e.preventDefault();

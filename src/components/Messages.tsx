@@ -188,6 +188,7 @@ function MessageContainer(props: {
 export function Messages(props: {
     switched: boolean;
     messages: Message[];
+    messagesHeight: number;
     setMessages: Function;
     messageColor: string;
 }) {
@@ -225,7 +226,11 @@ export function Messages(props: {
 
     return (
         <div id="container_messages">
-            <div id="all_messages" onScroll={handleScroll}>
+            <div
+                id="all_messages"
+                style={{ height: `${props.messagesHeight}vh` }}
+                onScroll={handleScroll}
+            >
                 {props.messages.map((message) => {
                     return (
                         <MessageContainer

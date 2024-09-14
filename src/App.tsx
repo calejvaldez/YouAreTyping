@@ -24,6 +24,7 @@ function App() {
     const [messages, setMessages] = useState([] as Message[]);
     const [messageColor, setMessageColor] = useState("");
     const [inputEnabled, setInputEnabled] = useState(true);
+    const [messagesHeight, setMessagesHeight] = useState(93);
 
     listen("tauri://menu", (event) => {
         if (event.payload === "filter_urls") {
@@ -63,6 +64,7 @@ function App() {
             <Messages
                 switched={switched}
                 messages={messages}
+                messagesHeight={messagesHeight}
                 setMessages={setMessages}
                 messageColor={messageColor}
             />
@@ -70,8 +72,10 @@ function App() {
                 switched={switched}
                 setSwitched={setSwitched}
                 messages={messages}
+                messagesHeight={messagesHeight}
                 setMessages={setMessages}
                 setMessageColor={setMessageColor}
+                setMessagesHeight={setMessagesHeight}
                 inputEnabled={inputEnabled}
             />
         </div>
