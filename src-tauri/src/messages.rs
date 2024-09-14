@@ -32,6 +32,8 @@ pub fn delete_all_messages(app: &AppHandle) {
 }
 
 fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Option<Message>) {
+    // issues to address:
+    // 1) some timestamps are repeated (frontend issue?)
     let current_dt = DateTime::from_timestamp(current_timestamp, 0)
         .unwrap()
         .with_timezone(&Local::now().timezone())
@@ -108,6 +110,13 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
         }
 
         messages.push(current_message);
+    }
+
+    let last_message = messages.last();
+
+    if !last_message.is_none() {
+        let (_, timestamp_message) = requires_timestamp(last_message.unwrap().timestamp, 0);
+        messages.push(timestamp_message.unwrap());
     }
 
     return messages;
@@ -195,7 +204,12 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
         }
         _ => panic!("This filter type is unknown."),
     }
+    let last_message = messages.last();
 
+    if !last_message.is_none() {
+        let (_, timestamp_message) = requires_timestamp(last_message.unwrap().timestamp, 0);
+        messages.push(timestamp_message.unwrap());
+    }
     messages
 }
 
