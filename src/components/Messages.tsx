@@ -60,7 +60,7 @@ function get_readable_timestamp(
             "Nov",
             "Dec",
         ];
-        return `${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}}`;
+        return `${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
     } else {
         let hour_24 = d.getHours();
         let hour_12 = hour_24 > 11 ? hour_24 - 12 : hour_24;
@@ -105,7 +105,9 @@ function Tools(props: {
                 }}
             />
             <p className="message-timestamp" hidden={!props.isHovered}>
-                {get_readable_timestamp(props.timestamp, "time")}
+                {get_readable_timestamp(props.timestamp, "date") +
+                    " at " +
+                    get_readable_timestamp(props.timestamp, "time")}
             </p>
         </div>
     );
