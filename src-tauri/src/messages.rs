@@ -116,7 +116,7 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
     messages
 }
 
-pub fn save_message(app: &AppHandle, content: String, author: String, timestamp: i64) {
+pub fn save_message(app: &AppHandle, content: String, author: String, timestamp: i64) -> Message {
     if !["self".to_string(), "other".to_string()].contains(&author) {
         panic!("'author' must be 'self' or 'other', not {author:?}.")
     }
@@ -124,10 +124,19 @@ pub fn save_message(app: &AppHandle, content: String, author: String, timestamp:
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db"))
         .expect("Connection in save_message failed.");
+    let id = Uuid::new_v4().to_string();
 
     conn.execute(
         "INSERT INTO message(id, author, content, time_stamp, bookmarked) VALUES (?1, ?2, ?3, ?4, 0)",
-        (Uuid::new_v4().to_string(), author, content, timestamp),
+        (&id, &author, &content, &timestamp),
     )
     .unwrap();
+
+    Message {
+        id,
+        content,
+        author,
+        timestamp,
+        bookmarked: 0,
+    }
 }

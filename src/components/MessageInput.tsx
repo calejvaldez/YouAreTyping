@@ -44,23 +44,14 @@ export default function MessageInput(props: {
                         if (e.currentTarget.value === "") {
                             return;
                         }
-                        props.setMessages(
-                            [
-                                {
-                                    author: determine_author(
-                                        "self",
-                                        props.switched,
-                                    ),
-                                    content: e.currentTarget.value,
-                                    timestamp: timestamp,
-                                },
-                            ].concat(props.messages),
-                        );
-
                         invoke("save_message", {
                             content: e.currentTarget.value,
                             author: determine_author("self", props.switched),
                             timestamp: timestamp,
+                        }).then((m) => {
+                            props.setMessages(
+                                [m as Message].concat(props.messages),
+                            );
                         });
 
                         e.currentTarget.value = "";
