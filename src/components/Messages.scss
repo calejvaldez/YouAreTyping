@@ -67,6 +67,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 }
 
 .not-bookmarked {
+    // Tool used:
+    // https://codepen.io/sosuke/pen/Pjoqqp
     filter: invert(53%) sepia(0%) saturate(0%) hue-rotate(208deg)
         brightness(95%) contrast(81%);
     height: 25px;
@@ -75,6 +77,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 }
 
 .bookmarked {
+    // Tool used:
+    // https://codepen.io/sosuke/pen/Pjoqqp
     filter: invert(86%) sepia(70%) saturate(5028%) hue-rotate(4deg)
         brightness(112%) contrast(102%);
     height: 25px;
