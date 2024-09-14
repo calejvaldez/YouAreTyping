@@ -32,7 +32,10 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages: Vec<Message> = vec![];
     let count = if limit.is_none() { 100 } else { limit.unwrap() };
-    let mut added_day = 99;
+    let mut added_day = 0;
+    let months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
 
     let mut stmt = conn
         .prepare("SELECT * FROM message ORDER BY time_stamp DESC LIMIT :count")
@@ -49,57 +52,32 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
         })
         .expect("Transferring db to Message struct failed.")
     {
-        let cloned = added_day.clone();
-        let months = [
-            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-        ];
         let current_message = msg.unwrap();
         let current_dt = DateTime::from_timestamp(current_message.timestamp, 0)
             .unwrap()
             .with_timezone(&Local::now().timezone());
-
-        println!("{}", current_dt.day());
-
-        let midnight = current_dt
-            .with_hour(0)
+        let last_dt = DateTime::from_timestamp(added_day, 0)
             .unwrap()
-            .with_minute(0)
-            .unwrap()
-            .with_second(0)
-            .unwrap();
-        let ts_midnight = midnight.timestamp();
-        let (year, month, day) = (
-            midnight.year(),
-            months[(midnight.month() - 1) as usize],
-            midnight.day(),
-        );
-        let hr_midnight = format!("{month} {day}, {year}");
-        //println!("{:?}", hr_midnight);
-
-        // ! it's an ordering issue
-        // ! ASC in SQL and .reverse() in Messages.tsx somewhat fixed it, but got
-        // ! the wrong messages
-
-        // ! solution below adds timestamp *after* messages are sent
-
-        /*
-        Imagine it like this:
-        There's an array with random numbers.
-
-        [18, 18, 18, 12, 12, 11, 6, 6, 30]
-
-        Whenever a number changes, you need to add a marker
-
-        [18, 18, 18, END 18, 12, 12, END 12, 11, END 11, 6, 6, END 6, 30, END 30]
-
-        Current solution does this:
-
-        [END 18, 18, 18, 18, END 12, 12, 12, END 11, 11, END 6, 6, 6, END 30, 30]
-
-         */
-        if current_dt.day() < cloned {
-            //println!("{cloned:?} != {hr_midnight:?}");
-            added_day = current_dt.day();
+            .with_timezone(&Local::now().timezone());
+        if added_day == 0 {
+            added_day = current_message.timestamp;
+        } else if last_dt.day() > current_dt.day() {
+            println!("{added_day} > {ts}", ts = current_message.timestamp);
+            let midnight = last_dt
+                .with_hour(0)
+                .unwrap()
+                .with_minute(0)
+                .unwrap()
+                .with_second(0)
+                .unwrap();
+            let ts_midnight = midnight.timestamp();
+            let (year, month, day) = (
+                midnight.year(),
+                months[(midnight.month() - 1) as usize],
+                midnight.day(),
+            );
+            let hr_midnight = format!("{month} {day}, {year}");
+            added_day = current_message.timestamp;
             messages.push(Message {
                 id: "".to_string(),
                 content: hr_midnight.clone(),
@@ -107,8 +85,6 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
                 timestamp: ts_midnight,
                 bookmarked: 0,
             });
-        } else {
-            //println!("{cloned:?} == {hr_midnight:?}");
         }
         messages.push(current_message);
     }
