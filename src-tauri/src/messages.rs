@@ -14,6 +14,10 @@ use rusqlite::{named_params, Connection};
 use tauri::AppHandle;
 use uuid::Uuid;
 
+const MONTHS: [&str; 12] = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
 pub fn delete_all_messages(app: &AppHandle) {
     let p = app
         .path_resolver()
@@ -27,15 +31,55 @@ pub fn delete_all_messages(app: &AppHandle) {
     app.restart();
 }
 
+fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Option<Message>) {
+    if old_timestamp == 0 {
+        return (false, None);
+    }
+
+    let current_dt = DateTime::from_timestamp(current_timestamp, 0)
+        .unwrap()
+        .with_timezone(&Local::now().timezone());
+    let last_dt = DateTime::from_timestamp(old_timestamp, 0)
+        .unwrap()
+        .with_timezone(&Local::now().timezone());
+
+    if last_dt.day() > current_dt.day() {
+        let midnight = last_dt
+            .with_hour(0)
+            .unwrap()
+            .with_minute(0)
+            .unwrap()
+            .with_second(0)
+            .unwrap();
+        let ts_midnight = midnight.timestamp();
+        let (year, month, day) = (
+            midnight.year(),
+            MONTHS[(midnight.month() - 1) as usize],
+            midnight.day(),
+        );
+        let hr_midnight = format!("{month} {day}, {year}");
+
+        return (
+            true,
+            Some(Message {
+                id: "".to_string(),
+                content: hr_midnight.clone(),
+                author: "system".to_string(),
+                timestamp: ts_midnight,
+                bookmarked: 0,
+            }),
+        );
+    }
+
+    (false, None)
+}
+
 pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages: Vec<Message> = vec![];
     let count = if limit.is_none() { 100 } else { limit.unwrap() };
-    let mut added_day = 0;
-    let months = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-    ];
+    let mut old_timestamp = 0;
 
     let mut stmt = conn
         .prepare("SELECT * FROM message ORDER BY time_stamp DESC LIMIT :count")
@@ -53,39 +97,16 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
         .expect("Transferring db to Message struct failed.")
     {
         let current_message = msg.unwrap();
-        let current_dt = DateTime::from_timestamp(current_message.timestamp, 0)
-            .unwrap()
-            .with_timezone(&Local::now().timezone());
-        let last_dt = DateTime::from_timestamp(added_day, 0)
-            .unwrap()
-            .with_timezone(&Local::now().timezone());
-        if added_day == 0 {
-            added_day = current_message.timestamp;
-        } else if last_dt.day() > current_dt.day() {
-            println!("{added_day} > {ts}", ts = current_message.timestamp);
-            let midnight = last_dt
-                .with_hour(0)
-                .unwrap()
-                .with_minute(0)
-                .unwrap()
-                .with_second(0)
-                .unwrap();
-            let ts_midnight = midnight.timestamp();
-            let (year, month, day) = (
-                midnight.year(),
-                months[(midnight.month() - 1) as usize],
-                midnight.day(),
-            );
-            let hr_midnight = format!("{month} {day}, {year}");
-            added_day = current_message.timestamp;
-            messages.push(Message {
-                id: "".to_string(),
-                content: hr_midnight.clone(),
-                author: "system".to_string(),
-                timestamp: ts_midnight,
-                bookmarked: 0,
-            });
+        let (should_add_timestamp, timestamp_message) =
+            requires_timestamp(old_timestamp, current_message.timestamp);
+
+        if should_add_timestamp {
+            old_timestamp = current_message.timestamp;
+            messages.push(timestamp_message.unwrap());
+        } else if old_timestamp == 0 {
+            old_timestamp = current_message.timestamp;
         }
+
         messages.push(current_message);
     }
 
