@@ -97,7 +97,7 @@ function Tools(props: {
     return (
         <div className={"message-toolbar"}>
             <img
-                className="bookmark"
+                className={props.isBookmarked ? "bookmarked" : "not-bookmarked"}
                 hidden={!props.isHovered}
                 src={bookmarkIcon}
                 onClick={() => {

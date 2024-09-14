@@ -62,11 +62,21 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
     .message-timestamp {
         font-size: 10px;
+        color: grey;
     }
 }
 
-.bookmark {
-    filter: invert(1);
+.not-bookmarked {
+    filter: invert(53%) sepia(0%) saturate(0%) hue-rotate(208deg)
+        brightness(95%) contrast(81%);
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+}
+
+.bookmarked {
+    filter: invert(86%) sepia(70%) saturate(5028%) hue-rotate(4deg)
+        brightness(112%) contrast(102%);
     height: 25px;
     width: 25px;
     cursor: pointer;
