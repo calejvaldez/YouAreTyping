@@ -15,6 +15,21 @@ import { Message, determine_author } from "./Messages";
 import { invoke } from "@tauri-apps/api/tauri";
 import TextareaAutosize from "react-textarea-autosize";
 
+const MONTHS = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
 export default function MessageInput(props: {
     switched: boolean;
     setSwitched: Function;
@@ -25,6 +40,29 @@ export default function MessageInput(props: {
     setMessagesHeight: Function;
     inputEnabled: boolean;
 }) {
+    function requires_timestamp(): [boolean, Message?] {
+        let current_dt = new Date();
+        let last_dt = new Date(props.messages[0].timestamp * 1000);
+        current_dt.setHours(0, 0, 0, 0);
+        last_dt.setHours(0, 0, 0, 0);
+
+        if (last_dt.getTime() > current_dt.getTime()) {
+            let hr_midnight = `${MONTHS[last_dt.getMonth()]} ${last_dt.getDate()}, ${last_dt.getFullYear()}`;
+
+            return [
+                true,
+                {
+                    id: Math.floor(last_dt.getTime() / 1000).toString(),
+                    content: hr_midnight,
+                    author: "system",
+                    timestamp: Math.floor(last_dt.getTime() / 1000),
+                    bookmarked: 0,
+                } as Message,
+            ];
+        }
+
+        return [false, undefined];
+    }
     return (
         <div id="container_message_input">
             <TextareaAutosize
@@ -55,9 +93,22 @@ export default function MessageInput(props: {
                             author: determine_author("self", props.switched),
                             timestamp: timestamp,
                         }).then((m) => {
-                            props.setMessages(
-                                [m as Message].concat(props.messages),
-                            );
+                            let [should_add_timestamp, timestamp_message] =
+                                requires_timestamp();
+
+                            if (should_add_timestamp) {
+                                props.setMessages(
+                                    [timestamp_message, m as Message].concat(
+                                        props.messages,
+                                    ),
+                                );
+                            } else if (props.messages.length === 0) {
+                                props.setMessages(
+                                    [{} as Message, m as Message].concat(
+                                        props.messages,
+                                    ),
+                                );
+                            }
                         });
 
                         e.currentTarget.value = "";

@@ -20,7 +20,7 @@ export interface Message {
     id: string;
     content: string;
     timestamp: number;
-    author: "self" | "other";
+    author: "self" | "other" | "system";
     bookmarked: 0 | 1;
 }
 
@@ -224,7 +224,7 @@ export function Messages(props: {
                             id={message.id}
                             content={message.content}
                             author={determine_author(
-                                message.author,
+                                message.author as "self" | "other",
                                 props.switched,
                             )}
                             timestamp={message.timestamp}
