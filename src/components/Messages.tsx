@@ -161,7 +161,11 @@ function MessageContainer(props: {
     const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
 
     if (props.author === "system") {
-        return <p className="message-system">{props.content}</p>;
+        return (
+            <p id={props.id} className="message-system">
+                {props.content}
+            </p>
+        );
     }
 
     return (

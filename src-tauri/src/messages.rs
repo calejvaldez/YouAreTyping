@@ -32,8 +32,6 @@ pub fn delete_all_messages(app: &AppHandle) {
 }
 
 fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Option<Message>) {
-    // issues to address:
-    // 1) some timestamps are repeated (frontend issue?)
     let current_dt = DateTime::from_timestamp(current_timestamp, 0)
         .unwrap()
         .with_timezone(&Local::now().timezone())
@@ -64,7 +62,7 @@ fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Opti
         return (
             true,
             Some(Message {
-                id: "".to_string(),
+                id: last_dt.timestamp().to_string(),
                 content: hr_midnight.clone(),
                 author: "system".to_string(),
                 timestamp: last_dt.timestamp(),
