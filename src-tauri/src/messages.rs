@@ -9,6 +9,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 use crate::structs::Message;
+use chrono::{DateTime, Datelike, Local, Timelike};
 use rusqlite::{named_params, Connection};
 use tauri::AppHandle;
 use uuid::Uuid;
@@ -31,6 +32,7 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages: Vec<Message> = vec![];
     let count = if limit.is_none() { 50 } else { limit.unwrap() };
+    let mut added_day = String::from("");
 
     let mut stmt = conn
         .prepare("SELECT * FROM message ORDER BY time_stamp DESC LIMIT :count")
@@ -47,7 +49,41 @@ pub fn fetch_messages(app: &AppHandle, limit: Option<i32>) -> Vec<Message> {
         })
         .expect("Transferring db to Message struct failed.")
     {
-        messages.push(msg.unwrap());
+        let months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        ];
+        let current_message = msg.unwrap();
+        let current_dt = DateTime::from_timestamp(current_message.timestamp, 0)
+            .unwrap()
+            .with_timezone(&Local::now().timezone());
+
+        let midnight = current_dt
+            .with_hour(0)
+            .unwrap()
+            .with_minute(0)
+            .unwrap()
+            .with_second(0)
+            .unwrap();
+        let ts_midnight = midnight.timestamp();
+        let (year, month, day) = (
+            midnight.year(),
+            months[(midnight.month() - 1) as usize],
+            midnight.day(),
+        );
+        let hr_midnight = format!("{month} {day}, {year}");
+
+        if hr_midnight != added_day {
+            println!("{added_day:?} != {hr_midnight:?}");
+            added_day = hr_midnight.clone();
+            messages.push(Message {
+                id: "".to_string(),
+                content: hr_midnight.clone(),
+                author: "system".to_string(),
+                timestamp: ts_midnight,
+                bookmarked: 0,
+            });
+        }
+        messages.push(current_message);
     }
 
     return messages;
