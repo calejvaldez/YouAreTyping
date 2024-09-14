@@ -32,30 +32,30 @@ pub fn delete_all_messages(app: &AppHandle) {
 }
 
 fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Option<Message>) {
-    if old_timestamp == 0 {
-        return (false, None);
-    }
-
     let current_dt = DateTime::from_timestamp(current_timestamp, 0)
         .unwrap()
-        .with_timezone(&Local::now().timezone());
+        .with_timezone(&Local::now().timezone())
+        .with_hour(0)
+        .unwrap()
+        .with_minute(0)
+        .unwrap()
+        .with_second(0)
+        .unwrap();
     let last_dt = DateTime::from_timestamp(old_timestamp, 0)
         .unwrap()
-        .with_timezone(&Local::now().timezone());
+        .with_timezone(&Local::now().timezone())
+        .with_hour(0)
+        .unwrap()
+        .with_minute(0)
+        .unwrap()
+        .with_second(0)
+        .unwrap();
 
-    if last_dt.day() > current_dt.day() {
-        let midnight = last_dt
-            .with_hour(0)
-            .unwrap()
-            .with_minute(0)
-            .unwrap()
-            .with_second(0)
-            .unwrap();
-        let ts_midnight = midnight.timestamp();
+    if last_dt.timestamp() > current_dt.timestamp() {
         let (year, month, day) = (
-            midnight.year(),
-            MONTHS[(midnight.month() - 1) as usize],
-            midnight.day(),
+            last_dt.year(),
+            MONTHS[(last_dt.month() - 1) as usize],
+            last_dt.day(),
         );
         let hr_midnight = format!("{month} {day}, {year}");
 
@@ -65,7 +65,7 @@ fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Opti
                 id: "".to_string(),
                 content: hr_midnight.clone(),
                 author: "system".to_string(),
-                timestamp: ts_midnight,
+                timestamp: last_dt.timestamp(),
                 bookmarked: 0,
             }),
         );
@@ -128,6 +128,7 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
     let mut messages = vec![];
+    let mut old_timestamp = 0;
 
     match filter.as_str() {
         "URL" => {
@@ -147,7 +148,18 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
                 })
                 .expect("Transferring db to Message struct failed.")
             {
-                messages.push(msg.unwrap());
+                let current_message = msg.unwrap();
+                let (should_add_timestamp, timestamp_message) =
+                    requires_timestamp(old_timestamp, current_message.timestamp);
+
+                if should_add_timestamp {
+                    old_timestamp = current_message.timestamp;
+                    messages.push(timestamp_message.unwrap());
+                } else if old_timestamp == 0 {
+                    old_timestamp = current_message.timestamp;
+                }
+
+                messages.push(current_message);
             }
         }
         "bookmarks" => {
@@ -167,7 +179,18 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
                 })
                 .expect("Transferring db to Message struct failed.")
             {
-                messages.push(msg.unwrap());
+                let current_message = msg.unwrap();
+                let (should_add_timestamp, timestamp_message) =
+                    requires_timestamp(old_timestamp, current_message.timestamp);
+
+                if should_add_timestamp {
+                    old_timestamp = current_message.timestamp;
+                    messages.push(timestamp_message.unwrap());
+                } else if old_timestamp == 0 {
+                    old_timestamp = current_message.timestamp;
+                }
+
+                messages.push(current_message);
             }
         }
         _ => panic!("This filter type is unknown."),
