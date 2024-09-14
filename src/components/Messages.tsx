@@ -39,37 +39,16 @@ export function determine_author(
     return author;
 }
 
-function get_readable_timestamp(
-    timestamp: number,
-    format: "date" | "time",
-): string {
+function get_readable_timestamp(timestamp: number): string {
     let d = new Date(timestamp * 1000);
 
-    if (format === "date") {
-        const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ];
-        return `${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
-    } else {
-        let hour_24 = d.getHours();
-        let hour_12 = hour_24 > 11 ? hour_24 - 12 : hour_24;
-        hour_12 = hour_12 === 0 ? 12 : hour_12;
-        let minute_padded =
-            d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
-        let am_pm = hour_24 > 11 ? "pm" : "am";
-        return `${hour_12}:${minute_padded} ${am_pm}`;
-    }
+    let hour_24 = d.getHours();
+    let hour_12 = hour_24 > 11 ? hour_24 - 12 : hour_24;
+    hour_12 = hour_12 === 0 ? 12 : hour_12;
+    let minute_padded =
+        d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
+    let am_pm = hour_24 > 11 ? "pm" : "am";
+    return `${hour_12}:${minute_padded} ${am_pm}`;
 }
 
 function Tools(props: {
@@ -105,9 +84,7 @@ function Tools(props: {
                 }}
             />
             <p className="message-timestamp" hidden={!props.isHovered}>
-                {get_readable_timestamp(props.timestamp, "date") +
-                    " at " +
-                    get_readable_timestamp(props.timestamp, "time")}
+                {get_readable_timestamp(props.timestamp)}
             </p>
         </div>
     );
