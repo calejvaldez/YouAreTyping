@@ -1,3 +1,13 @@
+/*
+SettingsView.tsx
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+View the Settings page.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.html
+*/
 import { invoke } from "@tauri-apps/api";
 import BackIcon from "../assets/arrow-back-circle.svg";
 import { open } from "@tauri-apps/api/shell";
