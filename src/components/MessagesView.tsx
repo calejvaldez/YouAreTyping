@@ -9,11 +9,11 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 import { useEffect, useState } from "react";
-import MessageInput from "./components/MessageInput";
-import { Messages } from "./components/Messages";
+import MessageInput from "./MessagesView/MessageInput";
+import { MessagesScrollable } from "./MessagesView/MessagesScrollable";
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
-import { Config, Message } from "./types";
+import { Config, Message } from "../types";
 
 export default function MessageView() {
     const [switched, setSwitched] = useState(false);
@@ -57,7 +57,7 @@ export default function MessageView() {
 
     return (
         <div id="view">
-            <Messages
+            <MessagesScrollable
                 switched={switched}
                 messages={messages}
                 messagesHeight={messagesHeight}

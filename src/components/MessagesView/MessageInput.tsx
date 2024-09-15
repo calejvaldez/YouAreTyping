@@ -14,7 +14,7 @@ import "./MessageInput.scss";
 import { determine_author } from "./tools";
 import { invoke } from "@tauri-apps/api/tauri";
 import TextareaAutosize from "react-textarea-autosize";
-import { Message } from "../types";
+import { Message } from "../../types";
 
 export default function MessageInput(props: {
     switched: boolean;
