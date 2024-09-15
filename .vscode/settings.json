@@ -19,6 +19,7 @@
         "calejvaldez",
         "chrono",
         "consts",
+        "Datelike",
         "dtolnay",
         "FOLDERID",
         "fullscreen",
@@ -32,6 +33,7 @@
         "patchelf",
         "rusqlite",
         "tauri",
+        "Timelike",
         "tsbuildinfo",
         "webkitgtk",
         "xattr"
