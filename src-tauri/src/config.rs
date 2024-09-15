@@ -16,7 +16,6 @@ pub fn create_config_file(app_data_dir: &PathBuf) {
     let p = app_data_dir.join("config.json");
     let template_config = Config {
         color: "#38768b".to_string(),
-        color_asked: false,
     };
 
     commit(p, &template_config);
@@ -25,25 +24,8 @@ pub fn create_config_file(app_data_dir: &PathBuf) {
 pub fn set_color(app: &AppHandle, color: String) {
     let app_data_dir = app.path_resolver().app_data_dir().unwrap();
     let p = app_data_dir.join("config.json");
-    let config = get_full_config(app);
 
-    let new_config = Config {
-        color,
-        color_asked: config.color_asked,
-    };
-
-    commit(p, &new_config);
-}
-
-pub fn set_color_asked(app: &AppHandle, value: bool) {
-    let app_data_dir = app.path_resolver().app_data_dir().unwrap();
-    let p = app_data_dir.join("config.json");
-    let config = get_full_config(app);
-
-    let new_config = Config {
-        color: config.color,
-        color_asked: value,
-    };
+    let new_config = Config { color };
 
     commit(p, &new_config);
 }

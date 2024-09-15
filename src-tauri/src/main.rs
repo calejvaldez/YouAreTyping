@@ -18,7 +18,7 @@ mod menu;
 mod messages;
 mod setup;
 mod structs;
-use config::{get_full_config, set_color, set_color_asked};
+use config::{get_full_config, set_color};
 use menu::{handle_menu_event, menu};
 use messages::{
     change_message_bookmark, fetch_messages, get_messages_filtered_by, save_message as save_to_db,
@@ -54,11 +54,6 @@ fn set_color_config(app: AppHandle, color: String) {
 }
 
 #[tauri::command(rename_all = "snake_case")]
-fn set_color_config_asked(app: AppHandle, value: bool) {
-    set_color_asked(&app, value);
-}
-
-#[tauri::command(rename_all = "snake_case")]
 fn toggle_bookmark_message(app: AppHandle, id: String, bookmark: bool) {
     change_message_bookmark(&app, id, bookmark);
 }
@@ -75,7 +70,6 @@ fn main() {
             get_messages,
             get_config,
             set_color_config,
-            set_color_config_asked,
             get_filtered_messages,
             toggle_bookmark_message
         ])
