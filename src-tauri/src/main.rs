@@ -29,7 +29,7 @@ use structs::{Config, Message};
 use tauri::AppHandle;
 
 #[tauri::command(rename_all = "snake_case")]
-fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) -> Message {
+fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) -> Vec<Message> {
     save_to_db(&app, content, author, timestamp)
 }
 

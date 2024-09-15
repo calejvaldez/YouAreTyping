@@ -57,7 +57,7 @@ export default function MessageInput(props: {
                             timestamp: timestamp,
                         }).then((m) => {
                             props.setMessages(
-                                [m as Message].concat(props.messages),
+                                (m as Message[]).concat(props.messages),
                             );
                         });
 

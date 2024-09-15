@@ -35,6 +35,14 @@ function MessageWithTools(props: {
         setIsHovered(false);
     }
 
+    if (props.author === "system") {
+        return (
+            <p id={props.id} className="message-system">
+                {props.content}
+            </p>
+        );
+    }
+
     return (
         <div
             id={props.id}
@@ -125,13 +133,11 @@ export function MessagesScrollable(props: {
                         ref={loadNewMessagesRef}
                         style={{ background: "transparent" }}
                     ></div>
-                    <p className="beginning-message">
-                        Return to send a message.
-                    </p>
-                    <p className="beginning-message">
+                    <p className="message-system">Return to send a message.</p>
+                    <p className="message-system">
                         Control+Return to switch perspectives.
                     </p>
-                    <p className="beginning-message">
+                    <p className="message-system">
                         This is the beginning of your conversation.
                     </p>
                 </div>

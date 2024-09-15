@@ -51,9 +51,7 @@ export default function MessageTools(props: {
                 onClick={handleBookmarkClick}
             />
             <p className="message-timestamp" hidden={!props.isHovered}>
-                {get_readable_timestamp(props.timestamp, "date") +
-                    " at " +
-                    get_readable_timestamp(props.timestamp, "time")}
+                {get_readable_timestamp(props.timestamp, "time")}
             </p>
         </div>
     );
