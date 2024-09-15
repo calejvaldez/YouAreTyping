@@ -14,6 +14,7 @@
     - [Can I suggest a feature?](#can-i-suggest-a-feature)
   - [Code Contributions](#code-contributions)
     - [Branching Rules](#branching-rules)
+    - [Icons](#icons)
     - [Setting up your environment](#setting-up-your-environment)
     - [Development](#development)
     - [Compiling](#compiling)
@@ -71,6 +72,10 @@ Pull Requests for suggested features!
 
 If you plan to contribute code, please create a fork of this project and open
 a PR targeted towards the `main` branch.
+
+### Icons
+
+All icons in this project are provided by [Ionic](https://ionic.io/ionicons).
 
 ### Setting up your environment
 
