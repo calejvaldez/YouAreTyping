@@ -214,6 +214,7 @@ pub fn get_messages_filtered_by(app: &AppHandle, filter: String) -> Vec<Message>
 
 fn with_timestamp(app_data_dir: PathBuf, new_timestamp: i64) -> Option<Message> {
     let conn = Connection::open(app_data_dir.join("YouAreTyping.db")).unwrap();
+    let mut messages: Vec<Message> = vec![];
 
     let mut stmt = conn
         .prepare("SELECT * FROM message ORDER BY time_stamp DESC LIMIT 1")
@@ -230,8 +231,34 @@ fn with_timestamp(app_data_dir: PathBuf, new_timestamp: i64) -> Option<Message> 
         })
         .expect("Transferring db to Message struct failed.")
     {
-        let old_message = msg.unwrap();
-        let (need_timestamp, ts_message) = requires_timestamp(new_timestamp, old_message.timestamp);
+        messages.push(msg.unwrap());
+    }
+
+    if messages.len() == 0 {
+        let today = Local::now()
+            .with_hour(0)
+            .unwrap()
+            .with_minute(0)
+            .unwrap()
+            .with_second(0)
+            .unwrap();
+
+        let (year, month, day) = (
+            today.year(),
+            MONTHS[(today.month() - 1) as usize],
+            today.day(),
+        );
+        let hr_midnight = format!("{month} {day}, {year}");
+
+        return Some(Message {
+            id: today.timestamp().to_string(),
+            content: hr_midnight,
+            author: "system".to_string(),
+            timestamp: today.timestamp(),
+            bookmarked: 0,
+        });
+    } else if messages.len() > 0 {
+        let (need_timestamp, ts_message) = requires_timestamp(new_timestamp, messages[0].timestamp);
 
         if need_timestamp {
             return ts_message;
