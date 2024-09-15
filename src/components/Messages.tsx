@@ -15,14 +15,7 @@ import Markdown from "react-markdown";
 import { open } from "@tauri-apps/api/shell";
 import Bookmark from "../assets/bookmark.svg";
 import BookmarkOutline from "../assets/bookmark-outline.svg";
-
-export interface Message {
-    id: string;
-    content: string;
-    timestamp: number;
-    author: "self" | "other";
-    bookmarked: 0 | 1;
-}
+import { Message } from "../types";
 
 export function determine_author(
     author: "self" | "other",
@@ -118,7 +111,7 @@ function Tools(props: {
     );
 }
 
-function Message(props: {
+function SentMessage(props: {
     author: string;
     messageColor: string;
     content: string;
@@ -174,7 +167,7 @@ function MessageContainer(props: {
             }}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <Message
+            <SentMessage
                 content={props.content}
                 messageColor={props.messageColor}
                 author={props.author}
@@ -244,7 +237,7 @@ export function Messages(props: {
                             id={message.id}
                             content={message.content}
                             author={determine_author(
-                                message.author,
+                                message.author as "self" | "other",
                                 props.switched,
                             )}
                             timestamp={message.timestamp}

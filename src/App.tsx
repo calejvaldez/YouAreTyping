@@ -10,14 +10,10 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 import { useEffect, useState } from "react";
 import MessageInput from "./components/MessageInput";
-import { Messages, Message } from "./components/Messages";
+import { Messages } from "./components/Messages";
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
-
-interface Config {
-    color: string;
-    color_asked: boolean;
-}
+import { Config, Message } from "./types";
 
 function App() {
     const [switched, setSwitched] = useState(false);
