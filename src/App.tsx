@@ -8,7 +8,7 @@ The first thing users see when they start You Are Typing.
 Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageInput from "./components/MessageInput";
 import { Messages, Message } from "./components/Messages";
 import { invoke } from "@tauri-apps/api";
@@ -25,6 +25,12 @@ function App() {
     const [messageColor, setMessageColor] = useState("");
     const [inputEnabled, setInputEnabled] = useState(true);
     const [messagesHeight, setMessagesHeight] = useState(93);
+    const [isEditing, setIsEditing] = useState(false);
+    const [messageCount, setMessageCount] = useState(50);
+    const [focusedMessageId, setFocusedMessageId] = useState<string | null>(
+        null,
+    );
+    const textareaRef = useRef<React.RefObject<HTMLTextAreaElement>>(null);
 
     listen("tauri://menu", (event) => {
         if (event.payload === "filter_urls") {
@@ -67,6 +73,12 @@ function App() {
                 messagesHeight={messagesHeight}
                 setMessages={setMessages}
                 messageColor={messageColor}
+                isEditing={isEditing}
+                setIsEditing={setIsEditing}
+                messageCount={messageCount}
+                setMessageCount={setMessageCount}
+                focusedMessageId={focusedMessageId}
+                setFocusedMessageId={}
             />
             <MessageInput
                 switched={switched}
@@ -77,6 +89,7 @@ function App() {
                 setMessageColor={setMessageColor}
                 setMessagesHeight={setMessagesHeight}
                 inputEnabled={inputEnabled}
+                textareaRef={textareaRef}
             />
         </div>
     );

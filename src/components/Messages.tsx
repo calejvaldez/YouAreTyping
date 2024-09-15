@@ -15,6 +15,8 @@ import Markdown from "react-markdown";
 import { open } from "@tauri-apps/api/shell";
 import Bookmark from "../assets/bookmark.svg";
 import BookmarkOutline from "../assets/bookmark-outline.svg";
+import EditIcon from "../assets/pencil.svg";
+import CancelIcon from "../assets/close-circle-outline.svg";
 
 export interface Message {
     id: string;
@@ -76,10 +78,16 @@ function Tools(props: {
     isHovered: boolean;
     timestamp: number;
     isBookmarked: boolean;
+    isEditing: boolean;
+    setIsEditing: Function;
     setIsBookmarked: Function;
     messageId: string;
+    messages: Message[];
+    setMessages: Function;
+    messageCount: number;
 }) {
     const [bookmarkIcon, setBookmarkIcon] = useState(BookmarkOutline);
+    const [editingIcon, setEditingIcon] = useState(EditIcon);
 
     useEffect(() => {
         setBookmarkIcon(props.isBookmarked ? Bookmark : BookmarkOutline);
@@ -94,21 +102,52 @@ function Tools(props: {
         }).catch((e) => console.log(e));
     }
 
+    function handleEditClick() {
+        props.setIsEditing(!props.isEditing);
+
+        setEditingIcon(!props.isEditing ? CancelIcon : EditIcon);
+
+        if (props.isEditing) {
+            invoke("get_messages", { limit: props.messageCount }).then((m) => {
+                props.setMessages(m as Message[]);
+            });
+        } else {
+            props.setMessages(
+                props.messages.filter((m) => m.id === props.messageId),
+            );
+        }
+    }
+
     return (
         <div className={"message-toolbar"}>
-            <img
-                title={
-                    props.isBookmarked
-                        ? "Remove bookmark"
-                        : "Bookmark this message"
-                }
-                className={props.isBookmarked ? "bookmarked" : "not-bookmarked"}
-                hidden={!props.isHovered}
-                src={bookmarkIcon}
-                onClick={() => {
-                    handleBookmarkClick();
-                }}
-            />
+            <div className="buttons">
+                <img
+                    title={
+                        props.isBookmarked
+                            ? "Remove bookmark"
+                            : "Bookmark this message"
+                    }
+                    className={
+                        props.isBookmarked ? "bookmarked" : "not-bookmarked"
+                    }
+                    hidden={!props.isHovered}
+                    src={bookmarkIcon}
+                    onClick={() => {
+                        handleBookmarkClick();
+                    }}
+                />
+                <img
+                    title={
+                        props.isEditing ? "Cancel edit" : "Edit this message"
+                    }
+                    className="button"
+                    hidden={!props.isHovered}
+                    src={editingIcon}
+                    onClick={() => {
+                        handleEditClick();
+                    }}
+                />
+            </div>
             <p className="message-timestamp" hidden={!props.isHovered}>
                 {get_readable_timestamp(props.timestamp, "date") +
                     " at " +
@@ -161,6 +200,11 @@ function MessageContainer(props: {
     author: string;
     messageColor: string;
     bookmarked: boolean;
+    isEditing: boolean;
+    setIsEditing: Function;
+    messages: Message[];
+    setMessages: Function;
+    messageCount: number;
 }) {
     const [isHovered, setIsHovered] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
@@ -184,7 +228,12 @@ function MessageContainer(props: {
                 timestamp={props.timestamp}
                 isBookmarked={isBookmarked}
                 setIsBookmarked={setIsBookmarked}
+                isEditing={props.isEditing}
+                setIsEditing={props.setIsEditing}
                 messageId={props.id}
+                messages={props.messages}
+                setMessages={props.setMessages}
+                messageCount={props.messageCount}
             />
         </div>
     );
@@ -196,6 +245,10 @@ export function Messages(props: {
     messagesHeight: number;
     setMessages: Function;
     messageColor: string;
+    isEditing: boolean;
+    setIsEditing: Function;
+    messageCount: number;
+    setMessageCount: Function;
 }) {
     const loadNewMessagesRef = useRef<null | HTMLDivElement>(null);
 
@@ -224,6 +277,7 @@ export function Messages(props: {
                     limit: props.messages.length + 50,
                 }).then((messages) => {
                     props.setMessages(messages);
+                    props.setMessageCount(props.messages.length + 50);
                 });
             }
         }
@@ -249,6 +303,11 @@ export function Messages(props: {
                             )}
                             timestamp={message.timestamp}
                             bookmarked={message.bookmarked === 1}
+                            isEditing={props.isEditing}
+                            setIsEditing={props.setIsEditing}
+                            messages={props.messages}
+                            setMessages={props.setMessages}
+                            messageCount={props.messageCount}
                         />
                     );
                 })}

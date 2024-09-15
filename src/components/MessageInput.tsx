@@ -13,7 +13,9 @@ https://www.gnu.org/licenses/gpl-3.0.html
 import "./MessageInput.scss";
 import { Message, determine_author } from "./Messages";
 import { invoke } from "@tauri-apps/api/tauri";
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize, {
+    TextareaAutosizeProps,
+} from "react-textarea-autosize";
 
 export default function MessageInput(props: {
     switched: boolean;
@@ -24,6 +26,7 @@ export default function MessageInput(props: {
     messagesHeight: number;
     setMessagesHeight: Function;
     inputEnabled: boolean;
+    textareaRef: React.RefObject<HTMLTextAreaElement>;
 }) {
     return (
         <div id="container_message_input">
@@ -36,6 +39,7 @@ export default function MessageInput(props: {
                 }
                 disabled={!props.inputEnabled}
                 maxRows={10}
+                ref={(textareaRef) => (this.textarea = textareaRef)}
                 onHeightChange={(height) => {
                     let height_change = (height / 17) * 3;
                     props.setMessagesHeight(93 - height_change);
