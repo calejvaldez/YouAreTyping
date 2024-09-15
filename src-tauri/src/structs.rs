@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     pub color: String,
-    pub color_asked: bool,
 }
 
 fn default_bookmark_value() -> i32 {

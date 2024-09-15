@@ -1,0 +1,72 @@
+.icon-back {
+    filter: invert(53%) sepia(0%) saturate(0%) hue-rotate(208deg)
+        brightness(95%) contrast(81%);
+
+    position: absolute;
+    left: 2%;
+    top: 2%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+#view-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.group-settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    h3,
+    p {
+        margin: 5px;
+        text-align: center;
+        width: 75%;
+    }
+}
+
+.label-centered {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 85vw;
+    max-width: 500px;
+
+    background-color: rgb(36, 36, 36);
+    border-radius: 10px;
+    padding: 5px 20px;
+
+    height: 35px;
+
+    margin: 5px 0;
+}
+
+.chosen_color {
+    border: none;
+    margin: 0 5px;
+    max-height: 20px;
+}
+
+.acknowledgements {
+    color: grey;
+    font-size: 10px;
+
+    position: absolute;
+    bottom: 2%;
+    width: 100%;
+
+    text-align: center;
+
+    a {
+        color: #808080;
+        cursor: pointer;
+    }
+}
