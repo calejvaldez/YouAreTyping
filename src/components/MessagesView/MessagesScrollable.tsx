@@ -27,14 +27,20 @@ function MessageWithTools(props: {
     const [isHovered, setIsHovered] = useState(false);
     const [isBookmarked, setIsBookmarked] = useState(props.bookmarked);
 
+    function handleMouseOver() {
+        setIsHovered(true);
+    }
+
+    function handleMouseLeave() {
+        setIsHovered(false);
+    }
+
     return (
         <div
             id={props.id}
             className={"message-container-" + props.author}
-            onMouseOver={() => {
-                setIsHovered(true);
-            }}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseOver={handleMouseOver}
+            onMouseLeave={handleMouseLeave}
         >
             <MessageSent
                 content={props.content}

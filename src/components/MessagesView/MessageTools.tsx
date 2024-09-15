@@ -48,9 +48,7 @@ export default function MessageTools(props: {
                 className={props.isBookmarked ? "bookmarked" : "not-bookmarked"}
                 hidden={!props.isHovered}
                 src={bookmarkIcon}
-                onClick={() => {
-                    handleBookmarkClick();
-                }}
+                onClick={handleBookmarkClick}
             />
             <p className="message-timestamp" hidden={!props.isHovered}>
                 {get_readable_timestamp(props.timestamp, "date") +
