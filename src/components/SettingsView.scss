@@ -1,0 +1,11 @@
+.icon-back {
+    filter: invert(53%) sepia(0%) saturate(0%) hue-rotate(208deg)
+        brightness(95%) contrast(81%);
+
+    position: absolute;
+    left: 2%;
+    top: 2%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}

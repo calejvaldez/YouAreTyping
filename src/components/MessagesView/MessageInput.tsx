@@ -70,21 +70,6 @@ export default function MessageInput(props: {
                     }
                 }}
             />
-            <div id="color-container" hidden={true}>
-                <label htmlFor="chosen_color" id="label_chosen_color">
-                    Color:
-                </label>
-                <input
-                    type="color"
-                    id="chosen_color"
-                    onInput={(e) => {
-                        props.setMessageColor(e.currentTarget.value);
-                        invoke("set_color_config", {
-                            color: e.currentTarget.value,
-                        });
-                    }}
-                ></input>
-            </div>
         </div>
     );
 }

@@ -14,8 +14,9 @@ import { MessagesScrollable } from "./MessagesView/MessagesScrollable";
 import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
 import { Config, Message } from "../types";
+import SettingsIcon from "../assets/cog.svg";
 
-export default function MessageView() {
+export default function MessageView(props: { setCurrentView: Function }) {
     const [switched, setSwitched] = useState(false);
     const [messages, setMessages] = useState([] as Message[]);
     const [messageColor, setMessageColor] = useState("");
@@ -55,8 +56,17 @@ export default function MessageView() {
             });
     }, []);
 
+    function handleSettingsClick() {
+        props.setCurrentView("settings");
+    }
+
     return (
         <div id="view">
+            <img
+                className="icon-settings"
+                src={SettingsIcon}
+                onClick={handleSettingsClick}
+            />
             <MessagesScrollable
                 switched={switched}
                 messages={messages}
