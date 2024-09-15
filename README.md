@@ -52,7 +52,7 @@ for a more in-depth background.
 - Bookmark messages that are important to you
 - Filter your messages by bookmarks or links
 - Export your messages into a `.csv` file with `Control` + `e`
-- Change the color of your messages with `Control` + `c`
+- Change the color of your messages
 - ... and more! Read the [User Guide](./docs/guide.md)!
 
 ## Visuals
