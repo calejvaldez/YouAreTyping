@@ -36,7 +36,6 @@ reading the entire guide, here's a quick table to use as reference:
 | ------------------- | ------------------------- |
 | `Enter`             | Send a message            |
 | `Control` + `Enter` | Switch perspectives       |
-| `Control` + `c`     | Toggle color picker       |
 | `Control` + `e`     | Export messages as `.csv` |
 | `Control` + `i`     | Import a `.json` file     |
 
@@ -59,9 +58,8 @@ You can do this by selecting the `Control` and `Enter` keys at the same time.
 ### Changing message colors
 
 If you'd like to customize your experience, you can change the color of the
-messages on the right. You can toggle the color selector by pressing the
-`Control` and `c` keys. On the top-right of the screen, a color selector will
-appear for you to change the color of your messages.
+messages on the right. Select the gear on the top-right of the screen to enter
+Settings. Under "Colors", you can select the color you'd like!
 
 ### Bookmarking a message
 
@@ -100,12 +98,13 @@ You can only import a `.json` file. You can do so by pressing the `Control` +
 In order to import a `.json` file, it has to be structured as a list of Message
 objects, with the following keys:
 
-| Key         | Type                  | Description                          |
-| ----------- | --------------------- | ------------------------------------ |
-| `id`        | `string`              | The UUID of the message              |
-| `timestamp` | `number`              | The Epoch timestamp of your message  |
-| `author`    | `"self"` or `"other"` | The perspective the message was sent |
-| `content`   | `string`              | The content of the message           |
+| Key          | Type                  | Description                                 |
+| ------------ | --------------------- | ------------------------------------------- |
+| `id`         | `string`              | The UUID of the message                     |
+| `timestamp`  | `number`              | The Epoch timestamp of your message         |
+| `author`     | `"self"` or `"other"` | The perspective the message was sent        |
+| `content`    | `string`              | The content of the message                  |
+| `bookmarked` | `0` or `1`            | If the message is bookmarked (`1` = `true`) |
 
 There are no plans to support importing from a `.csv`.
 
