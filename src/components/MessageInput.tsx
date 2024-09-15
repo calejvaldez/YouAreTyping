@@ -11,7 +11,7 @@ Licensed under the GNU GPLv3 license.
 https://www.gnu.org/licenses/gpl-3.0.html
 */
 import "./MessageInput.scss";
-import { determine_author } from "./Messages";
+import { determine_author } from "./tools";
 import { invoke } from "@tauri-apps/api/tauri";
 import TextareaAutosize from "react-textarea-autosize";
 import { Message } from "../types";

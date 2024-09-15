@@ -16,54 +16,7 @@ import { open } from "@tauri-apps/api/shell";
 import Bookmark from "../assets/bookmark.svg";
 import BookmarkOutline from "../assets/bookmark-outline.svg";
 import { Message } from "../types";
-
-export function determine_author(
-    author: "self" | "other",
-    switched: boolean,
-): "self" | "other" {
-    if (switched) {
-        if (author === "self") {
-            return "other";
-        } else if (author === "other") {
-            return "self";
-        }
-    }
-
-    return author;
-}
-
-function get_readable_timestamp(
-    timestamp: number,
-    format: "date" | "time",
-): string {
-    let d = new Date(timestamp * 1000);
-
-    if (format === "date") {
-        const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ];
-        return `${months[d.getMonth()]} ${d.getDate()} ${d.getFullYear()}`;
-    } else {
-        let hour_24 = d.getHours();
-        let hour_12 = hour_24 > 11 ? hour_24 - 12 : hour_24;
-        hour_12 = hour_12 === 0 ? 12 : hour_12;
-        let minute_padded =
-            d.getMinutes() < 10 ? `0${d.getMinutes()}` : d.getMinutes();
-        let am_pm = hour_24 > 11 ? "pm" : "am";
-        return `${hour_12}:${minute_padded} ${am_pm}`;
-    }
-}
+import { determine_author, get_readable_timestamp } from "./tools";
 
 function Tools(props: {
     isHovered: boolean;
