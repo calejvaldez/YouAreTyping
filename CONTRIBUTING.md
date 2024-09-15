@@ -21,7 +21,6 @@
       - [Scenario Testing](#scenario-testing)
   - [Structure](#structure)
     - [Frontend v. Backend](#frontend-v-backend)
-    - [Saved Data](#saved-data)
 
 ## Introduction
 
@@ -153,13 +152,3 @@ You should test each scenario on every OS that YAT releases on.
 
 The frontend code is inside of the `src` folder. The backend code is in
 `/src-tauri/src/`.
-
-### Saved Data
-
-Starting in version 1.3.3, all data is saved in a `YouAreTyping.db` file saved
-in
-[the `app_data_dir()` folder](https://docs.rs/tauri/latest/tauri/api/path/fn.app_data_dir.html).
-
-- On Windows, it is located in `C:\Users\[username]\AppData\Roaming\com.calejvaldez.YouAreTyping\`
-- On macOS, it is located in `/Users/[username]/Library/Application Support/com.calejvaldez.YouAreTyping/`
-- On Linux, it is located in `/home/[username]/.local/share/com.calejvaldez.YouAreTyping/`

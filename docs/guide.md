@@ -17,6 +17,7 @@
     - [Exporting your messages](#exporting-your-messages)
     - [Importing your messages](#importing-your-messages)
     - [Deleting your messages](#deleting-your-messages)
+  - [Where is my data?](#where-is-my-data)
 
 ## Introduction
 
@@ -112,3 +113,13 @@ There are no plans to support importing from a `.csv`.
 
 Sometimes you may want to clear your message history. You can do so by using the
 "Delete all messages" button inside of the "File" menu.
+
+## Where is my data?
+
+All data is stored in...
+
+| Platform | Location                                                                      |
+| -------- | ----------------------------------------------------------------------------- |
+| Windows  | `C:\Users\[username]\AppData\Roaming\com.calejvaldez.YouAreTyping\`           |
+| macOS    | `/Users/[username]/Library/Application Support/com.calejvaldez.YouAreTyping/` |
+| Linux    | `/home/[username]/.local/share/com.calejvaldez.YouAreTyping/`                 |
