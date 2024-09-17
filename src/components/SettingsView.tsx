@@ -14,7 +14,6 @@ import { open } from "@tauri-apps/api/shell";
 import "./SettingsView.scss";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { Config } from "../types";
-import { emit } from "@tauri-apps/api/event";
 
 function SettingsRowWithColorInput(props: {
     label: string;
@@ -41,6 +40,7 @@ function SettingsRowWithColorInput(props: {
 }
 
 function SettingsRowWithButtons(props: {
+    id: string;
     row_label: string;
     button_labels: string[];
     onClickArray: Function[];
@@ -53,9 +53,7 @@ function SettingsRowWithButtons(props: {
                 {props.button_labels.map((label, index) => {
                     return (
                         <button
-                            key={props.row_label
-                                .replace(" ", "_")
-                                .toLowerCase()}
+                            key={props.id + `${index}`}
                             className="button-settings"
                             onClick={
                                 props.onClickArray[
@@ -90,11 +88,23 @@ export default function SettingsView(props: { setCurrentView: Function }) {
     }
 
     function handleExportJsonClick() {
-        emit("tauri://menu", "export_json");
+        invoke("export_to", { to_format: "json" }).catch((e) => console.log(e));
     }
-    function handleExportCsvClick() {}
+    function handleExportCsvClick() {
+        invoke("export_to", { to_format: "csv" }).catch((e) => console.log(e));
+    }
 
-    function handleImportClick() {}
+    function handleImportClick() {
+        invoke("import").catch((e) => {
+            console.log(e);
+        });
+    }
+
+    function handleDeleteClick() {
+        invoke("delete").catch((e) => {
+            console.log(e);
+        });
+    }
 
     return (
         <div id="view-settings">
@@ -128,17 +138,36 @@ export default function SettingsView(props: { setCurrentView: Function }) {
 
                 <div>
                     <SettingsRowWithButtons
+                        id="import-data-json"
                         row_label="Import your data"
                         button_labels={["JSON"]}
                         onClickArray={[handleImportClick]}
                     />
                     <SettingsRowWithButtons
+                        id="import-data-csv"
                         row_label="Export your data"
                         button_labels={["CSV", "JSON"]}
                         onClickArray={[
                             handleExportCsvClick,
                             handleExportJsonClick,
                         ]}
+                    />
+                </div>
+            </div>
+
+            <div className="group-settings">
+                <h3>Delete Your Data</h3>
+                <p>
+                    Delete all your messages and start anew. This is an
+                    irreversible action.
+                </p>
+
+                <div>
+                    <SettingsRowWithButtons
+                        id="delete-data"
+                        row_label="Delete your data"
+                        button_labels={["Delete"]}
+                        onClickArray={[handleDeleteClick]}
                     />
                 </div>
             </div>
