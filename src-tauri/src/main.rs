@@ -22,13 +22,13 @@ use config::{get_full_config, set_color};
 use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::{handle_menu_event, menu};
 use messages::{
-    change_message_bookmark, delete_all_messages, fetch_messages, get_messages_filtered_by,
+    ask_delete_all_messages, change_message_bookmark, fetch_messages, get_messages_filtered_by,
     save_message as save_to_db,
 };
 use setup::handle_setup;
 use std::env;
 use structs::{Config, Message};
-use tauri::{api::dialog, AppHandle, Manager};
+use tauri::AppHandle;
 
 #[tauri::command(rename_all = "snake_case")]
 fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) -> Vec<Message> {
@@ -78,12 +78,7 @@ fn import(app: AppHandle) {
 
 #[tauri::command]
 fn delete(app: AppHandle) {
-    std::thread::spawn(move || {
-        let should_continue = dialog::blocking::ask(app.get_window("main").as_ref(), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
-        if should_continue {
-            delete_all_messages(&app);
-        }
-    });
+    ask_delete_all_messages(&app);
 }
 
 fn main() {

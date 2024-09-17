@@ -12,14 +12,14 @@ use crate::structs::Message;
 use chrono::{DateTime, Datelike, Local, Timelike};
 use rusqlite::{named_params, Connection};
 use std::path::PathBuf;
-use tauri::AppHandle;
+use tauri::{api::dialog, AppHandle, Manager};
 use uuid::Uuid;
 
 const MONTHS: [&str; 12] = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-pub fn delete_all_messages(app: &AppHandle) {
+fn delete_all_messages(app: &AppHandle) {
     let p = app
         .path_resolver()
         .app_data_dir()
@@ -30,6 +30,16 @@ pub fn delete_all_messages(app: &AppHandle) {
 
     conn.execute("DELETE FROM message", []).unwrap();
     app.restart();
+}
+
+pub fn ask_delete_all_messages(app: &AppHandle) {
+    let cloned = app.clone();
+    std::thread::spawn(move || {
+        let should_continue = dialog::blocking::ask(cloned.get_window("main").as_ref(), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
+        if should_continue {
+            delete_all_messages(&cloned);
+        }
+    });
 }
 
 fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Option<Message>) {
