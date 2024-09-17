@@ -53,12 +53,13 @@ fn requires_timestamp(old_timestamp: i64, current_timestamp: i64) -> (bool, Opti
         .unwrap();
 
     if last_dt.timestamp() > current_dt.timestamp() {
-        let (year, month, day) = (
+        let (weekday, year, month, day) = (
+            last_dt.weekday().to_string(),
             last_dt.year(),
             MONTHS[(last_dt.month() - 1) as usize],
             last_dt.day(),
         );
-        let hr_midnight = format!("{month} {day}, {year}");
+        let hr_midnight = format!("{weekday}, {month} {day}, {year}");
 
         return (
             true,
@@ -243,12 +244,13 @@ fn with_timestamp(app_data_dir: PathBuf, new_timestamp: i64) -> Option<Message> 
             .with_second(0)
             .unwrap();
 
-        let (year, month, day) = (
+        let (weekday, year, month, day) = (
+            today.weekday().to_string(),
             today.year(),
             MONTHS[(today.month() - 1) as usize],
             today.day(),
         );
-        let hr_midnight = format!("{month} {day}, {year}");
+        let hr_midnight = format!("{weekday}, {month} {day}, {year}");
 
         return Some(Message {
             id: today.timestamp().to_string(),
