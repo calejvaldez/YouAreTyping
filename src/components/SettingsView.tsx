@@ -102,6 +102,7 @@ export default function SettingsView(props: { setCurrentView: Function }) {
                 className="icon-back"
                 src={BackIcon}
                 onClick={handleBackClick}
+                onContextMenu={(e) => e.preventDefault()}
             />
             <h2>Settings</h2>
 

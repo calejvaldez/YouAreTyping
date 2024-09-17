@@ -66,6 +66,7 @@ export default function MessageView(props: { setCurrentView: Function }) {
                 className="icon-settings"
                 src={SettingsIcon}
                 onClick={handleSettingsClick}
+                onContextMenu={(e) => e.preventDefault()}
             />
             <MessagesScrollable
                 switched={switched}

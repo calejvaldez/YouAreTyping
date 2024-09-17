@@ -49,6 +49,7 @@ export default function MessageTools(props: {
                 hidden={!props.isHovered}
                 src={bookmarkIcon}
                 onClick={handleBookmarkClick}
+                onContextMenu={(e) => e.preventDefault()}
             />
             <p className="message-timestamp" hidden={!props.isHovered}>
                 {get_readable_timestamp(props.timestamp, "time")}

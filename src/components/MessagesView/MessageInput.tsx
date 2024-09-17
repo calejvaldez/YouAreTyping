@@ -30,6 +30,7 @@ export default function MessageInput(props: {
         <div id="container_message_input">
             <TextareaAutosize
                 id="message_text_input"
+                autoComplete="off"
                 placeholder={
                     props.inputEnabled
                         ? "Start typing here!"
