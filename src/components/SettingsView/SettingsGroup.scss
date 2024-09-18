@@ -1,0 +1,30 @@
+/*
+SettingsGroup.scss
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+Styling for SettingsGroup.tsx.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.html
+*/
+.settings-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 10px 0;
+
+    h3,
+    p {
+        margin: 5px;
+        text-align: center;
+        width: 75%;
+    }
+
+    p {
+        font-size: 12px;
+        color: grey;
+    }
+}

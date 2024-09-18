@@ -1,0 +1,54 @@
+/*
+SettingsRow.scss
+Part of the You Are Typing project.
+https://github.com/calejvaldez/YouAreTyping/
+
+Styling for SettingsRow.tsx.
+
+Licensed under the GNU GPLv3 license.
+https://www.gnu.org/licenses/gpl-3.0.html
+*/
+.settings-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 80vw;
+    max-width: 500px;
+
+    background-color: rgb(36, 36, 36);
+    border-radius: 10px;
+    padding: 5px 20px;
+
+    height: 35px;
+
+    margin: 5px 0;
+}
+
+.settings-button {
+    width: 65px;
+    height: 25px;
+
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
+
+    background-color: #dfdfdf;
+
+    justify-self: right;
+
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 5px;
+
+    &:hover {
+        background-color: #ffffff;
+    }
+}
+
+.chosen_color {
+    border: none;
+    margin: 0 5px;
+    max-height: 20px;
+}

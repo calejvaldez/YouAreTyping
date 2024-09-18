@@ -10,7 +10,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 */
 use crate::{
     conversion::{export_to_csv, export_to_json, import_as_json},
-    messages::delete_all_messages,
+    messages::ask_delete_all_messages,
 };
 use tauri::{
     api::{dialog, shell},
@@ -227,7 +227,7 @@ pub fn handle_menu_event(event: WindowMenuEvent) {
             std::thread::spawn(move || {
                 let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
                 if should_continue {
-                    delete_all_messages(&app);
+                    ask_delete_all_messages(&app);
                 }
             });
         }

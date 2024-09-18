@@ -19,9 +19,11 @@ mod messages;
 mod setup;
 mod structs;
 use config::{get_full_config, set_color};
+use conversion::{export_to_csv, export_to_json, import_as_json};
 use menu::{handle_menu_event, menu};
 use messages::{
-    change_message_bookmark, fetch_messages, get_messages_filtered_by, save_message as save_to_db,
+    ask_delete_all_messages, change_message_bookmark, fetch_messages, get_messages_filtered_by,
+    save_message as save_to_db,
 };
 use setup::handle_setup;
 use std::env;
@@ -58,6 +60,27 @@ fn toggle_bookmark_message(app: AppHandle, id: String, bookmark: bool) {
     change_message_bookmark(&app, id, bookmark);
 }
 
+#[tauri::command(rename_all = "snake_case")]
+fn export_to(app: AppHandle, to_format: String) {
+    if to_format == "json" {
+        export_to_json(&app);
+    } else if to_format == "csv" {
+        export_to_csv(&app);
+    } else {
+        panic!("Only JSON or CSV formats are supported.");
+    }
+}
+
+#[tauri::command]
+fn import(app: AppHandle) {
+    import_as_json(&app);
+}
+
+#[tauri::command]
+fn delete(app: AppHandle) {
+    ask_delete_all_messages(&app);
+}
+
 fn main() {
     let _ = fix_path_env::fix();
 
@@ -71,7 +94,10 @@ fn main() {
             get_config,
             set_color_config,
             get_filtered_messages,
-            toggle_bookmark_message
+            toggle_bookmark_message,
+            export_to,
+            import,
+            delete
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
