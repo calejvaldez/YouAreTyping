@@ -13,8 +13,7 @@ use crate::{
     messages::ask_delete_all_messages,
 };
 use tauri::{
-    api::{dialog, shell},
-    AboutMetadata, CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowMenuEvent,
+    api::shell, AboutMetadata, CustomMenuItem, Manager, Menu, MenuItem, Submenu, WindowMenuEvent,
 };
 
 /// # "App" Submenu
@@ -224,12 +223,7 @@ pub fn handle_menu_event(event: WindowMenuEvent) {
             export_to_csv(&app);
         }
         "delete_messages" => {
-            std::thread::spawn(move || {
-                let should_continue = dialog::blocking::ask(Some(event.window()), "Delete all messages?", "Deleting all messages is an irreversible action. Please be sure you've exported your messages as JSON before continuing.");
-                if should_continue {
-                    ask_delete_all_messages(&app);
-                }
-            });
+            ask_delete_all_messages(&app);
         }
         "help_user_guide" => {
             shell::open(
