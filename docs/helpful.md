@@ -20,7 +20,7 @@ ChatGPT to ask its thoughts on the matter.
 
 > [!NOTE]
 > I had the conversation with the
-> [gpt-4o model](https://platform.openai.com/docs/models/gpt-4o).
+> [GPT-4o model](https://platform.openai.com/docs/models/gpt-4o).
 
 <!-- cSpell:disable -->
 
