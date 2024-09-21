@@ -83,17 +83,17 @@ Once you're done, you can select "Reset filters" to go back to normal messages.
 > importing back into You Are Typing.
 
 You can export your messages as a comma separated values (`.csv`) file. This
-format is best used for spreadsheet programs.
+format is best used for spreadsheet programs. You can do so in the Settings page
+(selecting the gear icon located on the top-right) or by using the `Control` +
+`e` keyboard shortcut. You may also do this in the "File" submenu.
 
-You can do so by using the `Control` and `e` keys at the same time.
-
-You can also export your messages as a `.json` file by using the menu under the
-"File" submenu.
+If you'd like to backup your messages to import in another app, you can export
+as `.json` in the Settings page or in the "File" submenu.
 
 ### Importing your messages
 
 You can only import a `.json` file. You can do so by pressing the `Control` +
-`i` key.
+`i` key or using the "File" submenu.
 
 In order to import a `.json` file, it has to be structured as a list of Message
 objects, with the following keys:
