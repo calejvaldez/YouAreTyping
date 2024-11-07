@@ -1,0 +1,171 @@
+<!--
+messages.html
+Carlos Valdez
+
+This file contains an exported conversation from You Are Typing. To manually
+edit, replace the `MESSAGES` array with JSON data exported from the program.
+
+https://github.com/calejvaldez/YouAreTyping/
+-->
+<!doctype html>
+
+<html>
+    <head>
+        <title>Exported Chat — You Are Typing</title>
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="https://raw.githubusercontent.com/calejvaldez/YouAreTyping/refs/heads/release/src-tauri/icons/logo.png"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charset="utf-8" />
+
+        <style>
+            :root {
+                color: white;
+                background-color: black;
+                font-family: Arial, Helvetica, sans-serif;
+                margin: 0;
+            }
+
+            :root a {
+                color: white;
+            }
+
+            :root blockquote {
+                border-left: 5px solid #c7c7c7;
+                padding: 0.5px 20px 0.5px 20px;
+            }
+
+            #all-messages {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .message-system {
+                align-self: center;
+                color: grey;
+
+                text-align: center;
+                margin: 5px 10px;
+            }
+
+            .message-self {
+                align-self: flex-end;
+                background-color: #38768b;
+                max-width: 65%;
+                padding: 1px 10px;
+                margin: 10px;
+                overflow-wrap: anywhere;
+                border-radius: 10px 10px 0 10px;
+            }
+
+            .message-other {
+                align-self: flex-start;
+                background-color: grey;
+                max-width: 65%;
+                padding: 1px 10px;
+                margin: 10px;
+                overflow-wrap: anywhere;
+                border-radius: 10px 10px 10px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="all-messages">
+            <p class="message-system">
+                This is the beginning of your conversation.
+            </p>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.0/dist/showdown.min.js"></script>
+        <script>
+            // todo: copy and paste JSON data to the line below
+            const MESSAGES = [];
+            const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const MONTHS = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ];
+            let div_all_messages = document.getElementById("all-messages");
+            let converter = new showdown.Converter();
+            let timestamp = 0;
+
+            function requires_timestamp(old_timestamp, new_timestamp) {
+                let old_ts = new Date(old_timestamp * 1000);
+                let new_ts = new Date(new_timestamp * 1000);
+
+                old_ts.setHours(0, 0, 0, 0);
+                new_ts.setHours(0, 0, 0, 0);
+
+                if (old_ts.getTime() < new_ts.getTime()) {
+                    let weekday = DAYS[new_ts.getDay()];
+                    let year = new_ts.getFullYear();
+                    let month = MONTHS[new_ts.getMonth()];
+                    let day = new_ts.getDate();
+
+                    let hr_midnight = `${weekday}, ${month} ${day}, ${year}`;
+
+                    return [
+                        true,
+                        {
+                            id: new_ts.getTime().toString(),
+                            content: hr_midnight,
+                            author: "system",
+                            timestamp: new_ts.getT,
+                            bookmarked: 0,
+                        },
+                    ];
+                }
+
+                return [false, null];
+            }
+
+            function create_message(message) {
+                let div = document.createElement("div");
+                div.className = `message-${message.author}`;
+                div.innerHTML = converter.makeHtml(message.content);
+
+                return div;
+            }
+
+            if (!MESSAGES.length) {
+                div_all_messages.appendChild(
+                    create_message({
+                        id: new Date().getTime().toString(),
+                        content: "There are no messages.",
+                        author: "system",
+                        timestamp: new Date().getTime(),
+                        bookmarked: 0,
+                    }),
+                );
+            }
+
+            MESSAGES.forEach((message) => {
+                let [should_add_ts, ts_message] = requires_timestamp(
+                    timestamp,
+                    message.timestamp,
+                );
+
+                if (should_add_ts) {
+                    timestamp = message.timestamp;
+                    div_all_messages.appendChild(create_message(ts_message));
+                } else if (timestamp === 0) {
+                    timestamp = message.timestamp;
+                }
+
+                div_all_messages.appendChild(create_message(message));
+            });
+        </script>
+    </body>
+</html>
