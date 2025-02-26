@@ -12,6 +12,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
     display: flex;
     flex-direction: column-reverse;
     overflow: auto;
+    font-size: 15px;
 }
 
 .message-system {
@@ -24,8 +25,8 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
 @mixin common_message_traits($alignment) {
     max-width: 65%;
-    padding: 1px 10px;
-    margin: 10px;
+    padding: 0 15px;
+    margin: 4px 10px;
     overflow-wrap: anywhere;
 }
 
@@ -44,12 +45,12 @@ https://www.gnu.org/licenses/gpl-3.0.html
 
 .message_self {
     @include common_message_traits(flex-end);
-    border-radius: 10px 10px 0 10px;
+    border-radius: 25px 25px 2px 25px;
 }
 
 .message_other {
     @include common_message_traits(flex-start);
-    border-radius: 10px 10px 10px 0;
+    border-radius: 25px 25px 25px 2px;
 }
 
 .message-toolbar {
