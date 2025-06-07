@@ -15,6 +15,9 @@ dist-ssr
 # Other stuff to get rid of
 messages.json
 tools/export-messages
+.next
+src-tauri/gen/
+next-env.d.ts
 
 # Editor directories and files
 .idea
