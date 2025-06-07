@@ -8,7 +8,8 @@
         "build": "tauri build",
         "nextDev": "next dev --turbopack",
         "nextBuild": "next build",
-        "tauri": "tauri"
+        "tauri": "tauri",
+        "clear": "rm -rf .next node_modules out src-tauri/target/"
     },
     "dependencies": {
         "@tauri-apps/plugin-shell": "~2.2.1",
