@@ -1,0 +1,13 @@
+:root {
+  /* Global variables */
+  --white: rgb(220, 220, 220);
+  --black: black;
+  --light-gray: rgb(20, 20, 20);
+
+  color: var(--white);
+  background-color: var(--light-gray);
+}
+
+body {
+  margin: 0;
+}

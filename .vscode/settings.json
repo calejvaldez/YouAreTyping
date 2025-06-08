@@ -1,41 +1,41 @@
 {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "[markdown]": {
-        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-    },
-    "[rust]": {
-        "editor.defaultFormatter": "rust-lang.rust-analyzer"
-    },
-    "[typescriptreact][scss]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "files.associations": {
-        "LICENSE": "plaintext"
-    },
-    "cSpell.words": [
-        "aarch",
-        "autosize",
-        "calejvaldez",
-        "chrono",
-        "consts",
-        "Datelike",
-        "dtolnay",
-        "FOLDERID",
-        "fullscreen",
-        "github",
-        "icns",
-        "libappindicator",
-        "librsvg",
-        "libwebkit",
-        "linux",
-        "ojosproject",
-        "patchelf",
-        "rusqlite",
-        "tauri",
-        "Timelike",
-        "tsbuildinfo",
-        "webkitgtk",
-        "xattr"
-    ]
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[typescriptreact][css][typescript][javscript][json][toml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "LICENSE": "plaintext"
+  },
+  "cSpell.words": [
+    "aarch",
+    "autosize",
+    "calejvaldez",
+    "chrono",
+    "consts",
+    "Datelike",
+    "dtolnay",
+    "FOLDERID",
+    "fullscreen",
+    "github",
+    "icns",
+    "libappindicator",
+    "librsvg",
+    "libwebkit",
+    "linux",
+    "ojosproject",
+    "patchelf",
+    "rusqlite",
+    "tauri",
+    "Timelike",
+    "tsbuildinfo",
+    "webkitgtk",
+    "xattr"
+  ]
 }

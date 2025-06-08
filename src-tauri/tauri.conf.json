@@ -1,73 +1,73 @@
 {
-    "build": {
-        "beforeBuildCommand": "pnpm run nextBuild",
-        "beforeDevCommand": "pnpm run nextDev",
-        "frontendDist": "../out",
-        "devUrl": "http://localhost:3000"
+  "build": {
+    "beforeBuildCommand": "pnpm run nextBuild",
+    "beforeDevCommand": "pnpm run nextDev",
+    "frontendDist": "../out",
+    "devUrl": "http://localhost:3000"
+  },
+  "bundle": {
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-        "windows": {
-            "certificateThumbprint": null,
-            "digestAlgorithm": "sha256",
-            "timestampUrl": ""
-        },
-        "publisher": "Carlos Valdez",
-        "copyright": "© 2023-2024 Carlos Valdez",
-        "category": "Entertainment",
-        "shortDescription": "Have a conversation with yourself.",
-        "longDescription": "You Are Typing allows you to have a conversation with yourself and become your own best friend. It does this by switching the perspective of the chat conversation to make it feel like you're talking to someone else.",
-        "targets": "all",
-        "active": true,
-        "resources": [],
-        "externalBin": [],
-        "icon": [
-            "icons/32x32.png",
-            "icons/128x128.png",
-            "icons/128x128@2x.png",
-            "icons/icon.icns",
-            "icons/icon.ico"
-        ],
-        "macOS": {
-            "entitlements": null,
-            "exceptionDomain": "",
-            "frameworks": [],
-            "providerShortName": null,
-            "signingIdentity": null
-        },
-        "linux": {
-            "deb": {
-                "depends": []
-            }
-        },
-        "createUpdaterArtifacts": "v1Compatible"
+    "publisher": "Carlos Valdez",
+    "copyright": "© 2023-2024 Carlos Valdez",
+    "category": "Entertainment",
+    "shortDescription": "Have a conversation with yourself.",
+    "longDescription": "You Are Typing allows you to have a conversation with yourself and become your own best friend. It does this by switching the perspective of the chat conversation to make it feel like you're talking to someone else.",
+    "targets": "all",
+    "active": true,
+    "resources": [],
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
     },
-    "productName": "You Are Typing",
-    "mainBinaryName": "You Are Typing",
-    "version": "1.4.3",
-    "identifier": "com.calejvaldez.YouAreTyping",
-    "plugins": {
-        "updater": {
-            "endpoints": [
-                "https://github.com/calejvaldez/YouAreTyping/releases/latest/download/latest.json"
-            ],
-            "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDczNERBNjUzQzdENDA2N0QKUldSOUJ0VEhVNlpOYzg3K0ltQ0I0aHFyU2IrZ05YcmM1b0h6eHE0ZVRDTm1EVDdGNTd6dEozNGsK"
-        }
+    "linux": {
+      "deb": {
+        "depends": []
+      }
     },
-    "app": {
-        "security": {
-            "csp": null
-        },
-        "windows": [
-            {
-                "fullscreen": false,
-                "resizable": true,
-                "title": "You Are Typing",
-                "height": 800,
-                "width": 1200,
-                "minHeight": 800,
-                "minWidth": 1200,
-                "useHttpsScheme": true
-            }
-        ]
+    "createUpdaterArtifacts": "v1Compatible"
+  },
+  "productName": "You Are Typing",
+  "mainBinaryName": "You Are Typing",
+  "version": "1.4.3",
+  "identifier": "com.calejvaldez.YouAreTyping",
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/calejvaldez/YouAreTyping/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDczNERBNjUzQzdENDA2N0QKUldSOUJ0VEhVNlpOYzg3K0ltQ0I0aHFyU2IrZ05YcmM1b0h6eHE0ZVRDTm1EVDdGNTd6dEozNGsK"
     }
+  },
+  "app": {
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "You Are Typing",
+        "height": 800,
+        "width": 1200,
+        "minHeight": 800,
+        "minWidth": 1200,
+        "useHttpsScheme": true
+      }
+    ]
+  }
 }

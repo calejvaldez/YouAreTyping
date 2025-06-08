@@ -1,31 +1,32 @@
 {
-    "name": "you-are-typing",
-    "private": true,
-    "version": "0.0.0",
-    "type": "module",
-    "scripts": {
-        "dev": "tauri dev",
-        "build": "tauri build",
-        "nextDev": "next dev --turbopack",
-        "nextBuild": "next build",
-        "tauri": "tauri",
-        "clear": "rm -rf .next node_modules out src-tauri/target/"
-    },
-    "dependencies": {
-        "@tauri-apps/plugin-shell": "~2.2.1",
-        "@tauri-apps/plugin-updater": "~2.7.1",
-        "next": "^15.3.3",
-        "react": "^19.1.0",
-        "react-dom": "^19.1.0",
-        "react-markdown": "^10.1.0"
-    },
-    "devDependencies": {
-        "@tauri-apps/cli": "^2.5.0",
-        "@types/node": "22.15.30",
-        "@types/react": "^19.1.6",
-        "@types/react-dom": "^19.1.6",
-        "prettier": "3.5.3",
-        "react-textarea-autosize": "^8.5.9",
-        "typescript": "^5.2.2"
-    }
+  "name": "you-are-typing",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "nextDev": "next dev --turbopack",
+    "nextBuild": "next build",
+    "tauri": "tauri",
+    "prettier": "prettier --write \"**/*.{js,ts,tsx,json,css}\"",
+    "clear": "rm -rf .next node_modules out src-tauri/target/"
+  },
+  "dependencies": {
+    "@tauri-apps/plugin-shell": "~2.2.1",
+    "@tauri-apps/plugin-updater": "~2.7.1",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.5.0",
+    "@types/node": "22.15.30",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "prettier": "3.5.3",
+    "react-textarea-autosize": "^8.5.9",
+    "typescript": "^5.2.2"
+  }
 }

@@ -19,6 +19,7 @@ tools/export-messages
 src-tauri/gen/
 next-env.d.ts
 out
+src-tauri/target/
 
 # Editor directories and files
 .idea
