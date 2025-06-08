@@ -34,11 +34,7 @@
       "providerShortName": null,
       "signingIdentity": null
     },
-    "linux": {
-      "deb": {
-        "depends": []
-      }
-    },
+    "linux": { "deb": { "depends": [] } },
     "createUpdaterArtifacts": "v1Compatible"
   },
   "productName": "You Are Typing",
@@ -54,18 +50,16 @@
     }
   },
   "app": {
-    "security": {
-      "csp": null
-    },
+    "security": { "csp": null },
     "windows": [
       {
         "fullscreen": false,
         "resizable": true,
         "title": "You Are Typing",
-        "height": 800,
-        "width": 1200,
-        "minHeight": 800,
-        "minWidth": 1200,
+        "height": 600,
+        "width": 1000,
+        "minHeight": 600,
+        "minWidth": 1000,
         "useHttpsScheme": true
       }
     ]
