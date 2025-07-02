@@ -1,8 +1,13 @@
 use serde::{Deserialize, Serialize};
 
+fn default_true() -> bool {
+    true
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct Config {
     pub color: String,
+    #[serde(default = "default_true")]
     pub new_user: bool,
 }
 
