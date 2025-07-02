@@ -34,7 +34,7 @@ export default function MessageInput(props: {
                 placeholder={
                     props.inputEnabled
                         ? "Start typing here!"
-                        : "You cannot send a message in Search mode."
+                        : "Input disabled."
                 }
                 disabled={!props.inputEnabled}
                 maxRows={10}

@@ -22,6 +22,7 @@ export default function MessageView(props: { setCurrentView: Function }) {
     const [messageColor, setMessageColor] = useState("");
     const [inputEnabled, setInputEnabled] = useState(true);
     const [messagesHeight, setMessagesHeight] = useState(93);
+    const [showOnboarding, setShowOnboarding] = useState(false);
 
     listen("tauri://menu", (event) => {
         if (event.payload === "filter_urls") {
@@ -47,8 +48,12 @@ export default function MessageView(props: { setCurrentView: Function }) {
     });
 
     useEffect(() => {
-        invoke("get_config")
+        invoke<Config>("get_config")
             .then((config) => {
+                setShowOnboarding(config.new_user);
+                if (config.new_user) {
+                    setInputEnabled(false);
+                }
                 setMessageColor((config as Config).color);
             })
             .catch((e) => {
@@ -85,6 +90,39 @@ export default function MessageView(props: { setCurrentView: Function }) {
                 setMessagesHeight={setMessagesHeight}
                 inputEnabled={inputEnabled}
             />
+            {showOnboarding && (
+                <div className="dialogContainer">
+                    <dialog>
+                        <h1>Instructions</h1>
+                        <p>
+                            <strong>
+                                <span style={{ color: messageColor }}>
+                                    You Are Typing
+                                </span>
+                            </strong>{" "}
+                            lets you chat with yourself as a grounding method
+                            when you're having a tough time. Here's how it
+                            works:
+                        </p>
+
+                        <ol>
+                            <li>Vent your feelings</li>
+                            <li>Use Control + Enter to switch perspectives</li>
+                            <li>Respond to yourself like you would a friend</li>
+                        </ol>
+
+                        <button
+                            onClick={() => {
+                                setInputEnabled(true);
+                                setShowOnboarding(false);
+                                invoke("set_new_user_config");
+                            }}
+                        >
+                            Got it
+                        </button>
+                    </dialog>
+                </div>
+            )}
         </div>
     );
 }

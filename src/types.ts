@@ -12,6 +12,7 @@ https://www.gnu.org/licenses/gpl-3.0.html
 export type Config = {
     color: string;
     color_asked: boolean;
+    new_user: boolean;
 };
 
 export type Message = {

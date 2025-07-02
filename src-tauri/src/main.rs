@@ -30,6 +30,8 @@ use std::env;
 use structs::{Config, Message};
 use tauri::AppHandle;
 
+use crate::config::set_new_user;
+
 #[tauri::command(rename_all = "snake_case")]
 fn save_message(app: AppHandle, content: String, author: String, timestamp: i64) -> Vec<Message> {
     save_to_db(&app, content, author, timestamp)
@@ -53,6 +55,11 @@ fn get_config(app: AppHandle) -> Config {
 #[tauri::command(rename_all = "snake_case")]
 fn set_color_config(app: AppHandle, color: String) {
     set_color(&app, color);
+}
+
+#[tauri::command(rename_all = "snake_case")]
+fn set_new_user_config(app: AppHandle) {
+    set_new_user(&app);
 }
 
 #[tauri::command(rename_all = "snake_case")]
@@ -97,7 +104,8 @@ fn main() {
             toggle_bookmark_message,
             export_to,
             import,
-            delete
+            delete,
+            set_new_user_config
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
