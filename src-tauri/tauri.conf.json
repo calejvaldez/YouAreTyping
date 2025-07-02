@@ -57,16 +57,16 @@
                 "fullscreen": false,
                 "resizable": true,
                 "title": "You Are Typing",
-                "height": 600,
-                "width": 400,
-                "minHeight": 600,
+                "height": 550,
+                "width": 800,
+                "minHeight": 550,
                 "minWidth": 400
             }
         ]
     },
     "build": {
-        "beforeBuildCommand": "npm run build",
-        "beforeDevCommand": "npm run dev",
+        "beforeBuildCommand": "pnpm run viteBuild",
+        "beforeDevCommand": "pnpm run viteDev",
         "devPath": "http://localhost:5173",
         "distDir": "../dist"
     }
