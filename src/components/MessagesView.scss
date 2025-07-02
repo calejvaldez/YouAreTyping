@@ -1,0 +1,15 @@
+dialog button {
+    width: 100px;
+    height: 30px;
+    border: black solid 2px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+
+    font-weight: bold;
+
+    background-color: white;
+}
+
+dialog button:hover {
+    cursor: pointer;
+}

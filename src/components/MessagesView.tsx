@@ -15,6 +15,7 @@ import { invoke } from "@tauri-apps/api";
 import { listen } from "@tauri-apps/api/event";
 import { Config, Message } from "../types";
 import SettingsIcon from "../assets/cog.svg";
+import "./MessagesView.scss";
 
 export default function MessageView(props: { setCurrentView: Function }) {
     const [switched, setSwitched] = useState(false);
@@ -112,13 +113,17 @@ export default function MessageView(props: { setCurrentView: Function }) {
                         </ol>
 
                         <button
+                            style={{
+                                color: messageColor,
+                                borderColor: messageColor,
+                            }}
                             onClick={() => {
                                 setInputEnabled(true);
                                 setShowOnboarding(false);
                                 invoke("set_new_user_config");
                             }}
                         >
-                            Got it
+                            Start
                         </button>
                     </dialog>
                 </div>
