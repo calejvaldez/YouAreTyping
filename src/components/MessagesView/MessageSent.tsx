@@ -22,7 +22,7 @@ export function MessageSent(props: {
             className={"message_" + props.author}
             style={{
                 backgroundColor:
-                    props.author === "self" ? props.messageColor : "grey",
+                    props.author === "self" ? props.messageColor : "#3B3B3D",
             }}
         >
             <Markdown
